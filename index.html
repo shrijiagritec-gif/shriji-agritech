@@ -66,7 +66,7 @@
           <div>
             <div class="flex items-center gap-2">
               <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight" id="header-shop-title">SHRI JI AGRITECH</h1>
-              <span class="text-[10px] uppercase tracking-wider bg-brand-800 text-brand-200 px-2 py-0.5 rounded font-semibold border border-brand-700">GST Enterprise</span>
+              <span class="text-[10px] uppercase tracking-wider bg-brand-800 text-brand-200 px-2 py-0.5 rounded font-semibold border border-brand-700">GST Enterprise ERP</span>
             </div>
             <p class="text-xs text-brand-200 font-medium italic">Quality Products, Strong Yields.</p>
             <p class="text-[11px] text-brand-300 hidden sm:block mt-0.5" id="header-address-line">
@@ -82,7 +82,7 @@
           </div>
           
           <div class="bg-brand-800/80 border border-brand-700 px-3.5 py-1.5 rounded-lg text-right">
-            <span class="text-[10px] uppercase font-semibold text-brand-300 block tracking-wider">Drawer Balance</span>
+            <span class="text-[10px] uppercase font-semibold text-brand-300 block tracking-wider">Drawer Cash</span>
             <span class="text-sm font-bold text-white tracking-tight" id="header-balance">₹ 0.00</span>
           </div>
         </div>
@@ -99,22 +99,31 @@
       <div class="px-3 py-2 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Navigation Menu</div>
       
       <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn w-full text-left px-3.5 py-2.5 rounded-xl font-bold text-emerald-700 bg-emerald-50 flex items-center gap-3 text-xs transition">
-        <i class="fa-solid fa-chart-line w-4 text-center"></i> Pro Dashboard & P&L
+        <i class="fa-solid fa-chart-line w-4 text-center"></i> Financials & Reports
       </button>
       <button onclick="switchTab('billing')" id="tab-billing" class="tab-btn w-full text-left px-3.5 py-2.5 rounded-xl font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-3 text-xs transition">
         <i class="fa-solid fa-cash-register w-4 text-center text-emerald-600"></i> Billing & POS
       </button>
+      <button onclick="switchTab('returns')" id="tab-returns" class="tab-btn w-full text-left px-3.5 py-2.5 rounded-xl font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-3 text-xs transition">
+        <i class="fa-solid fa-rotate-left w-4 text-center text-orange-600"></i> Sales Return
+      </button>
       <button onclick="switchTab('inventory')" id="tab-inventory" class="tab-btn w-full text-left px-3.5 py-2.5 rounded-xl font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-3 text-xs transition">
-        <i class="fa-solid fa-boxes-stacked w-4 text-center text-blue-600"></i> Inventory & PO
+        <i class="fa-solid fa-boxes-stacked w-4 text-center text-blue-600"></i> Stock Inventory
       </button>
       <button onclick="switchTab('khata')" id="tab-khata" class="tab-btn w-full text-left px-3.5 py-2.5 rounded-xl font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-3 text-xs transition">
-        <i class="fa-solid fa-users-rectangle w-4 text-center text-red-600"></i> Credit Khata
+        <i class="fa-solid fa-users-rectangle w-4 text-center text-red-600"></i> Customer Khata
+      </button>
+      <button onclick="switchTab('vendors')" id="tab-vendors" class="tab-btn w-full text-left px-3.5 py-2.5 rounded-xl font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-3 text-xs transition">
+        <i class="fa-solid fa-truck-field w-4 text-center text-purple-600"></i> Supplier / Vendor
       </button>
       <button onclick="switchTab('invoices')" id="tab-invoices" class="tab-btn w-full text-left px-3.5 py-2.5 rounded-xl font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-3 text-xs transition">
-        <i class="fa-solid fa-receipt w-4 text-center text-amber-600"></i> Invoices
+        <i class="fa-solid fa-receipt w-4 text-center text-amber-600"></i> Invoices Archive
       </button>
       <button onclick="switchTab('daybook')" id="tab-daybook" class="tab-btn w-full text-left px-3.5 py-2.5 rounded-xl font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-3 text-xs transition">
-        <i class="fa-solid fa-book-journal-whills w-4 text-center text-purple-600"></i> Cashbook
+        <i class="fa-solid fa-book-journal-whills w-4 text-center text-teal-600"></i> Cashbook
+      </button>
+      <button onclick="switchTab('audit')" id="tab-audit" class="tab-btn w-full text-left px-3.5 py-2.5 rounded-xl font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-3 text-xs transition">
+        <i class="fa-solid fa-shield-halved w-4 text-center text-rose-600"></i> Security Audit Logs
       </button>
       <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn w-full text-left px-3.5 py-2.5 rounded-xl font-semibold text-amber-800 hover:bg-amber-50 flex items-center gap-3 text-xs transition border-t border-slate-100 mt-2">
         <i class="fa-solid fa-sliders w-4 text-center text-amber-600"></i> Settings & Cloud
@@ -124,27 +133,25 @@
     <!-- MAIN CONTENT AREA -->
     <main class="md:col-span-3 w-full space-y-6">
 
-      <!-- 0. PROFESSIONAL DASHBOARD, P&L & BALANCE SHEET -->
+      <!-- 0. PRO DASHBOARD, P&L & BALANCE SHEET -->
       <section id="section-reports" class="tab-content space-y-6">
-        
         <div class="bg-gradient-to-r from-brand-900 to-brand-700 text-white p-5 rounded-2xl shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <span class="bg-brand-800 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-brand-600">Financial Hub</span>
-            <h2 class="text-xl sm:text-2xl font-black mt-1">Enterprise Financials & Reports</h2>
-            <p class="text-xs text-brand-100 mt-0.5">Real-time Balance Sheet, Profit & Loss (P&L), and Sales Breakdowns.</p>
+            <span class="bg-brand-800 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-brand-600">Enterprise Financial Hub</span>
+            <h2 class="text-xl sm:text-2xl font-black mt-1">Financial Statements & Analytics</h2>
+            <p class="text-xs text-brand-100 mt-0.5">Real-time P&L, Balance Sheet, Vendor Balances, and Sales Performance.</p>
           </div>
-          <div class="flex gap-2">
+          <div>
             <button onclick="exportMasterFinancialExcel()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow flex items-center gap-2">
-              <i class="fa-solid fa-file-excel"></i> Export Master Excel (P&L, BS, Sales)
+              <i class="fa-solid fa-file-excel"></i> Export Master Excel (Full Report)
             </button>
           </div>
         </div>
 
-        <!-- KPI Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-600 flex items-center justify-between">
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Revenue / Sales</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Sales Revenue</span>
               <div class="text-xl font-black mt-1 text-slate-900 tracking-tight" id="rep-total-sales">₹ 0.00</div>
               <span class="text-[10px] text-emerald-600 font-bold mt-1 block"><i class="fa-solid fa-arrow-trend-up"></i> Gross Invoiced</span>
             </div>
@@ -157,7 +164,7 @@
             <div>
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Estimated Gross Profit</span>
               <div class="text-xl font-black mt-1 text-indigo-700 tracking-tight" id="rep-gross-profit">₹ 0.00</div>
-              <span class="text-[10px] text-indigo-600 font-bold mt-1 block"><i class="fa-solid fa-chart-pie"></i> Sales minus COGS</span>
+              <span class="text-[10px] text-indigo-600 font-bold mt-1 block"><i class="fa-solid fa-chart-pie"></i> Revenue minus COGS</span>
             </div>
             <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl font-bold">
               <i class="fa-solid fa-wallet"></i>
@@ -166,7 +173,7 @@
 
           <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-blue-600 flex items-center justify-between">
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Stock Valuation (Cost)</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Stock Valuation</span>
               <div class="text-xl font-black mt-1 text-blue-700 tracking-tight" id="rep-stock-valuation">₹ 0.00</div>
               <span class="text-[10px] text-blue-600 font-bold mt-1 block"><i class="fa-solid fa-warehouse"></i> Warehouse Assets</span>
             </div>
@@ -177,9 +184,9 @@
 
           <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-red-500 flex items-center justify-between">
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Active Market Udhar</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Customer Receivables</span>
               <div class="text-xl font-black mt-1 text-red-600 tracking-tight" id="rep-total-udhar">₹ 0.00</div>
-              <span class="text-[10px] text-red-500 font-bold mt-1 block"><i class="fa-solid fa-triangle-exclamation"></i> Pending Collection</span>
+              <span class="text-[10px] text-red-500 font-bold mt-1 block"><i class="fa-solid fa-triangle-exclamation"></i> Pending Market Udhar</span>
             </div>
             <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-xl font-bold">
               <i class="fa-solid fa-users-rectangle"></i>
@@ -187,9 +194,7 @@
           </div>
         </div>
 
-        <!-- Financial Statements Section (P&L and Balance Sheet Cards) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Profit & Loss Summary Card -->
           <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
             <h3 class="text-base font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
               <span><i class="fa-solid fa-file-invoice-dollar text-emerald-600 mr-2"></i> Profit & Loss (P&L) Summary</span>
@@ -197,11 +202,11 @@
             </h3>
             <div class="space-y-3 text-xs">
               <div class="flex justify-between py-1.5 border-b border-slate-100">
-                <span class="text-slate-600 font-medium">Total Gross Revenue (Sales):</span>
+                <span class="text-slate-600 font-medium">Gross Sales Revenue:</span>
                 <span class="font-bold text-slate-900" id="pnl-revenue">₹ 0.00</span>
               </div>
               <div class="flex justify-between py-1.5 border-b border-slate-100">
-                <span class="text-slate-600 font-medium">Less: Estimated Cost of Goods Sold (COGS):</span>
+                <span class="text-slate-600 font-medium">Less: Cost of Goods Sold (COGS):</span>
                 <span class="font-bold text-red-600" id="pnl-cogs">₹ 0.00</span>
               </div>
               <div class="flex justify-between py-2 text-sm font-black border-t-2 border-slate-200">
@@ -211,36 +216,37 @@
             </div>
           </div>
 
-          <!-- Balance Sheet Summary Card -->
           <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
             <h3 class="text-base font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4 flex items-center justify-between">
-              <span class="flex items-center"><i class="fa-solid fa-scale-balanced text-blue-600 mr-2"></i> Balance Sheet (Assets & Liabilities)</span>
-              <span class="text-[10px] bg-blue-50 text-blue-800 px-2.5 py-1 rounded-full font-bold">Live Snapshot</span>
+              <span class="flex items-center"><i class="fa-solid fa-scale-balanced text-blue-600 mr-2"></i> Balance Sheet Snapshot</span>
+              <span class="text-[10px] bg-blue-50 text-blue-800 px-2.5 py-1 rounded-full font-bold">Assets & Liabilities</span>
             </h3>
             <div class="space-y-3 text-xs">
               <div class="flex justify-between py-1.5 border-b border-slate-100">
-                <span class="text-slate-600 font-medium">Current Assets - Inventory Valuation:</span>
+                <span class="text-slate-600 font-medium">Warehouse Inventory Valuation:</span>
                 <span class="font-bold text-blue-700" id="bs-stock">₹ 0.00</span>
               </div>
               <div class="flex justify-between py-1.5 border-b border-slate-100">
-                <span class="text-slate-600 font-medium">Current Assets - Market Receivables (Udhar):</span>
+                <span class="text-slate-600 font-medium">Customer Receivables (Market Udhar):</span>
                 <span class="font-bold text-slate-900" id="bs-receivables">₹ 0.00</span>
               </div>
               <div class="flex justify-between py-1.5 border-b border-slate-100">
-                <span class="text-slate-600 font-medium">Current Assets - Cash Drawer Balance:</span>
+                <span class="text-slate-600 font-medium">Cash Drawer Balance:</span>
                 <span class="font-bold text-emerald-700" id="bs-cash">₹ 0.00</span>
               </div>
+              <div class="flex justify-between py-1.5 border-b border-slate-100 text-purple-700">
+                <span class="font-medium">Supplier Payables (Vendor Udhar):</span>
+                <span class="font-bold" id="bs-vendor-payables">₹ 0.00</span>
+              </div>
               <div class="flex justify-between py-2 text-sm font-black border-t-2 border-slate-200">
-                <span class="text-slate-800">Total Enterprise Assets:</span>
+                <span class="text-slate-800">Total Net Enterprise Assets:</span>
                 <span class="text-blue-800" id="bs-total-assets">₹ 0.00</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Sales Breakdowns (By Item & By Staff) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Sale By Item -->
           <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
             <h3 class="text-base font-bold text-slate-800 border-b border-slate-100 pb-3 mb-3 flex items-center gap-2">
               <i class="fa-solid fa-boxes-stacked text-blue-600"></i> Sales Breakdown by Item
@@ -259,7 +265,6 @@
             </div>
           </div>
 
-          <!-- Sale By Staff -->
           <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
             <h3 class="text-base font-bold text-slate-800 border-b border-slate-100 pb-3 mb-3 flex items-center gap-2">
               <i class="fa-solid fa-user-tie text-emerald-600"></i> Sales Breakdown by Staff
@@ -278,27 +283,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Sale By Customer Section -->
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-          <h3 class="text-base font-bold text-slate-800 border-b border-slate-100 pb-3 mb-3 flex items-center gap-2">
-            <i class="fa-solid fa-users text-amber-600"></i> Sales Breakdown by Customer
-          </h3>
-          <div class="overflow-x-auto max-h-56 rounded-lg border border-slate-200">
-            <table class="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr class="bg-slate-100 text-slate-600 font-semibold uppercase text-[10px]">
-                  <th class="p-3">Customer Name</th>
-                  <th class="p-3">Mobile Number</th>
-                  <th class="p-3 text-right">Total Invoices</th>
-                  <th class="p-3 text-right font-black">Total Purchase Amount (₹)</th>
-                </tr>
-              </thead>
-              <tbody id="customer-sales-tbody" class="divide-y divide-slate-100"></tbody>
-            </table>
-          </div>
-        </div>
-
       </section>
 
       <!-- 1. BILLING & GST POS -->
@@ -484,7 +468,62 @@
         </div>
       </section>
 
-      <!-- 2. INVENTORY & STOCK -->
+      <!-- 2. SALES RETURN & CREDIT NOTE (सामान वापसी) -->
+      <section id="section-returns" class="tab-content hidden space-y-6">
+        <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
+          <h2 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-rotate-left text-orange-600"></i> Process Sales Return (सामान वापसी)
+          </h2>
+          <p class="text-xs text-slate-500 mb-4">Select returned product. Stock will automatically increase and customer balance adjusted.</p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <div>
+              <label class="text-[11px] font-bold text-slate-600 uppercase block">Customer Mobile *</label>
+              <input type="tel" id="ret-cust-phone" placeholder="10-digit mobile" class="w-full text-xs border border-slate-300 p-2 rounded-lg mt-1 bg-white">
+            </div>
+            <div>
+              <label class="text-[11px] font-bold text-slate-600 uppercase block">Returned Product *</label>
+              <select id="ret-product-select" class="w-full text-xs border border-slate-300 p-2 rounded-lg mt-1 bg-white"></select>
+            </div>
+            <div>
+              <label class="text-[11px] font-bold text-slate-600 uppercase block">Return Qty *</label>
+              <input type="number" id="ret-qty" value="1" min="0.1" step="any" class="w-full text-xs border border-slate-300 p-2 rounded-lg mt-1 bg-white">
+            </div>
+            <div>
+              <label class="text-[11px] font-bold text-slate-600 uppercase block">Refund Method</label>
+              <select id="ret-mode" class="w-full text-xs border border-slate-300 p-2 rounded-lg mt-1 bg-white">
+                <option value="khata">Adjust Customer Khata (Less Udhar/Advance)</option>
+                <option value="cash">Instant Cash Refund (- Cash Out)</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-4">
+            <button onclick="processSalesReturn()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold px-5 py-2.5 rounded-lg text-xs transition">
+              Process Return & Update Stock
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
+          <h3 class="text-sm font-bold text-slate-800 mb-3">Sales Return History</h3>
+          <div class="overflow-x-auto rounded-lg border border-slate-200">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-100 text-slate-600 font-semibold uppercase text-[10px]">
+                  <th class="p-3">Date</th>
+                  <th class="p-3">Customer</th>
+                  <th class="p-3">Item</th>
+                  <th class="p-3 text-right">Qty</th>
+                  <th class="p-3 text-right font-black">Refund Amt (₹)</th>
+                </tr>
+              </thead>
+              <tbody id="returns-history-tbody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. INVENTORY & STOCK -->
       <section id="section-inventory" class="tab-content hidden space-y-6">
         <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
           <h2 class="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
@@ -570,7 +609,7 @@
         </div>
       </section>
 
-      <!-- 3. CREDIT LEDGER (KHATA) -->
+      <!-- 4. CREDIT LEDGER (KHATA) -->
       <section id="section-khata" class="tab-content hidden space-y-6">
         <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4 mb-4">
@@ -595,6 +634,7 @@
                   <th class="p-3">Customer Name</th>
                   <th class="p-3">Phone (WhatsApp)</th>
                   <th class="p-3 text-right">Outstanding / Advance Balance (₹)</th>
+                  <th class="p-3 text-center">Remind</th>
                   <th class="p-3 text-center">Actions</th>
                   <th class="p-3 text-center">Delete</th>
                 </tr>
@@ -605,7 +645,54 @@
         </div>
       </section>
 
-      <!-- 4. INVOICES ARCHIVE -->
+      <!-- 5. SUPPLIER / VENDOR KHATA -->
+      <section id="section-vendors" class="tab-content hidden space-y-6">
+        <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
+          <h2 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-truck-field text-purple-600"></i> Supplier / Vendor Ledger (सप्लायर का खाता)
+          </h2>
+          <p class="text-xs text-slate-500 mb-4">Add suppliers and track outstanding payables for purchased raw materials.</p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <div>
+              <label class="text-[11px] font-bold text-slate-600 uppercase block">Supplier Name *</label>
+              <input type="text" id="vendor-name" placeholder="e.g. Mahavir Seeds Corp" class="w-full text-xs border border-slate-300 p-2 rounded-lg mt-1 bg-white">
+            </div>
+            <div>
+              <label class="text-[11px] font-bold text-slate-600 uppercase block">Phone Number *</label>
+              <input type="tel" id="vendor-phone" placeholder="10-digit phone" class="w-full text-xs border border-slate-300 p-2 rounded-lg mt-1 bg-white">
+            </div>
+            <div>
+              <label class="text-[11px] font-bold text-slate-600 uppercase block">Initial Payable Udhar (₹)</label>
+              <input type="number" id="vendor-balance" value="0" min="0" class="w-full text-xs border border-slate-300 p-2 rounded-lg mt-1 bg-white">
+            </div>
+          </div>
+          <div class="mt-4">
+            <button onclick="addVendor()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-5 py-2.5 rounded-lg text-xs transition">
+              Save Supplier
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
+          <div class="overflow-x-auto rounded-lg border border-slate-200">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-100 text-slate-600 font-semibold uppercase text-[10px]">
+                  <th class="p-3">Supplier Name</th>
+                  <th class="p-3">Phone</th>
+                  <th class="p-3 text-right">Payable Udhar (₹)</th>
+                  <th class="p-3 text-center">Record Payment</th>
+                  <th class="p-3 text-center">Delete</th>
+                </tr>
+              </thead>
+              <tbody id="vendor-table-body" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. INVOICES ARCHIVE -->
       <section id="section-invoices" class="tab-content hidden space-y-4">
         <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b border-slate-100 pb-4">
@@ -644,7 +731,7 @@
         </div>
       </section>
 
-      <!-- 5. CASHBOOK & DAYBOOK -->
+      <!-- 7. CASHBOOK & DAYBOOK -->
       <section id="section-daybook" class="tab-content hidden space-y-6">
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-wrap gap-3 items-end bg-slate-50">
           <div class="flex-1 min-w-[220px]">
@@ -686,9 +773,31 @@
         </div>
       </section>
 
-      <!-- 6. SETTINGS & CLOUD CONFIG -->
+      <!-- 8. SECURITY AUDIT LOGS -->
+      <section id="section-audit" class="tab-content hidden space-y-6">
+        <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
+          <h2 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved text-rose-600"></i> Security Audit Logs
+          </h2>
+          <p class="text-xs text-slate-500 mb-4">Tracks deletions, stock modifications, and system edits with exact timestamps.</p>
+          
+          <div class="overflow-x-auto rounded-lg border border-slate-200">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-100 text-slate-600 font-semibold uppercase text-[10px]">
+                  <th class="p-3">Timestamp</th>
+                  <th class="p-3">Action performed</th>
+                  <th class="p-3">User / Staff</th>
+                </tr>
+              </thead>
+              <tbody id="audit-logs-tbody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. SETTINGS & CLOUD CONFIG -->
       <section id="section-settings" class="tab-content hidden space-y-6">
-        
         <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
           <h2 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
             <i class="fa-solid fa-building text-brand-600"></i> Company Profile & Information
@@ -718,132 +827,71 @@
 
         <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
           <h2 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-university text-blue-600"></i> Bank Account & UPI Details (Invoice Footer)
+            <i class="fa-solid fa-university text-blue-600"></i> Bank Account & UPI Details
           </h2>
-          <p class="text-xs text-slate-500 mb-4">Add your bank details and UPI ID so they automatically appear on all generated invoices.</p>
-          
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label class="text-[11px] font-bold text-slate-600 uppercase">Bank Name & Branch</label>
-              <input type="text" id="bank-name-input" placeholder="State Bank of India, Banda" class="w-full text-xs border border-slate-300 p-2.5 rounded-lg mt-1 bg-white">
+              <label class="text-[11px] font-bold text-slate-600 uppercase">Bank Name</label>
+              <input type="text" id="bank-name-input" placeholder="SBI Banda" class="w-full text-xs border border-slate-300 p-2.5 rounded-lg mt-1 bg-white">
             </div>
             <div>
               <label class="text-[11px] font-bold text-slate-600 uppercase">Account Number</label>
-              <input type="text" id="bank-acc-input" placeholder="123456789012" class="w-full text-xs border border-slate-300 p-2.5 rounded-lg mt-1 bg-white">
+              <input type="text" id="bank-acc-input" placeholder="1234567890" class="w-full text-xs border border-slate-300 p-2.5 rounded-lg mt-1 bg-white">
             </div>
             <div>
               <label class="text-[11px] font-bold text-slate-600 uppercase">IFSC Code</label>
               <input type="text" id="bank-ifsc-input" placeholder="SBIN0001234" class="w-full text-xs uppercase border border-slate-300 p-2.5 rounded-lg mt-1 bg-white">
             </div>
             <div class="sm:col-span-3">
-              <label class="text-[11px] font-bold text-slate-600 uppercase">UPI ID / QR VPA</label>
+              <label class="text-[11px] font-bold text-slate-600 uppercase">UPI ID (VPA)</label>
               <input type="text" id="bank-upi-input" placeholder="shrijiagritech@upi" class="w-full text-xs border border-slate-300 p-2.5 rounded-lg mt-1 bg-white">
             </div>
           </div>
           <div class="mt-4">
             <button onclick="saveBankDetails()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-lg text-xs transition">
-              Save Bank & UPI Details
+              Save Bank & UPI
             </button>
           </div>
         </div>
 
         <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
           <h2 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-users text-indigo-600"></i> Staff Management & Sales Tracking
+            <i class="fa-solid fa-users text-indigo-600"></i> Staff Management
           </h2>
-          <p class="text-xs text-slate-500 mb-4">Add or remove staff members. Sales will be tracked per staff for performance analysis.</p>
-          
           <div class="flex gap-2 max-w-md mb-4">
             <input type="text" id="new-staff-name" placeholder="Enter Staff Name" class="w-full text-xs border border-slate-300 p-2.5 rounded-lg bg-white">
             <button onclick="addNewStaff()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2.5 rounded-lg text-xs whitespace-nowrap">Add Staff</button>
           </div>
-
           <div id="staff-settings-list" class="space-y-2"></div>
-        </div>
-
-        <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
-          <h2 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-signature text-purple-600"></i> Invoice Branding: Logo Upload & Signature
-          </h2>
-          <p class="text-xs text-slate-500 mb-4">Upload your shop logo (JPG/PNG) directly from your device and set the authorised signatory text.</p>
-          
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-            <div>
-              <label class="text-[11px] font-bold text-slate-600 uppercase">Upload Shop Logo (JPG/PNG)</label>
-              <input type="file" id="company-logo-file" accept="image/*" class="w-full text-xs border border-slate-300 p-2 rounded-lg mt-1 bg-white" onchange="handleLogoUpload(event)">
-            </div>
-            <div>
-              <label class="text-[11px] font-bold text-slate-600 uppercase">Authorised Signatory Title</label>
-              <input type="text" id="company-sign-input" placeholder="For Shri Ji Agritech (Proprietor)" class="w-full text-xs border border-slate-300 p-2.5 rounded-lg mt-1 bg-white">
-            </div>
-          </div>
-          <div class="mt-4">
-            <button onclick="saveBrandingConfig()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-5 py-2.5 rounded-lg text-xs transition">
-              Save Signature Branding
-            </button>
-          </div>
         </div>
 
         <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
           <div class="flex items-center gap-3 border-b border-slate-100 pb-3 mb-3">
             <i class="fa-solid fa-cloud-arrow-up text-3xl text-blue-600"></i>
             <div>
-              <h2 class="text-base font-bold text-slate-800">Supabase Cloud Multi-Device Synchronization</h2>
-              <p class="text-xs text-slate-500">Connects PC, Mobile, and Tablets to the same database</p>
+              <h2 class="text-base font-bold text-slate-800">Supabase Cloud Sync</h2>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
             <div>
-              <label class="text-[11px] font-bold text-slate-600 uppercase">Supabase Project URL</label>
-              <input type="text" id="supabase-url" placeholder="https://vaipnmlbfarqhpvkskbq.supabase.co" class="w-full text-xs font-mono border border-slate-300 p-2 rounded-lg bg-white mt-1">
+              <label class="text-[11px] font-bold text-slate-600 uppercase">Supabase URL</label>
+              <input type="text" id="supabase-url" placeholder="https://..." class="w-full text-xs font-mono border border-slate-300 p-2 rounded-lg bg-white mt-1">
             </div>
             <div>
-              <label class="text-[11px] font-bold text-slate-600 uppercase">Supabase Anon Public API Key</label>
-              <input type="password" id="supabase-key" placeholder="eyJhbGciOi..." class="w-full text-xs font-mono border border-slate-300 p-2 rounded-lg bg-white mt-1">
+              <label class="text-[11px] font-bold text-slate-600 uppercase">Anon API Key</label>
+              <input type="password" id="supabase-key" placeholder="eyJ..." class="w-full text-xs font-mono border border-slate-300 p-2 rounded-lg bg-white mt-1">
             </div>
           </div>
           <div class="mt-4 flex flex-wrap gap-2">
-            <button onclick="saveCloudConfig()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg text-xs flex items-center gap-2">
-              <i class="fa-solid fa-link"></i> Save & Connect Cloud
-            </button>
-            <button onclick="forcePullFromCloud()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 px-5 rounded-lg text-xs flex items-center gap-2">
-              <i class="fa-solid fa-cloud-arrow-down"></i> Pull Latest Data from Cloud
-            </button>
-            <button onclick="forcePushToCloud()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-5 rounded-lg text-xs flex items-center gap-2">
-              <i class="fa-solid fa-cloud-arrow-up"></i> Push This Device's Data to Cloud
-            </button>
+            <button onclick="saveCloudConfig()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg text-xs">Save & Connect</button>
+            <button onclick="forcePullFromCloud()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 px-5 rounded-lg text-xs">Pull Cloud Data</button>
+            <button onclick="forcePushToCloud()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-5 rounded-lg text-xs">Push Cloud Data</button>
           </div>
         </div>
-
-        <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
-          <h2 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-shield-halved text-emerald-600"></i> Offline JSON Backup
-          </h2>
-          <p class="text-xs text-slate-500 mb-4">Download backup files directly to your storage for peace of mind.</p>
-          <div class="flex gap-3">
-            <button onclick="downloadFullBackupJSON()" class="bg-slate-900 hover:bg-black text-white text-xs font-bold py-2.5 px-4 rounded-lg flex items-center gap-2">
-              <i class="fa-solid fa-download"></i> Download Full Backup (.JSON)
-            </button>
-          </div>
-        </div>
-
       </section>
 
     </main>
-
-  </div>
-
-  <!-- BARCODE SCANNER MODAL -->
-  <div id="scanner-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-base font-bold text-slate-900"><i class="fa-solid fa-camera mr-2 text-indigo-600"></i> Scan Product Barcode</h3>
-        <button onclick="closeScannerModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">×</button>
-      </div>
-      <div id="reader" style="width: 100%; border-radius: 12px; overflow: hidden;"></div>
-      <p class="text-[11px] text-slate-500 text-center mt-3">Point camera at item barcode or QR code</p>
-    </div>
   </div>
 
   <!-- CUSTOMER LEDGER MODAL -->
@@ -859,22 +907,16 @@
         </div>
 
         <div class="bg-red-50 border border-red-200 p-3.5 rounded-xl flex justify-between items-center mb-5">
-          <span class="text-xs font-bold uppercase tracking-wider text-red-900">Current Balance (Due / Advance):</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-red-900">Current Balance:</span>
           <span class="text-xl font-black text-red-700 tracking-tight" id="modal-cust-balance">₹ 0.00</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
           <div class="p-3.5 bg-emerald-50/60 border border-emerald-200 rounded-xl">
-            <h4 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Receive Payment (Cash/UPI)</h4>
+            <h4 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Receive Payment</h4>
             <div class="space-y-2">
               <input type="number" id="modal-payin-amt" placeholder="Amount (₹)" class="w-full text-xs border border-emerald-300 p-2 rounded-lg bg-white">
-              <select id="modal-payin-mode" class="w-full text-xs border border-emerald-300 p-2 rounded-lg bg-white">
-                <option value="Cash">Cash In Counter</option>
-                <option value="UPI">UPI / Bank Transfer</option>
-              </select>
-              <button onclick="processCustomerPayment('in')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg text-xs">
-                Record Payment Received
-              </button>
+              <button onclick="processCustomerPayment('in')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg text-xs">Record Payment</button>
             </div>
           </div>
 
@@ -882,10 +924,8 @@
             <h4 class="text-xs font-bold text-amber-900 uppercase tracking-wider mb-2">Add Credit Adjustment</h4>
             <div class="space-y-2">
               <input type="number" id="modal-payout-amt" placeholder="Amount (₹)" class="w-full text-xs border border-amber-300 p-2 rounded-lg bg-white">
-              <input type="text" id="modal-payout-note" placeholder="Reason (e.g. Extra Material)" class="w-full text-xs border border-amber-300 p-2 rounded-lg bg-white">
-              <button onclick="processCustomerPayment('out')" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-lg text-xs">
-                Add Credit Outstanding
-              </button>
+              <input type="text" id="modal-payout-note" placeholder="Reason" class="w-full text-xs border border-amber-300 p-2 rounded-lg bg-white">
+              <button onclick="processCustomerPayment('out')" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-lg text-xs">Add Credit</button>
             </div>
           </div>
         </div>
@@ -896,8 +936,8 @@
               <tr class="bg-slate-100 text-slate-600 font-semibold uppercase text-[10px]">
                 <th class="p-2">Date</th>
                 <th class="p-2">Description</th>
-                <th class="p-2 text-right">Debit (+ Due)</th>
-                <th class="p-2 text-right">Credit (- Paid)</th>
+                <th class="p-2 text-right">Debit</th>
+                <th class="p-2 text-right">Credit</th>
               </tr>
             </thead>
             <tbody id="modal-ledger-body" class="divide-y divide-slate-100"></tbody>
@@ -909,9 +949,7 @@
         <button onclick="sendStatementWhatsApp()" class="bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 px-4 rounded-lg text-xs flex items-center gap-2">
           <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Statement
         </button>
-        <button onclick="closeCustomerModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-2 px-4 rounded-lg text-xs">
-          Close
-        </button>
+        <button onclick="closeCustomerModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-2 px-4 rounded-lg text-xs">Close</button>
       </div>
     </div>
   </div>
@@ -921,16 +959,10 @@
     <div id="printable-invoice-view" style="width: 760px; padding: 32px; background: #ffffff; color: #0f172a; font-family: 'Inter', sans-serif;">
       <div style="border-bottom: 2.5px solid #16a34a; padding-bottom: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-start;">
         <div style="display: flex; align-items: center; gap: 12px;">
-          <div id="pdf-logo-wrapper" style="width: 50px; height: 50px; display: none;">
-            <img id="pdf-logo-img" src="" style="width: 100%; height: 100%; object-fit: contain;" />
-          </div>
           <div>
             <h1 style="font-size: 24px; font-weight: 900; color: #14532d; margin: 0;" id="pdf-company-name">SHRI JI AGRITECH</h1>
             <p style="font-size: 11px; font-weight: 700; color: #16a34a; margin: 2px 0 4px 0; font-style: italic;">Quality Products, Strong Yields.</p>
-            <p style="font-size: 10px; color: #475569; margin: 0; line-height: 1.4;" id="pdf-company-address">
-              Basantapur, Banda, Powayan, Dist. Shahjahanpur - 242042 (U.P.)<br>
-              <strong>Phone:</strong> +91 8960009391 | <strong>GSTIN:</strong> <span id="pdf-shop-gstin">-</span>
-            </p>
+            <p style="font-size: 10px; color: #475569; margin: 0; line-height: 1.4;" id="pdf-company-address"></p>
           </div>
         </div>
         <div style="text-align: right;">
@@ -967,7 +999,7 @@
       </table>
 
       <div style="border-top: 1px solid #cbd5e1; padding-top: 10px; margin-bottom: 12px; font-size: 10px; color: #475569; background: #f8fafc; padding: 8px; border-radius: 6px;" id="pdf-bank-footer">
-        <strong>Bank Details for Payment:</strong> <span id="pdf-bank-info">Not Configured</span> | <strong>UPI ID:</strong> <span id="pdf-upi-info">Not Configured</span>
+        <strong>Bank Details:</strong> <span id="pdf-bank-info">-</span> | <strong>UPI:</strong> <span id="pdf-upi-info">-</span>
       </div>
 
       <div style="border-top: 1px solid #cbd5e1; padding-top: 12px; font-size: 12px; display: flex; justify-content: space-between; align-items: flex-end;">
@@ -994,13 +1026,14 @@
     let customers = JSON.parse(localStorage.getItem('shriji_v3_customers')) || [];
     let daybook = JSON.parse(localStorage.getItem('shriji_v3_daybook')) || [];
     let customerLedgers = JSON.parse(localStorage.getItem('shriji_v3_ledgers')) || {};
+    let vendors = JSON.parse(localStorage.getItem('shriji_v3_vendors')) || [];
+    let salesReturns = JSON.parse(localStorage.getItem('shriji_v3_returns')) || [];
+    let auditLogs = JSON.parse(localStorage.getItem('shriji_v3_audit')) || [];
     
     let companyName = localStorage.getItem('shriji_company_name') || 'SHRI JI AGRITECH';
     let companyAddress = localStorage.getItem('shriji_company_address') || 'Basantapur, Banda, Powayan, Dist. Shahjahanpur - 242042 (U.P.) | ☎ 8960009391';
     let shopGstin = localStorage.getItem('shriji_shop_gstin') || '';
-    let companyLogo = localStorage.getItem('shriji_company_logo') || '';
     let companySignature = localStorage.getItem('shriji_company_signature') || 'For Shri Ji Agritech (Authorised Signatory)';
-    
     let bankName = localStorage.getItem('shriji_bank_name') || '';
     let bankAcc = localStorage.getItem('shriji_bank_acc') || '';
     let bankIfsc = localStorage.getItem('shriji_bank_ifsc') || '';
@@ -1014,7 +1047,25 @@
     let currentCart = [];
     let activeCustomerPhone = null;
     let supabaseClient = null;
-    let html5QrCode = null;
+
+    function addAuditLog(action) {
+      const logEntry = { timestamp: new Date().toLocaleString('en-IN'), action, user: 'Admin/Staff' };
+      auditLogs.unshift(logEntry);
+      localStorage.setItem('shriji_v3_audit', JSON.stringify(auditLogs));
+      renderAuditLogs();
+    }
+
+    function renderAuditLogs() {
+      const tbody = document.getElementById('audit-logs-tbody');
+      if(!tbody) return;
+      tbody.innerHTML = auditLogs.map(l => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3 text-slate-500 font-mono text-[11px]">${l.timestamp}</td>
+          <td class="p-3 font-semibold text-slate-800">${l.action}</td>
+          <td class="p-3 text-slate-600 font-bold">${l.user}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="3" class="text-center py-4 text-slate-400">No logs.</td></tr>';
+    }
 
     function renderAllUI() {
       loadCompanyProfile();
@@ -1025,7 +1076,10 @@
       renderInventoryTable();
       renderSavedInvoicesTable();
       renderKhataTable();
+      renderVendorTable();
       renderDaybookTable();
+      renderReturnsHistory();
+      renderAuditLogs();
       renderReports();
       updateLiveBalance();
     }
@@ -1037,216 +1091,91 @@
       localStorage.setItem('shriji_v3_customers', JSON.stringify(customers));
       localStorage.setItem('shriji_v3_daybook', JSON.stringify(daybook));
       localStorage.setItem('shriji_v3_ledgers', JSON.stringify(customerLedgers));
+      localStorage.setItem('shriji_v3_vendors', JSON.stringify(vendors));
+      localStorage.setItem('shriji_v3_returns', JSON.stringify(salesReturns));
+      localStorage.setItem('shriji_v3_audit', JSON.stringify(auditLogs));
       updateLiveBalance();
     }
 
     async function saveAll() {
       saveLocalOnly();
-      if (supabaseClient) {
-        await forcePushToCloud(false);
-      }
+      if (supabaseClient) await forcePushToCloud(false);
     }
 
     window.onload = async function() {
-      document.getElementById('live-clock').innerText = new Date().toLocaleDateString('en-IN', {
-        weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
-      });
+      document.getElementById('live-clock').innerText = new Date().toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
       renderAllUI();
       await initCloudClientAndSync();
     };
 
     async function initCloudClientAndSync() {
-      const dot = document.getElementById('sync-dot');
-      const text = document.getElementById('sync-text');
-      const badge = document.getElementById('cloud-status-badge');
-
-      if (!cloudConfig.url || !cloudConfig.key) {
-        if(dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
-        if(text) text.innerText = 'Key Needed (Click)';
-        if(badge) badge.className = 'text-xs bg-slate-900/60 border border-brand-700/60 px-3 py-1.5 rounded-lg flex items-center gap-2 cursor-pointer';
-        return;
-      }
-
-      const urlInput = document.getElementById('supabase-url');
-      const keyInput = document.getElementById('supabase-key');
-      if(urlInput) urlInput.value = cloudConfig.url;
-      if(keyInput) keyInput.value = cloudConfig.key;
-
+      if (!cloudConfig.url || !cloudConfig.key) return;
       try {
         if(window.supabase) {
           supabaseClient = window.supabase.createClient(cloudConfig.url, cloudConfig.key);
-          if(dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse';
-          if(text) text.innerText = 'Syncing...';
           await forcePullFromCloud(false);
         }
-      } catch (e) {
-        console.error(e);
-        if(dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-red-500';
-        if(text) text.innerText = 'Sync Error';
-      }
+      } catch(e) { console.error(e); }
     }
 
     function saveCloudConfig() {
       const url = document.getElementById('supabase-url').value.trim();
       const key = document.getElementById('supabase-key').value.trim();
-      if (!url || !key) return alert('Please enter both Supabase URL and Anon Key.');
-
+      if (!url || !key) return alert('Enter Supabase URL & Key');
       cloudConfig = { url, key };
       localStorage.setItem('shriji_cloud_config', JSON.stringify(cloudConfig));
-      alert('Cloud credentials saved! Now syncing...');
+      alert('Cloud Config Saved!');
       initCloudClientAndSync();
     }
 
     async function forcePushToCloud(showAlert = true) {
-      if (!supabaseClient) {
-        if (showAlert) alert('Cloud not connected. Configure URL & Key in Settings.');
-        return;
-      }
-
-      const dot = document.getElementById('sync-dot');
-      const text = document.getElementById('sync-text');
-
+      if (!supabaseClient) return;
       try {
-        const payload = {
-          products, staffMembers, invoices, customers, daybook, customerLedgers, 
-          companyName, companyAddress, shopGstin, companyLogo, companySignature,
-          bankName, bankAcc, bankIfsc, bankUpi
-        };
-
-        const { error } = await supabaseClient
-          .from('shriji_store')
-          .upsert([{
-            shop_id: 'shri_ji_agritech',
-            data: payload,
-            updated_at: new Date().toISOString()
-          }]);
-
-        if (error) throw error;
-
-        if(dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400';
-        if(text) text.innerText = 'Cloud Synced';
-        if (showAlert) alert('✅ Local data successfully saved to cloud!');
-      } catch (err) {
-        console.error('Cloud Push Error:', err);
-        if(dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-red-500';
-        if(text) text.innerText = 'Sync Failed';
-        if (showAlert) alert('❌ Cloud Save Failed: ' + (err.message || 'Check connection.'));
-      }
+        const payload = { products, staffMembers, invoices, customers, daybook, customerLedgers, vendors, salesReturns, auditLogs, companyName, companyAddress, shopGstin, companySignature, bankName, bankAcc, bankIfsc, bankUpi };
+        await supabaseClient.from('shriji_store').upsert([{ shop_id: 'shri_ji_agritech', data: payload, updated_at: new Date().toISOString() }]);
+        if (showAlert) alert('Data Pushed to Cloud!');
+      } catch(err) { console.error(err); }
     }
 
     async function forcePullFromCloud(showAlert = true) {
-      if (!supabaseClient) {
-        if (showAlert) alert('Cloud not connected.');
-        return;
-      }
-
-      const dot = document.getElementById('sync-dot');
-      const text = document.getElementById('sync-text');
-
+      if (!supabaseClient) return;
       try {
-        const { data, error } = await supabaseClient
-          .from('shriji_store')
-          .select('data, updated_at')
-          .eq('shop_id', 'shri_ji_agritech')
-          .maybeSingle();
-
-        if (error) throw error;
-
+        const { data } = await supabaseClient.from('shriji_store').select('data').eq('shop_id', 'shri_ji_agritech').maybeSingle();
         if (data && data.data) {
-          const store = data.data;
-          products = store.products || [];
-          staffMembers = store.staffMembers || staffMembers;
-          invoices = store.invoices || [];
-          customers = store.customers || [];
-          daybook = store.daybook || [];
-          customerLedgers = store.customerLedgers || {};
-          
-          if (store.companyName) companyName = store.companyName;
-          if (store.companyAddress) companyAddress = store.companyAddress;
-          if (store.shopGstin) shopGstin = store.shopGstin;
-          if (store.companyLogo) companyLogo = store.companyLogo;
-          if (store.companySignature) companySignature = store.companySignature;
-          if (store.bankName) bankName = store.bankName;
-          if (store.bankAcc) bankAcc = store.bankAcc;
-          if (store.bankIfsc) bankIfsc = store.bankIfsc;
-          if (store.bankUpi) bankUpi = store.bankUpi;
-
-          localStorage.setItem('shriji_company_name', companyName);
-          localStorage.setItem('shriji_company_address', companyAddress);
-          localStorage.setItem('shriji_shop_gstin', shopGstin);
-          localStorage.setItem('shriji_company_logo', companyLogo);
-          localStorage.setItem('shriji_company_signature', companySignature);
-          localStorage.setItem('shriji_bank_name', bankName);
-          localStorage.setItem('shriji_bank_acc', bankAcc);
-          localStorage.setItem('shriji_bank_ifsc', bankIfsc);
-          localStorage.setItem('shriji_bank_upi', bankUpi);
-
+          const s = data.data;
+          products = s.products || [];
+          staffMembers = s.staffMembers || staffMembers;
+          invoices = s.invoices || [];
+          customers = s.customers || [];
+          daybook = s.daybook || [];
+          customerLedgers = s.customerLedgers || {};
+          vendors = s.vendors || [];
+          salesReturns = s.salesReturns || [];
+          auditLogs = s.auditLogs || [];
           saveLocalOnly();
           renderAllUI();
-
-          if(dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400';
-          if(text) text.innerText = 'Cloud Synced';
-          if (showAlert) alert('✅ Data successfully downloaded from cloud!');
-        } else {
-          await forcePushToCloud(false);
-          if(dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400';
-          if(text) text.innerText = 'Cloud Synced (New)';
+          if (showAlert) alert('Cloud Data Synced!');
         }
-      } catch (err) {
-        console.error(err);
-        if(dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-red-500';
-        if(text) text.innerText = 'Sync Failed';
-      }
+      } catch(err) { console.error(err); }
     }
 
     function loadCompanyProfile() {
       const titleEl = document.getElementById('header-shop-title');
       const addrEl = document.getElementById('header-address-line');
       if(titleEl) titleEl.innerText = companyName;
-      if(addrEl) addrEl.innerHTML = `${companyAddress} | GSTIN: <span id="header-gstin-text" class="font-bold text-yellow-300">${shopGstin || 'NOT CONFIGURED'}</span>`;
-      
-      const compInput = document.getElementById('company-name-input');
-      const gstinInput = document.getElementById('shop-gstin-input');
-      const addrInput = document.getElementById('company-address-input');
-      const signInput = document.getElementById('company-sign-input');
-      const bankNameInput = document.getElementById('bank-name-input');
-      const bankAccInput = document.getElementById('bank-acc-input');
-      const bankIfscInput = document.getElementById('bank-ifsc-input');
-      const bankUpiInput = document.getElementById('bank-upi-input');
-
-      if (compInput) compInput.value = companyName;
-      if (gstinInput) gstinInput.value = shopGstin;
-      if (addrInput) addrInput.value = companyAddress;
-      if (signInput) signInput.value = companySignature;
-      if (bankNameInput) bankNameInput.value = bankName;
-      if (bankAccInput) bankAccInput.value = bankAcc;
-      if (bankIfscInput) bankIfscInput.value = bankIfsc;
-      if (bankUpiInput) bankUpiInput.value = bankUpi;
-
-      const headerLogoImg = document.getElementById('header-logo-img');
-      const headerLogoFallback = document.getElementById('header-logo-fallback');
-      if (companyLogo && headerLogoImg && headerLogoFallback) {
-        headerLogoImg.src = companyLogo;
-        headerLogoImg.classList.remove('hidden');
-        headerLogoFallback.classList.add('hidden');
-      } else if(headerLogoImg && headerLogoFallback) {
-        headerLogoImg.classList.add('hidden');
-        headerLogoFallback.classList.remove('hidden');
-      }
+      if(addrEl) addrEl.innerHTML = `${companyAddress} | GSTIN: <span class="font-bold text-yellow-300">${shopGstin || 'NOT CONFIGURED'}</span>`;
     }
 
     function saveCompanyProfile() {
       companyName = document.getElementById('company-name-input').value.trim() || 'SHRI JI AGRITECH';
       shopGstin = document.getElementById('shop-gstin-input').value.trim().toUpperCase();
       companyAddress = document.getElementById('company-address-input').value.trim();
-
       localStorage.setItem('shriji_company_name', companyName);
       localStorage.setItem('shriji_shop_gstin', shopGstin);
       localStorage.setItem('shriji_company_address', companyAddress);
-
-      loadCompanyProfile();
+      addAuditLog('Updated company profile');
       saveAll();
-      alert('Company profile successfully updated and synced!');
+      alert('Company Profile Saved!');
     }
 
     function saveBankDetails() {
@@ -1254,88 +1183,12 @@
       bankAcc = document.getElementById('bank-acc-input').value.trim();
       bankIfsc = document.getElementById('bank-ifsc-input').value.trim().toUpperCase();
       bankUpi = document.getElementById('bank-upi-input').value.trim();
-
       localStorage.setItem('shriji_bank_name', bankName);
       localStorage.setItem('shriji_bank_acc', bankAcc);
       localStorage.setItem('shriji_bank_ifsc', bankIfsc);
       localStorage.setItem('shriji_bank_upi', bankUpi);
-
       saveAll();
-      alert('Bank and UPI details saved successfully!');
-    }
-
-    function handleLogoUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        companyLogo = e.target.result;
-        localStorage.setItem('shriji_company_logo', companyLogo);
-        loadCompanyProfile();
-        alert('Logo uploaded successfully!');
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function saveBrandingConfig() {
-      companySignature = document.getElementById('company-sign-input').value.trim();
-      localStorage.setItem('shriji_company_signature', companySignature);
-      loadCompanyProfile();
-      saveAll();
-      alert('Signature branding updated!');
-    }
-
-    function addNewStaff() {
-      const name = document.getElementById('new-staff-name').value.trim();
-      if (!name) return alert('Enter staff name.');
-      if (staffMembers.includes(name)) return alert('Staff already exists.');
-      staffMembers.push(name);
-      document.getElementById('new-staff-name').value = '';
-      populateStaffSelect();
-      renderStaffSettingsList();
-      saveAll();
-      alert(`Staff "${name}" added!`);
-    }
-
-    function deleteStaff(name) {
-      if (staffMembers.length <= 1) return alert('At least one staff member is required.');
-      if (confirm(`Remove staff member "${name}"?`)) {
-        staffMembers = staffMembers.filter(s => s !== name);
-        populateStaffSelect();
-        renderStaffSettingsList();
-        saveAll();
-      }
-    }
-
-    function renderStaffSettingsList() {
-      const container = document.getElementById('staff-settings-list');
-      if (!container) return;
-      container.innerHTML = staffMembers.map(s => `
-        <div class="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs">
-          <span class="font-bold text-slate-800"><i class="fa-solid fa-user text-indigo-600 mr-2"></i>${s}</span>
-          <button onclick="deleteStaff('${s}')" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button>
-        </div>
-      `).join('');
-    }
-
-    function getNextInvoiceNo() {
-      if (!invoices || invoices.length === 0) return 'SJA-101';
-      let maxNum = 100;
-      invoices.forEach(inv => {
-        if (inv.billNo) {
-          const match = inv.billNo.match(/SJA-(\d+)/i);
-          if (match) {
-            const num = parseInt(match[1]);
-            if (num > maxNum) maxNum = num;
-          }
-        }
-      });
-      return 'SJA-' + (maxNum + 1);
-    }
-
-    function resetInvoiceNumberInput() {
-      const input = document.getElementById('bill-custom-no');
-      if (input) input.value = getNextInvoiceNo();
+      alert('Bank Details Saved!');
     }
 
     function updateLiveBalance() {
@@ -1346,584 +1199,150 @@
 
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(el => {
-        el.classList.remove('bg-emerald-50', 'text-emerald-700', 'font-bold');
-        el.classList.add('text-slate-600', 'font-semibold');
-      });
-
-      const targetSection = document.getElementById(`section-${tabId}`);
-      if(targetSection) targetSection.classList.remove('hidden');
-      
+      document.querySelectorAll('.tab-btn').forEach(el => { el.classList.remove('bg-emerald-50', 'text-emerald-700', 'font-bold'); el.classList.add('text-slate-600', 'font-semibold'); });
+      const target = document.getElementById(`section-${tabId}`);
+      if(target) target.classList.remove('hidden');
       const activeBtn = document.getElementById(`tab-${tabId}`);
-      if (activeBtn) {
-        activeBtn.classList.add('bg-emerald-50', 'text-emerald-700', 'font-bold');
-        activeBtn.classList.remove('text-slate-600', 'font-semibold');
-      }
-
+      if (activeBtn) { activeBtn.classList.add('bg-emerald-50', 'text-emerald-700', 'font-bold'); activeBtn.classList.remove('text-slate-600', 'font-semibold'); }
       if (tabId === 'billing') resetInvoiceNumberInput();
       if (tabId === 'inventory') renderInventoryTable();
       if (tabId === 'khata') renderKhataTable();
+      if (tabId === 'vendors') renderVendorTable();
       if (tabId === 'invoices') renderSavedInvoicesTable();
       if (tabId === 'daybook') renderDaybookTable();
+      if (tabId === 'audit') renderAuditLogs();
       if (tabId === 'reports') renderReports();
     }
 
-    function lookupCustomerByPhone() {
-      const phoneInput = document.getElementById('cust-phone');
-      if(!phoneInput) return;
-      const phone = phoneInput.value.trim();
-      const banner = document.getElementById('customer-recognition-banner');
-      const nameInput = document.getElementById('cust-name');
-      
-      if (phone.length < 10) {
-        if(banner) banner.classList.add('hidden');
-        return;
+    function processSalesReturn() {
+      const phone = document.getElementById('ret-cust-phone').value.trim();
+      const pId = document.getElementById('ret-product-select').value;
+      const qty = parseFloat(document.getElementById('ret-qty').value);
+      const mode = document.getElementById('ret-mode').value;
+
+      if (!phone || !pId || isNaN(qty) || qty <= 0) return alert('Enter customer phone, select product, and valid quantity.');
+      const prod = products.find(p => p.id === pId);
+      if (!prod) return alert('Product not found.');
+
+      const refundAmount = prod.price * qty;
+      prod.stock += qty;
+
+      let c = customers.find(cust => cust.phone === phone);
+      if (!c) {
+        c = { name: 'Customer ' + phone, phone, udhar: 0, createdAt: new Date().toISOString() };
+        customers.push(c);
       }
 
-      const found = customers.find(c => c.phone === phone);
-      if (found && banner && nameInput) {
-        nameInput.value = found.name;
-        document.getElementById('recognized-cust-text').innerText = `Recognized: ${found.name}`;
-        document.getElementById('recognized-cust-balance').innerText = found.udhar < 0 ? `Advance: ₹${Math.abs(found.udhar).toFixed(2)}` : `Due: ₹${found.udhar.toFixed(2)}`;
-        banner.classList.remove('hidden');
-      } else if(banner) {
-        banner.classList.add('hidden');
-      }
-    }
-
-    function openScannerModal() {
-      const modal = document.getElementById('scanner-modal');
-      if(modal) modal.classList.remove('hidden');
-      try {
-        html5QrCode = new Html5Qrcode("reader");
-        html5QrCode.start(
-          { facingMode: "environment" },
-          { fps: 10, qrbox: { width: 250, height: 150 } },
-          (decodedText, decodedResult) => {
-            handleScannedCode(decodedText);
-            closeScannerModal();
-          },
-          (errorMessage) => {}
-        ).catch((err) => {
-          console.error(err);
-          alert('Unable to access camera.');
-        });
-      } catch(e) { console.error(e); }
-    }
-
-    function closeScannerModal() {
-      const modal = document.getElementById('scanner-modal');
-      if(modal) modal.classList.add('hidden');
-      if (html5QrCode) {
-        html5QrCode.stop().then(() => {
-          html5QrCode.clear();
-        }).catch(err => console.error(err));
-      }
-    }
-
-    function handleScannedCode(code) {
-      const found = products.find(p => p.id === code || p.name.toLowerCase().includes(code.toLowerCase()));
-      if (found) {
-        const prodSelect = document.getElementById('bill-product-select');
-        if(prodSelect) prodSelect.value = found.id;
-        updateProductHint();
-        addItemToCurrentBill();
-        alert(`Scanned & Added: ${found.name}`);
+      if (mode === 'khata') {
+        c.udhar -= refundAmount;
+        if (!customerLedgers[phone]) customerLedgers[phone] = [];
+        customerLedgers[phone].unshift({ date: new Date().toLocaleDateString('en-IN'), timestamp: new Date().toISOString(), desc: `Sales Return: ${prod.name} (x${qty})`, debit: 0, credit: refundAmount });
       } else {
-        alert(`Scanned code "${code}" did not match any product.`);
-      }
-    }
-
-    function generateLowStockPO() {
-      const lowStockItems = products.filter(p => p.stock <= 5);
-      if (lowStockItems.length === 0) return alert('All items have sufficient stock!');
-
-      let poText = `*PURCHASE ORDER - ${companyName}*\nDate: ${new Date().toLocaleDateString('en-IN')}\n\nPlease supply the following low stock items:\n\n`;
-      lowStockItems.forEach((item, idx) => {
-        poText += `${idx + 1}. *${item.name}* - Needed Qty: ${Math.max(10, item.stock * 2)} ${item.unit} (Current: ${item.stock})\n`;
-      });
-      poText += `\nPlease confirm dispatch. Thank you!`;
-
-      if (confirm('Low Stock Purchase Order generated! Send via WhatsApp to supplier?')) {
-        window.open(`https://wa.me/?text=${encodeURIComponent(poText)}`, '_blank');
-      }
-    }
-
-    function addNewCustomProduct() {
-      const name = document.getElementById('new-prod-name').value.trim();
-      const unit = document.getElementById('new-prod-unit').value;
-      const gst = parseFloat(document.getElementById('new-prod-gst').value) || 0;
-      const cost = parseFloat(document.getElementById('new-prod-cost').value) || 0;
-      const price = parseFloat(document.getElementById('new-prod-price').value);
-      const stock = parseFloat(document.getElementById('new-prod-stock').value) || 0;
-
-      if (!name || isNaN(price) || price <= 0) {
-        return alert('Please enter valid product name and selling price.');
+        daybook.unshift({ date: new Date().toLocaleString('en-IN'), desc: `Sales Return Refund: ${prod.name} (${phone})`, inflow: 0, outflow: refundAmount });
       }
 
-      products.push({
-        id: 'PROD_' + Date.now(),
-        name, unit, gstRate: gst, cost, price, stock
-      });
+      salesReturns.unshift({ date: new Date().toLocaleDateString('en-IN'), timestamp: new Date().toISOString(), phone, custName: c.name, item: prod.name, qty, refundAmount });
+      addAuditLog(`Sales Return processed: ${prod.name} x${qty} for ₹${refundAmount}`);
 
       saveAll();
-      document.getElementById('new-prod-name').value = '';
-      document.getElementById('new-prod-cost').value = '';
-      document.getElementById('new-prod-price').value = '';
-      document.getElementById('new-prod-stock').value = '10';
-
-      populateProductSelect();
+      renderReturnsHistory();
       renderInventoryTable();
-      alert(`Product "${name}" saved and synced!`);
+      renderKhataTable();
+      renderReports();
+      alert(`Sales Return of ₹${refundAmount.toFixed(2)} processed! Stock updated.`);
     }
 
-    function renderInventoryTable() {
-      const tbody = document.getElementById('inventory-table-body');
-      if(!tbody) return;
-      if (products.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">Inventory is empty. Add products above.</td></tr>`;
-        return;
-      }
+    function renderReturnsHistory() {
+      const tbody = document.getElementById('returns-history-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = salesReturns.map(r => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3 text-slate-500">${r.date}</td>
+          <td class="p-3 font-semibold text-slate-800">${r.custName} (${r.phone})</td>
+          <td class="p-3 font-bold text-slate-900">${r.item}</td>
+          <td class="p-3 text-right font-bold">${r.qty}</td>
+          <td class="p-3 text-right font-black text-orange-600">₹${r.refundAmount.toFixed(2)}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="5" class="text-center py-4 text-slate-400">No returns recorded.</td></tr>';
+    }
 
-      tbody.innerHTML = products.map((p, idx) => `
-        <tr class="hover:bg-slate-50 transition">
-          <td class="p-3 font-semibold text-slate-900">${p.name}</td>
-          <td class="p-3 text-center"><span class="bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded text-[10px]">${p.unit}</span></td>
-          <td class="p-3 text-center"><span class="bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold px-2 py-0.5 rounded text-[10px]">${p.gstRate || 0}%</span></td>
-          <td class="p-3 text-right text-slate-500 font-medium">₹${p.cost.toFixed(2)}</td>
-          <td class="p-3 text-right font-bold text-brand-700">₹${p.price.toFixed(2)}</td>
-          <td class="p-3 text-right font-black ${p.stock <= 5 ? 'text-red-600' : 'text-slate-800'}">${p.stock}</td>
-          <td class="p-3 text-center space-x-1">
-            <button onclick="adjustProductStock(${idx}, 'add')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded text-[11px] font-bold">+ Add</button>
-            <button onclick="adjustProductStock(${idx}, 'sub')" class="bg-red-50 hover:bg-red-100 text-red-800 border border-red-200 px-2 py-0.5 rounded text-[11px] font-bold">- Less</button>
+    function addVendor() {
+      const name = document.getElementById('vendor-name').value.trim();
+      const phone = document.getElementById('vendor-phone').value.trim();
+      const balance = parseFloat(document.getElementById('vendor-balance').value) || 0;
+
+      if (!name || !phone) return alert('Enter supplier name and phone.');
+      if (vendors.some(v => v.phone === phone)) return alert('Vendor exists.');
+
+      vendors.push({ name, phone, balance });
+      addAuditLog(`Added Supplier: ${name} with Udhar ₹${balance}`);
+      saveAll();
+      renderVendorTable();
+      document.getElementById('vendor-name').value = '';
+      document.getElementById('vendor-phone').value = '';
+      document.getElementById('vendor-balance').value = '0';
+      alert('Supplier Added!');
+    }
+
+    function renderVendorTable() {
+      const tbody = document.getElementById('vendor-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = vendors.map((v, idx) => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3 font-bold text-slate-900">${v.name}</td>
+          <td class="p-3 text-slate-500">${v.phone}</td>
+          <td class="p-3 text-right font-black text-purple-700">₹${v.balance.toFixed(2)}</td>
+          <td class="p-3 text-center">
+            <button onclick="payVendor(${idx})" class="bg-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded">Pay Supplier</button>
           </td>
           <td class="p-3 text-center">
-            <button onclick="deleteProduct(${idx})" class="text-slate-400 hover:text-red-600 transition"><i class="fa-solid fa-trash-can"></i></button>
+            <button onclick="deleteVendor(${idx})" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button>
           </td>
         </tr>
-      `).join('');
+      `).join('') || '<tr><td colspan="5" class="text-center py-4 text-slate-400">No suppliers.</td></tr>';
     }
 
-    function adjustProductStock(index, action) {
-      const p = products[index];
-      const qtyStr = prompt(action === 'add' ? `Add quantity to ${p.name}:` : `Deduct quantity from ${p.name}:`);
-      if (!qtyStr || isNaN(qtyStr)) return;
-      const qty = parseFloat(qtyStr);
-      if (qty <= 0) return;
+    function payVendor(idx) {
+      const v = vendors[idx];
+      const amtStr = prompt(`Payment to Supplier ${v.name}:`);
+      if (!amtStr || isNaN(amtStr)) return;
+      const amt = parseFloat(amtStr);
+      if (amt <= 0) return;
 
-      if (action === 'add') p.stock += qty;
-      else p.stock = Math.max(0, p.stock - qty);
-
+      v.balance = Math.max(0, v.balance - amt);
+      daybook.unshift({ date: new Date().toLocaleString('en-IN'), desc: `Supplier Payment: ${v.name}`, inflow: 0, outflow: amt });
+      addAuditLog(`Paid Supplier ${v.name}: ₹${amt}`);
       saveAll();
-      renderInventoryTable();
-      populateProductSelect();
+      renderVendorTable();
+      renderReports();
+      alert(`Paid ₹${amt} to supplier ${v.name}`);
     }
 
-    function deleteProduct(index) {
-      if (confirm(`Delete "${products[index].name}"?`)) {
-        products.splice(index, 1);
+    function deleteVendor(idx) {
+      if (confirm(`Delete Supplier ${vendors[idx].name}?`)) {
+        addAuditLog(`Deleted Supplier ${vendors[idx].name}`);
+        vendors.splice(idx, 1);
         saveAll();
-        renderInventoryTable();
-        populateProductSelect();
+        renderVendorTable();
       }
     }
 
-    function populateProductSelect() {
-      const select = document.getElementById('bill-product-select');
-      if (!select) return;
-      if (products.length === 0) {
-        select.innerHTML = `<option value="">-- No products available --</option>`;
-        return;
-      }
-      select.innerHTML = products.map(p => `
-        <option value="${p.id}">${p.name} - ₹${p.price.toFixed(2)} / ${p.unit} (GST: ${p.gstRate || 0}%)</option>
-      `).join('');
-      updateProductHint();
-    }
-
-    function updateProductHint() {
-      const pIdEl = document.getElementById('bill-product-select');
-      const hintEl = document.getElementById('product-hint');
-      if(!pIdEl || !hintEl) return;
-      const pId = pIdEl.value;
-      const prod = products.find(p => p.id === pId);
-      if (prod) {
-        hintEl.innerText = `Stock: ${prod.stock} ${prod.unit} | Rate: ₹${prod.price} | GST: ${prod.gstRate || 0}%`;
-      } else {
-        hintEl.innerText = 'Available Stock: -';
-      }
-    }
-
-    function populateStaffSelect() {
-      const select = document.getElementById('bill-salesperson');
-      if (!select) return;
-      select.innerHTML = staffMembers.map(s => `<option value="${s}">${s}</option>`).join('');
-    }
-
-    function addItemToCurrentBill() {
-      const pIdEl = document.getElementById('bill-product-select');
-      const qtyEl = document.getElementById('bill-qty');
-      if(!pIdEl || !qtyEl) return;
-      const pId = pIdEl.value;
-      const qty = parseFloat(qtyEl.value);
-      const prod = products.find(p => p.id === pId);
-
-      if (!prod || isNaN(qty) || qty <= 0) return alert('Select item and quantity.');
-      const gst = prod.gstRate !== undefined ? prod.gstRate : 0;
-      const existing = currentCart.find(i => i.id === prod.id);
-
-      if (existing) {
-        existing.qty += qty;
-        existing.taxable = existing.qty * existing.price;
-      } else {
-        currentCart.push({
-          id: prod.id, name: prod.name, unit: prod.unit, gstRate: gst, cost: prod.cost, price: prod.price, qty, taxable: qty * prod.price
-        });
-      }
-
-      renderCartTable();
-    }
-
-    function renderCartTable() {
-      const tbody = document.getElementById('cart-table-body');
-      const taxModeEl = document.getElementById('bill-tax-type');
-      if(!tbody || !taxModeEl) return;
-      const taxMode = taxModeEl.value;
-
-      if (currentCart.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">No items added to invoice yet</td></tr>`;
-        const taxValEl = document.getElementById('bill-taxable-amt');
-        const cgstEl = document.getElementById('bill-cgst-amt');
-        const sgstEl = document.getElementById('bill-sgst-amt');
-        const igstEl = document.getElementById('bill-igst-amt');
-        const totTaxEl = document.getElementById('bill-total-tax');
-        const finTotEl = document.getElementById('bill-final-total');
-        if(taxValEl) taxValEl.innerText = '₹ 0.00';
-        if(cgstEl) cgstEl.innerText = '₹ 0.00';
-        if(sgstEl) sgstEl.innerText = '₹ 0.00';
-        if(igstEl) igstEl.innerText = '₹ 0.00';
-        if(totTaxEl) totTaxEl.innerText = '₹ 0.00';
-        if(finTotEl) finTotEl.innerText = '₹ 0.00';
-        const pCash = document.getElementById('pay-cash');
-        const pUpi = document.getElementById('pay-upi');
-        const pUdhar = document.getElementById('pay-udhar');
-        if(pCash) pCash.value = 0;
-        if(pUpi) pUpi.value = 0;
-        if(pUdhar) pUdhar.value = 0;
-        return;
-      }
-
-      tbody.innerHTML = currentCart.map((item, index) => {
-        const itemGst = taxMode === 'nongst' ? 0 : item.gstRate;
-        const itemTax = (item.taxable * itemGst) / 100;
-        const itemTotal = item.taxable + itemTax;
-
-        return `
-          <tr class="hover:bg-slate-50 transition">
-            <td class="p-2.5 font-medium text-slate-900">${item.name}</td>
-            <td class="p-2.5 text-center text-slate-500 font-semibold">${item.unit}</td>
-            <td class="p-2.5 text-center font-bold text-emerald-800">${itemGst}%</td>
-            <td class="p-2.5 text-right font-semibold">${item.qty}</td>
-            <td class="p-2.5 text-right text-slate-600">₹${item.price.toFixed(2)}</td>
-            <td class="p-2.5 text-right font-medium text-slate-700">₹${item.taxable.toFixed(2)}</td>
-            <td class="p-2.5 text-right font-bold text-slate-900">₹${itemTotal.toFixed(2)}</td>
-            <td class="p-2.5 text-center">
-              <button onclick="currentCart.splice(${index},1); renderCartTable()" class="text-slate-400 hover:text-red-600 transition">
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      calculateBillTotal();
-    }
-
-    function calculateBillTotal() {
-      const taxModeEl = document.getElementById('bill-tax-type');
-      const discEl = document.getElementById('bill-discount');
-      if(!taxModeEl || !discEl) return;
-      const taxMode = taxModeEl.value;
-      const discount = parseFloat(discEl.value) || 0;
-
-      let totalTaxable = 0, totalCgst = 0, totalSgst = 0, totalIgst = 0;
-
-      currentCart.forEach(item => {
-        totalTaxable += item.taxable;
-        const effectiveGst = taxMode === 'nongst' ? 0 : item.gstRate;
-        const taxVal = (item.taxable * effectiveGst) / 100;
-
-        if (taxMode === 'intra') {
-          totalCgst += taxVal / 2;
-          totalSgst += taxVal / 2;
-        } else if (taxMode === 'inter') {
-          totalIgst += taxVal;
-        }
-      });
-
-      const taxValEl = document.getElementById('bill-taxable-amt');
-      if(taxValEl) taxValEl.innerText = `₹ ${totalTaxable.toFixed(2)}`;
-      
-      const cgstRow = document.getElementById('cgst-row');
-      const sgstRow = document.getElementById('sgst-row');
-      const igstRow = document.getElementById('igst-row');
-
-      if (taxMode === 'inter') {
-        if(cgstRow) cgstRow.classList.add('hidden');
-        if(sgstRow) sgstRow.classList.add('hidden');
-        if(igstRow) igstRow.classList.remove('hidden');
-        const igstAmtEl = document.getElementById('bill-igst-amt');
-        if(igstAmtEl) igstAmtEl.innerText = `₹ ${totalIgst.toFixed(2)}`;
-      } else {
-        if(cgstRow) cgstRow.classList.remove('hidden');
-        if(sgstRow) sgstRow.classList.remove('hidden');
-        if(igstRow) igstRow.classList.add('hidden');
-        const cgstAmtEl = document.getElementById('bill-cgst-amt');
-        const sgstAmtEl = document.getElementById('bill-sgst-amt');
-        if(cgstAmtEl) cgstAmtEl.innerText = `₹ ${totalCgst.toFixed(2)}`;
-        if(sgstAmtEl) sgstAmtEl.innerText = `₹ ${totalSgst.toFixed(2)}`;
-      }
-
-      const totalTax = totalCgst + totalSgst + totalIgst;
-      const totTaxEl = document.getElementById('bill-total-tax');
-      if(totTaxEl) totTaxEl.innerText = `₹ ${totalTax.toFixed(2)}`;
-      
-      const grandTotal = Math.max(0, (totalTaxable + totalTax) - discount);
-      const finTotEl = document.getElementById('bill-final-total');
-      if(finTotEl) finTotEl.innerText = `₹ ${grandTotal.toFixed(2)}`;
-
-      const pCash = document.getElementById('pay-cash');
-      const pUpi = document.getElementById('pay-upi');
-      if(pCash) pCash.value = grandTotal.toFixed(2);
-      if(pUpi) pUpi.value = 0;
-      calculateUdhar();
-    }
-
-    function calculateUdhar() {
-      const finTotEl = document.getElementById('bill-final-total');
-      const pCash = document.getElementById('pay-cash');
-      const pUpi = document.getElementById('pay-upi');
-      const pUdhar = document.getElementById('pay-udhar');
-      if(!finTotEl || !pCash || !pUpi || !pUdhar) return;
-
-      const finalTotal = parseFloat(finTotEl.innerText.replace('₹ ', '').replace(/,/g, '')) || 0;
-      const cash = parseFloat(pCash.value) || 0;
-      const upi = parseFloat(pUpi.value) || 0;
-      const udhar = Math.max(0, finalTotal - (cash + upi));
-      pUdhar.value = udhar.toFixed(2);
-    }
-
-    async function saveAndProcessInvoice(mode) {
-      const custName = document.getElementById('cust-name').value.trim();
-      const custPhone = document.getElementById('cust-phone').value.trim();
-      const custGstin = document.getElementById('cust-gstin').value.trim().toUpperCase();
-      const taxMode = document.getElementById('bill-tax-type').value;
-      const saleBy = document.getElementById('bill-salesperson').value;
-      let billNo = document.getElementById('bill-custom-no').value.trim() || getNextInvoiceNo();
-
-      if (!custName || !custPhone) return alert('Enter customer name and WhatsApp number.');
-      if (currentCart.length === 0) return alert('Cart cannot be empty.');
-
-      const discount = parseFloat(document.getElementById('bill-discount').value) || 0;
-      let totalTaxable = 0, totalCgst = 0, totalSgst = 0, totalIgst = 0;
-
-      const processedItems = currentCart.map(item => {
-        const effectiveGst = taxMode === 'nongst' ? 0 : item.gstRate;
-        const taxVal = (item.taxable * effectiveGst) / 100;
-        totalTaxable += item.taxable;
-
-        if (taxMode === 'intra') { totalCgst += taxVal / 2; totalSgst += taxVal / 2; }
-        else if (taxMode === 'inter') { totalIgst += taxVal; }
-
-        return { ...item, effectiveGst, taxAmount: taxVal, totalAmount: item.taxable + taxVal };
-      });
-
-      const totalTax = totalCgst + totalSgst + totalIgst;
-      const grandTotal = Math.max(0, (totalTaxable + totalTax) - discount);
-      const cash = parseFloat(document.getElementById('pay-cash').value) || 0;
-      const upi = parseFloat(document.getElementById('pay-upi').value) || 0;
-      const udhar = parseFloat(document.getElementById('pay-udhar').value) || 0;
-
-      currentCart.forEach(item => {
-        const prod = products.find(p => p.id === item.id);
-        if (prod) prod.stock = Math.max(0, prod.stock - item.qty);
-      });
-
-      let customer = customers.find(c => c.phone === custPhone);
-      if (!customer) {
-        customer = { name: custName, phone: custPhone, udhar: 0, createdAt: new Date().toISOString() };
-        customers.push(customer);
-      }
-      customer.udhar += udhar;
-
-      const billDate = new Date().toLocaleDateString('en-IN');
-      const timestampIso = new Date().toISOString();
-      if (!customerLedgers[custPhone]) customerLedgers[custPhone] = [];
-      customerLedgers[custPhone].unshift({
-        date: billDate, timestamp: timestampIso, desc: `Invoice #${billNo}`, debit: udhar, credit: 0
-      });
-
-      if (cash + upi > 0) {
-        daybook.unshift({
-          date: new Date().toLocaleString('en-IN'),
-          desc: `Invoice #${billNo} (${custName})`,
-          inflow: cash + upi,
-          outflow: 0
-        });
-      }
-
-      const invoiceObj = {
-        billNo, date: billDate, timestamp: timestampIso, custName, custPhone, custGstin: custGstin || 'Consumer',
-        taxMode, saleBy, items: processedItems, taxableTotal: totalTaxable,
-        cgst: totalCgst, sgst: totalSgst, igst: totalIgst, totalTax, discount,
-        total: grandTotal, cash, upi, udhar
-      };
-
-      invoices.unshift(invoiceObj);
-      await saveAll();
-
-      preparePdfTemplate(invoiceObj);
-
-      if (mode === 'pdf') downloadPdf(billNo);
-      else if (mode === 'whatsapp') {
-        downloadPdf(billNo);
-        let msg = `*${companyName} - TAX INVOICE*\n*Invoice:* ${billNo}\n*Customer:* ${custName}\n*Total:* ₹${grandTotal.toFixed(2)}\n*Balance Due:* ₹${udhar.toFixed(2)}\nThank you!`;
-        window.open(`https://wa.me/91${custPhone}?text=${encodeURIComponent(msg)}`, '_blank');
-      } else if (mode === 'print') {
-        window.print();
-      }
-
-      currentCart = [];
-      document.getElementById('cust-name').value = '';
-      document.getElementById('cust-phone').value = '';
-      document.getElementById('cust-gstin').value = '';
-      document.getElementById('bill-discount').value = 0;
-      const recBanner = document.getElementById('customer-recognition-banner');
-      if(recBanner) recBanner.classList.add('hidden');
-      resetInvoiceNumberInput();
-      renderCartTable();
-      renderSavedInvoicesTable();
-      renderReports();
-      alert(`Invoice #${billNo} generated and synced!`);
-    }
-
-    function preparePdfTemplate(inv) {
-      document.getElementById('pdf-company-name').innerText = companyName;
-      document.getElementById('pdf-company-address').innerHTML = `${companyAddress}<br><strong>GSTIN:</strong> <span id="pdf-shop-gstin">${shopGstin || 'UNREGISTERED'}</span>`;
-      document.getElementById('pdf-bill-no').innerText = inv.billNo;
-      document.getElementById('pdf-bill-date').innerText = inv.date;
-      document.getElementById('pdf-cust-name').innerText = inv.custName;
-      document.getElementById('pdf-cust-phone').innerText = inv.custPhone;
-      document.getElementById('pdf-sale-by').innerText = inv.saleBy;
-      document.getElementById('pdf-signature-text').innerText = companySignature;
-
-      document.getElementById('pdf-bank-info').innerText = bankName && bankAcc ? `${bankName} | A/c: ${bankAcc} | IFSC: ${bankIfsc}` : 'Not Configured';
-      document.getElementById('pdf-upi-info').innerText = bankUpi || 'Not Configured';
-
-      const logoWrapper = document.getElementById('pdf-logo-wrapper');
-      const logoImg = document.getElementById('pdf-logo-img');
-      if (companyLogo && logoWrapper && logoImg) {
-        logoImg.src = companyLogo;
-        logoWrapper.style.display = 'block';
-      } else if(logoWrapper) {
-        logoWrapper.style.display = 'none';
-      }
-
-      document.getElementById('pdf-items-body').innerHTML = inv.items.map(i => `
-        <tr style="border-bottom: 1px solid #e2e8f0;">
-          <td style="padding: 6px 5px;">${i.name}</td>
-          <td style="padding: 6px 5px; text-align: center;">${i.unit}</td>
-          <td style="padding: 6px 5px; text-align: right;">${i.qty}</td>
-          <td style="padding: 6px 5px; text-align: right;">₹${i.price.toFixed(2)}</td>
-          <td style="padding: 6px 5px; text-align: right;">₹${i.taxable.toFixed(2)}</td>
-          <td style="padding: 6px 5px; text-align: center;">${i.effectiveGst}%</td>
-          <td style="padding: 6px 5px; text-align: right; font-weight: bold;">₹${i.totalAmount.toFixed(2)}</td>
-        </tr>
-      `).join('');
-
-      document.getElementById('pdf-taxable-val').innerText = inv.taxableTotal.toFixed(2);
-      document.getElementById('pdf-tax-added').innerText = inv.totalTax.toFixed(2);
-      document.getElementById('pdf-discount').innerText = inv.discount.toFixed(2);
-      document.getElementById('pdf-final').innerText = inv.total.toFixed(2);
-      document.getElementById('pdf-paid').innerText = (inv.cash + inv.upi).toFixed(2);
-      document.getElementById('pdf-udhar').innerText = inv.udhar.toFixed(2);
-    }
-
-    function downloadPdf(billNo) {
-      const element = document.getElementById('printable-invoice-view');
-      const opt = {
-        margin: [6, 6, 6, 6], filename: `Invoice_${billNo}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-      html2pdf().set(opt).from(element).save();
-    }
-
-    function renderSavedInvoicesTable() {
-      const tbody = document.getElementById('saved-invoices-body');
-      if(!tbody) return;
-      const searchInput = document.getElementById('invoice-search-input');
-      const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
-
-      let filteredInvoices = invoices.filter(i => 
-        i.billNo.toLowerCase().includes(searchVal) ||
-        i.custName.toLowerCase().includes(searchVal) ||
-        i.custPhone.includes(searchVal)
-      );
-
-      if (filteredInvoices.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-slate-400">No matching invoices found.</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = filteredInvoices.map(i => `
-        <tr class="hover:bg-slate-50 transition">
-          <td class="p-3 font-bold text-blue-700">${i.billNo}</td>
-          <td class="p-3 text-slate-500">${i.date}</td>
-          <td class="p-3 font-semibold text-slate-900">${i.custName}</td>
-          <td class="p-3 text-slate-600">${i.saleBy || 'Admin'}</td>
-          <td class="p-3 text-right">₹${(i.taxableTotal || 0).toFixed(2)}</td>
-          <td class="p-3 text-right font-bold text-emerald-700">₹${(i.totalTax || 0).toFixed(2)}</td>
-          <td class="p-3 text-right font-black">₹${i.total.toFixed(2)}</td>
-          <td class="p-3 text-right text-red-600 font-bold">${i.udhar > 0 ? '₹' + i.udhar.toFixed(2) : '-'}</td>
-          <td class="p-3 text-center">
-            <button onclick="downloadSavedPdf('${i.billNo}')" class="bg-blue-50 text-blue-700 border border-blue-200 text-xs px-2 py-1 rounded font-bold">PDF</button>
-          </td>
-          <td class="p-3 text-center">
-            <button onclick="deleteInvoice('${i.billNo}')" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function downloadSavedPdf(billNo) {
-      const inv = invoices.find(i => i.billNo === billNo);
-      if (inv) { preparePdfTemplate(inv); downloadPdf(billNo); }
-    }
-
-    function deleteInvoice(billNo) {
-      if (!confirm(`Delete Invoice #${billNo}?`)) return;
-      invoices = invoices.filter(i => i.billNo !== billNo);
-      saveAll();
-      renderSavedInvoicesTable();
-      renderReports();
+    function sendWhatsAppReminder(phone) {
+      const c = customers.find(cust => cust.phone === phone);
+      if (!c) return;
+      let text = `*${companyName} - KHATA REMINDER*\n\nNamaste ${c.name} ji,\nYour outstanding balance is *₹${c.udhar.toFixed(2)}*.\nKindly settle the amount via UPI / Cash.\n\nThank you!`;
+      if(bankUpi) text += `\nUPI VPA: ${bankUpi}`;
+      window.open(`https://wa.me/91${c.phone}?text=${encodeURIComponent(text)}`, '_blank');
     }
 
     function renderKhataTable() {
       const tbody = document.getElementById('khata-table-body');
       if(!tbody) return;
-      const searchInput = document.getElementById('khata-search-input');
-      const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
+      const searchVal = (document.getElementById('khata-search-input') ? document.getElementById('khata-search-input').value : '').toLowerCase();
 
-      let filteredCustomers = customers.filter(c =>
-        c.name.toLowerCase().includes(searchVal) ||
-        c.phone.includes(searchVal)
-      );
+      let filtered = customers.filter(c => c.name.toLowerCase().includes(searchVal) || c.phone.includes(searchVal));
 
-      if (filteredCustomers.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-slate-400">No matching customers found.</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = filteredCustomers.map(c => `
+      tbody.innerHTML = filtered.map(c => `
         <tr class="hover:bg-slate-50 transition">
           <td class="p-3 font-bold text-slate-900">${c.name}</td>
           <td class="p-3 text-slate-500">${c.phone}</td>
@@ -1931,297 +1350,16 @@
             ${c.udhar < 0 ? '₹ ' + Math.abs(c.udhar).toFixed(2) + ' (Advance)' : '₹ ' + c.udhar.toFixed(2)}
           </td>
           <td class="p-3 text-center">
-            <button onclick="openCustomerModal('${c.phone}')" class="bg-slate-800 text-white font-semibold text-xs px-3 py-1.5 rounded-lg">Manage</button>
+            <button onclick="sendWhatsAppReminder('${c.phone}')" class="bg-brand-600 text-white font-bold text-xs px-2.5 py-1 rounded flex items-center justify-center gap-1 mx-auto"><i class="fa-brands fa-whatsapp"></i> Remind</button>
+          </td>
+          <td class="p-3 text-center">
+            <button onclick="openCustomerModal('${c.phone}')" class="bg-slate-800 text-white font-semibold text-xs px-3 py-1 rounded-lg">Manage</button>
           </td>
           <td class="p-3 text-center">
             <button onclick="deleteCustomer('${c.phone}')" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button>
           </td>
         </tr>
-      `).join('');
-    }
-
-    function openCustomerModal(phone) {
-      activeCustomerPhone = phone;
-      const c = customers.find(cust => cust.phone === phone);
-      if (!c) return;
-
-      document.getElementById('modal-cust-name').innerText = c.name;
-      document.getElementById('modal-cust-phone').innerText = `Mobile: ${c.phone}`;
-      document.getElementById('modal-cust-balance').innerText = c.udhar < 0 ? `₹ ${Math.abs(c.udhar).toFixed(2)} (Advance)` : `₹ ${c.udhar.toFixed(2)}`;
-
-      const ledger = customerLedgers[phone] || [];
-      const tbody = document.getElementById('modal-ledger-body');
-      tbody.innerHTML = ledger.map(l => `
-        <tr class="hover:bg-slate-50">
-          <td class="p-2 text-slate-500">${l.date}</td>
-          <td class="p-2 font-medium text-slate-800">${l.desc}</td>
-          <td class="p-2 text-right font-semibold text-red-600">${l.debit > 0 ? '+ ₹' + l.debit.toFixed(2) : '-'}</td>
-          <td class="p-2 text-right font-semibold text-emerald-600">${l.credit > 0 ? '- ₹' + l.credit.toFixed(2) : '-'}</td>
-        </tr>
-      `).join('') || '<tr><td colspan="4" class="text-center py-4 text-slate-400">No entries.</td></tr>';
-
-      document.getElementById('customer-modal').classList.remove('hidden');
-    }
-
-    function closeCustomerModal() {
-      document.getElementById('customer-modal').classList.add('hidden');
-      activeCustomerPhone = null;
-    }
-
-    function deleteCustomer(phone) {
-      if (!confirm('Delete customer record?')) return;
-      customers = customers.filter(c => c.phone !== phone);
-      delete customerLedgers[phone];
-      saveAll();
-      renderKhataTable();
-    }
-
-    function processCustomerPayment(direction) {
-      if (!activeCustomerPhone) return;
-      const c = customers.find(cust => cust.phone === activeCustomerPhone);
-      const today = new Date().toLocaleDateString('en-IN');
-      const timestampIso = new Date().toISOString();
-
-      if (direction === 'in') {
-        const amt = parseFloat(document.getElementById('modal-payin-amt').value);
-        if (isNaN(amt) || amt <= 0) return alert('Enter valid payment amount.');
-
-        if (c.udhar < amt) {
-          const advanceAmt = amt - Math.max(0, c.udhar);
-          const confirmAdvance = confirm(
-            `Payment (₹${amt}) is greater than Outstanding Balance (₹${Math.max(0, c.udhar).toFixed(2)}).\n\n` +
-            `₹${advanceAmt.toFixed(2)} will be credited as ADVANCE for future billing. Continue?`
-          );
-          if (!confirmAdvance) return;
-        }
-
-        c.udhar = c.udhar - amt;
-
-        if (!customerLedgers[c.phone]) customerLedgers[c.phone] = [];
-        customerLedgers[c.phone].unshift({ 
-          date: today, 
-          timestamp: timestampIso, 
-          desc: c.udhar < 0 ? 'Payment Received (Advance)' : 'Payment Received', 
-          debit: 0, 
-          credit: amt 
-        });
-
-        daybook.unshift({ 
-          date: new Date().toLocaleString('en-IN'), 
-          desc: `Payment Received: ${c.name} ${c.udhar < 0 ? '(Advance)' : ''}`, 
-          inflow: amt, 
-          outflow: 0 
-        });
-        
-        let statusMsg = c.udhar < 0 
-          ? `Advance Balance: ₹${Math.abs(c.udhar).toFixed(2)}` 
-          : `Remaining Due: ₹${c.udhar.toFixed(2)}`;
-
-        let receiptMsg = `*${companyName} - PAYMENT RECEIPT*\n` +
-                         `Received ₹${amt.toFixed(2)} from ${c.name}.\n` +
-                         `${statusMsg}\nThank you!`;
-
-        if (confirm(`Payment of ₹${amt} recorded! Send receipt on WhatsApp to ${c.name}?`)) {
-          window.open(`https://wa.me/91${c.phone}?text=${encodeURIComponent(receiptMsg)}`, '_blank');
-        }
-
-        document.getElementById('modal-payin-amt').value = '';
-      } else {
-        const amt = parseFloat(document.getElementById('modal-payout-amt').value);
-        const note = document.getElementById('modal-payout-note').value.trim() || 'Credit Added';
-        if (isNaN(amt) || amt <= 0) return alert('Enter valid amount.');
-        
-        c.udhar += amt;
-        if (!customerLedgers[c.phone]) customerLedgers[c.phone] = [];
-        customerLedgers[c.phone].unshift({ date: today, timestamp: timestampIso, desc: note, debit: amt, credit: 0 });
-        
-        document.getElementById('modal-payout-amt').value = '';
-        document.getElementById('modal-payout-note').value = '';
-      }
-
-      saveAll();
-      openCustomerModal(c.phone);
-      renderKhataTable();
-      renderReports();
-    }
-
-    function sendStatementWhatsApp() {
-      if (!activeCustomerPhone) return;
-      const c = customers.find(cust => cust.phone === activeCustomerPhone);
-      let balanceStr = c.udhar < 0 ? `Advance Balance: ₹${Math.abs(c.udhar).toFixed(2)}` : `Outstanding Balance: ₹${c.udhar.toFixed(2)}`;
-      const text = `*${companyName}*\nCustomer: ${c.name}\n${balanceStr}\nThank you!`;
-      window.open(`https://wa.me/91${c.phone}?text=${encodeURIComponent(text)}`, '_blank');
-    }
-
-    function recordManualTx() {
-      const desc = document.getElementById('manual-tx-desc').value.trim();
-      const amt = parseFloat(document.getElementById('manual-tx-amt').value);
-      const type = document.getElementById('manual-tx-type').value;
-
-      if (!desc || isNaN(amt) || amt <= 0) return alert('Enter description and valid amount.');
-      daybook.unshift({
-        date: new Date().toLocaleString('en-IN'), desc,
-        inflow: type === 'in' ? amt : 0, outflow: type === 'out' ? amt : 0
-      });
-
-      saveAll();
-      document.getElementById('manual-tx-desc').value = '';
-      document.getElementById('manual-tx-amt').value = '';
-      renderDaybookTable();
-      renderReports();
-    }
-
-    function renderDaybookTable() {
-      const tbody = document.getElementById('daybook-table-body');
-      if(!tbody) return;
-      let running = 0;
-      let calculated = [...daybook].reverse().map((item, revIdx) => {
-        running += (item.inflow - item.outflow);
-        return { ...item, balance: running, origIdx: daybook.length - 1 - revIdx };
-      }).reverse();
-
-      tbody.innerHTML = calculated.map(item => `
-        <tr class="hover:bg-slate-50 transition">
-          <td class="p-3 text-slate-500">${item.date}</td>
-          <td class="p-3 font-medium text-slate-900">${item.desc}</td>
-          <td class="p-3 text-right font-bold text-emerald-700">${item.inflow > 0 ? '+ ₹' + item.inflow.toFixed(2) : '-'}</td>
-          <td class="p-3 text-right font-bold text-red-600">${item.outflow > 0 ? '- ₹' + item.outflow.toFixed(2) : '-'}</td>
-          <td class="p-3 text-right font-black">₹ ${item.balance.toFixed(2)}</td>
-          <td class="p-3 text-center">
-            <button onclick="deleteDaybookEntry(${item.origIdx})" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button>
-          </td>
-        </tr>
-      `).join('') || '<tr><td colspan="6" class="text-center py-8 text-slate-400">No cash transactions recorded.</td></tr>';
-    }
-
-    function deleteDaybookEntry(index) {
-      if (!confirm('Delete entry?')) return;
-      daybook.splice(index, 1);
-      saveAll();
-      renderDaybookTable();
-      renderReports();
-    }
-
-    function renderReports() {
-      let sales = invoices.reduce((s, i) => s + i.total, 0);
-      let totalUdhar = customers.reduce((s, c) => s + (c.udhar > 0 ? c.udhar : 0), 0);
-      let wallet = daybook.reduce((sum, item) => sum + item.inflow - item.outflow, 0);
-      
-      let stockValuation = products.reduce((s, p) => s + (p.cost * p.stock), 0);
-
-      let totalCogs = 0;
-      invoices.forEach(inv => {
-        if (inv.items) {
-          inv.items.forEach(it => {
-            const prod = products.find(p => p.id === it.id);
-            const costPrice = prod ? prod.cost : (it.cost || 0);
-            totalCogs += (costPrice * it.qty);
-          });
-        }
-      });
-      let grossProfit = sales - totalCogs;
-
-      const pnlRev = document.getElementById('pnl-revenue');
-      const pnlCogs = document.getElementById('pnl-cogs');
-      const pnlNet = document.getElementById('pnl-net-profit');
-      if(pnlRev) pnlRev.innerText = `₹ ${sales.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-      if(pnlCogs) pnlCogs.innerText = `₹ ${totalCogs.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-      if(pnlNet) pnlNet.innerText = `₹ ${grossProfit.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-
-      let totalReceivables = customers.reduce((s, c) => s + (c.udhar > 0 ? c.udhar : 0), 0);
-      let totalAssets = stockValuation + totalReceivables + wallet;
-
-      const bsStk = document.getElementById('bs-stock');
-      const bsRec = document.getElementById('bs-receivables');
-      const bsCash = document.getElementById('bs-cash');
-      const bsTot = document.getElementById('bs-total-assets');
-      if(bsStk) bsStk.innerText = `₹ ${stockValuation.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-      if(bsRec) bsRec.innerText = `₹ ${totalReceivables.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-      if(bsCash) bsCash.innerText = `₹ ${wallet.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-      if(bsTot) bsTot.innerText = `₹ ${totalAssets.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-
-      const repSales = document.getElementById('rep-total-sales');
-      const repProf = document.getElementById('rep-gross-profit');
-      const repStk = document.getElementById('rep-stock-valuation');
-      const repUdhar = document.getElementById('rep-total-udhar');
-      if(repSales) repSales.innerText = `₹ ${sales.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-      if(repProf) repProf.innerText = `₹ ${grossProfit.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-      if(repStk) repStk.innerText = `₹ ${stockValuation.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-      if(repUdhar) repUdhar.innerText = `₹ ${totalUdhar.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-
-      let itemSalesMap = {};
-      invoices.forEach(inv => {
-        if (inv.items) {
-          inv.items.forEach(it => {
-            if (!itemSalesMap[it.name]) itemSalesMap[it.name] = { qty: 0, revenue: 0, unit: it.unit };
-            itemSalesMap[it.name].qty += it.qty;
-            itemSalesMap[it.name].revenue += it.totalAmount;
-          });
-        }
-      });
-
-      let itemTbody = document.getElementById('item-sales-tbody');
-      if(itemTbody) {
-        let itemKeys = Object.keys(itemSalesMap);
-        if (itemKeys.length === 0) {
-          itemTbody.innerHTML = `<tr><td colspan="3" class="text-center py-4 text-slate-400">No item sales recorded.</td></tr>`;
-        } else {
-          itemTbody.innerHTML = itemKeys.map(name => `
-            <tr class="hover:bg-slate-50">
-              <td class="p-2.5 font-semibold text-slate-900">${name}</td>
-              <td class="p-2.5 text-right">${itemSalesMap[name].qty} ${itemSalesMap[name].unit}</td>
-              <td class="p-2.5 text-right font-black text-blue-700">₹ ${itemSalesMap[name].revenue.toFixed(2)}</td>
-            </tr>
-          `).join('');
-        }
-      }
-
-      let staffStats = {};
-      staffMembers.forEach(s => { staffStats[s] = { count: 0, total: 0 }; });
-      invoices.forEach(inv => {
-        let rep = inv.saleBy || staffMembers[0];
-        if (!staffStats[rep]) staffStats[rep] = { count: 0, total: 0 };
-        staffStats[rep].count += 1;
-        staffStats[rep].total += inv.total;
-      });
-
-      let staffTbody = document.getElementById('staff-performance-tbody');
-      if(staffTbody) {
-        staffTbody.innerHTML = Object.keys(staffStats).map(staff => `
-          <tr class="hover:bg-slate-50">
-            <td class="p-2.5 font-bold text-slate-900">${staff}</td>
-            <td class="p-2.5 text-right text-slate-600">${staffStats[staff].count} Bills</td>
-            <td class="p-2.5 text-right font-black text-emerald-700">₹ ${staffStats[staff].total.toFixed(2)}</td>
-          </tr>
-        `).join('');
-      }
-
-      let custSalesMap = {};
-      customers.forEach(c => { custSalesMap[c.phone] = { name: c.name, phone: c.phone, count: 0, total: 0 }; });
-      invoices.forEach(inv => {
-        if (!custSalesMap[inv.custPhone]) {
-          custSalesMap[inv.custPhone] = { name: inv.custName, phone: inv.custPhone, count: 0, total: 0 };
-        }
-        custSalesMap[inv.custPhone].count += 1;
-        custSalesMap[inv.custPhone].total += inv.total;
-      });
-
-      let custTbody = document.getElementById('customer-sales-tbody');
-      if(custTbody) {
-        let custKeys = Object.values(custSalesMap);
-        if (custKeys.length === 0) {
-          custTbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-slate-400">No customer sales recorded.</td></tr>`;
-        } else {
-          custTbody.innerHTML = custKeys.map(c => `
-            <tr class="hover:bg-slate-50">
-              <td class="p-3 font-bold text-slate-900">${c.name}</td>
-              <td class="p-3 text-slate-500">${c.phone}</td>
-              <td class="p-3 text-right">${c.count} Bills</td>
-              <td class="p-3 text-right font-black text-amber-700">₹ ${c.total.toFixed(2)}</td>
-            </tr>
-          `).join('');
-        }
-      }
+      `).join('') || '<tr><td colspan="6" class="text-center py-8 text-slate-400">No customers found.</td></tr>';
     }
 
     function exportMasterFinancialExcel() {
@@ -2238,111 +1376,121 @@
       let grossProfit = sales - totalCogs;
       let stockValuation = products.reduce((s, p) => s + (p.cost * p.stock), 0);
       let totalReceivables = customers.reduce((s, c) => s + (c.udhar > 0 ? c.udhar : 0), 0);
+      let vendorPayables = vendors.reduce((s, v) => s + v.balance, 0);
       let wallet = daybook.reduce((sum, item) => sum + item.inflow - item.outflow, 0);
 
       const pnlBsData = [
-        { "Category": "PROFIT & LOSS STATEMENT", "Metric": "Total Gross Revenue (Sales)", "Amount (INR)": sales },
-        { "Category": "PROFIT & LOSS STATEMENT", "Metric": "Less: Cost of Goods Sold (COGS)", "Amount (INR)": totalCogs },
-        { "Category": "PROFIT & LOSS STATEMENT", "Metric": "Net Gross Profit", "Amount (INR)": grossProfit },
-        { "Category": "BALANCE SHEET ASSETS", "Metric": "Warehouse Stock Assets", "Amount (INR)": stockValuation },
-        { "Category": "BALANCE SHEET ASSETS", "Metric": "Market Receivables (Udhar)", "Amount (INR)": totalReceivables },
-        { "Category": "BALANCE SHEET ASSETS", "Metric": "Cash Drawer Balance", "Amount (INR)": wallet },
-        { "Category": "BALANCE SHEET ASSETS", "Metric": "Total Enterprise Assets", "Amount (INR)": stockValuation + totalReceivables + wallet }
+        { "Category": "FINANCIAL STATEMENT", "Metric": "Total Gross Sales Revenue", "Amount (INR)": sales },
+        { "Category": "FINANCIAL STATEMENT", "Metric": "Less: Cost of Goods Sold (COGS)", "Amount (INR)": totalCogs },
+        { "Category": "FINANCIAL STATEMENT", "Metric": "Net Gross Profit", "Amount (INR)": grossProfit },
+        { "Category": "BALANCE SHEET", "Metric": "Warehouse Stock Assets", "Amount (INR)": stockValuation },
+        { "Category": "BALANCE SHEET", "Metric": "Market Customer Receivables (Udhar)", "Amount (INR)": totalReceivables },
+        { "Category": "BALANCE SHEET", "Metric": "Cash Drawer Balance", "Amount (INR)": wallet },
+        { "Category": "BALANCE SHEET", "Metric": "Supplier Payables (Vendor Udhar)", "Amount (INR)": vendorPayables },
+        { "Category": "BALANCE SHEET", "Metric": "Net Enterprise Assets", "Amount (INR)": (stockValuation + totalReceivables + wallet) - vendorPayables }
       ];
 
-      let itemSalesMap = {};
-      invoices.forEach(inv => {
-        if (inv.items) {
-          inv.items.forEach(it => {
-            if (!itemSalesMap[it.name]) itemSalesMap[it.name] = { qty: 0, revenue: 0, unit: it.unit };
-            itemSalesMap[it.name].qty += it.qty;
-            itemSalesMap[it.name].revenue += it.totalAmount;
-          });
-        }
-      });
-      let itemExcelData = Object.keys(itemSalesMap).map(name => ({
-        "Item Name": name, "Total Qty Sold": itemSalesMap[name].qty + ' ' + itemSalesMap[name].unit, "Total Revenue (INR)": itemSalesMap[name].revenue
-      }));
-
-      let staffStats = {};
-      staffMembers.forEach(s => { staffStats[s] = { count: 0, total: 0 }; });
-      invoices.forEach(inv => {
-        let rep = inv.saleBy || staffMembers[0];
-        if (!staffStats[rep]) staffStats[rep] = { count: 0, total: 0 };
-        staffStats[rep].count += 1;
-        staffStats[rep].total += inv.total;
-      });
-      let staffExcelData = Object.keys(staffStats).map(staff => ({
-        "Staff Member": staff, "Total Bills Generated": staffStats[staff].count, "Total Sales Volume (INR)": staffStats[staff].total
-      }));
-
-      let custSalesMap = {};
-      invoices.forEach(inv => {
-        if (!custSalesMap[inv.custPhone]) {
-          custSalesMap[inv.custPhone] = { name: inv.custName, phone: inv.custPhone, count: 0, total: 0 };
-        }
-        custSalesMap[inv.custPhone].count += 1;
-        custSalesMap[inv.custPhone].total += inv.total;
-      });
-      let custExcelData = Object.values(custSalesMap).map(c => ({
-        "Customer Name": c.name, "Mobile Number": c.phone, "Total Invoices": c.count, "Total Purchase Amount (INR)": c.total
-      }));
-
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(pnlBsData), "Financial_Summary_PL_BS");
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(itemExcelData), "Sale_By_Item");
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(staffExcelData), "Sale_By_Staff");
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(custExcelData), "Sale_By_Customer");
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(pnlBsData), "Financial_PL_BS");
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(products), "Warehouse_Stock");
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(customers), "Customer_Khata");
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(vendors), "Supplier_Khata");
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(salesReturns), "Sales_Returns");
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(auditLogs), "Audit_Logs");
 
       XLSX.writeFile(wb, `ShriJi_Master_Financial_Report_${new Date().toISOString().slice(0,10)}.xlsx`);
+      addAuditLog('Exported Master Enterprise Excel Report');
     }
 
-    function downloadFullBackupJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
-        products, staffMembers, invoices, customers, daybook, customerLedgers, 
-        companyName, companyAddress, shopGstin, companyLogo, companySignature,
-        bankName, bankAcc, bankIfsc, bankUpi,
-        exportDate: new Date().toISOString()
-      }, null, 2));
-      const a = document.createElement('a');
-      a.setAttribute("href", dataStr);
-      a.setAttribute("download", `ShriJi_Backup_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+    function deleteInvoice(billNo) {
+      if (!confirm(`Delete Invoice #${billNo}?`)) return;
+      invoices = invoices.filter(i => i.billNo !== billNo);
+      addAuditLog(`Deleted Invoice #${billNo}`);
+      saveAll();
+      renderSavedInvoicesTable();
+      renderReports();
     }
 
-    function exportStockToExcel() {
-      if (products.length === 0) return alert('No products to export.');
-      const ws = XLSX.utils.json_to_sheet(products.map(p => ({
-        "Product Name": p.name, "Unit": p.unit, "GST Slab (%)": p.gstRate || 0,
-        "Cost Rate": p.cost, "Selling Rate": p.price, "Stock": p.stock
-      })));
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Inventory");
-      XLSX.writeFile(wb, "Shri_Ji_Inventory.xlsx");
+    function populateProductSelect() {
+      const select = document.getElementById('bill-product-select');
+      const retSelect = document.getElementById('ret-product-select');
+      if (select) {
+        select.innerHTML = products.map(p => `<option value="${p.id}">${p.name} - ₹${p.price.toFixed(2)} / ${p.unit}</option>`).join('');
+      }
+      if (retSelect) {
+        retSelect.innerHTML = products.map(p => `<option value="${p.id}">${p.name} - ₹${p.price.toFixed(2)}</option>`).join('');
+      }
+      updateProductHint();
     }
 
-    function exportKhataToExcel() {
-      if (customers.length === 0) return alert('No ledger to export.');
-      const ws = XLSX.utils.json_to_sheet(customers.map(c => ({
-        "Customer Name": c.name, "Mobile Number": c.phone, "Outstanding/Advance Balance (INR)": c.udhar
-      })));
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Credit_Ledger");
-      XLSX.writeFile(wb, "Shri_Ji_Khata_With_Mobile.xlsx");
+    function renderReports() {
+      let sales = invoices.reduce((s, i) => s + i.total, 0);
+      let totalUdhar = customers.reduce((s, c) => s + (c.udhar > 0 ? c.udhar : 0), 0);
+      let vendorPayables = vendors.reduce((s, v) => s + v.balance, 0);
+      let wallet = daybook.reduce((sum, item) => sum + item.inflow - item.outflow, 0);
+      let stockValuation = products.reduce((s, p) => s + (p.cost * p.stock), 0);
+
+      let totalCogs = 0;
+      invoices.forEach(inv => {
+        if (inv.items) inv.items.forEach(it => { const prod = products.find(p => p.id === it.id); totalCogs += ((prod ? prod.cost : 0) * it.qty); });
+      });
+      let grossProfit = sales - totalCogs;
+
+      const pnlRev = document.getElementById('pnl-revenue');
+      const pnlCogs = document.getElementById('pnl-cogs');
+      const pnlNet = document.getElementById('pnl-net-profit');
+      if(pnlRev) pnlRev.innerText = `₹ ${sales.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      if(pnlCogs) pnlCogs.innerText = `₹ ${totalCogs.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      if(pnlNet) pnlNet.innerText = `₹ ${grossProfit.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+
+      const bsStk = document.getElementById('bs-stock');
+      const bsRec = document.getElementById('bs-receivables');
+      const bsCash = document.getElementById('bs-cash');
+      const bsVend = document.getElementById('bs-vendor-payables');
+      const bsTot = document.getElementById('bs-total-assets');
+      if(bsStk) bsStk.innerText = `₹ ${stockValuation.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      if(bsRec) bsRec.innerText = `₹ ${totalUdhar.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      if(bsCash) bsCash.innerText = `₹ ${wallet.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      if(bsVend) bsVend.innerText = `₹ ${vendorPayables.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      if(bsTot) bsTot.innerText = `₹ ${(stockValuation + totalUdhar + wallet - vendorPayables).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+
+      const repSales = document.getElementById('rep-total-sales');
+      const repProf = document.getElementById('rep-gross-profit');
+      const repStk = document.getElementById('rep-stock-valuation');
+      const repUdhar = document.getElementById('rep-total-udhar');
+      if(repSales) repSales.innerText = `₹ ${sales.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      if(repProf) repProf.innerText = `₹ ${grossProfit.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      if(repStk) repStk.innerText = `₹ ${stockValuation.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+      if(repUdhar) repUdhar.innerText = `₹ ${totalUdhar.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
     }
 
-    function exportInvoicesToExcel() {
-      if (invoices.length === 0) return alert('No invoices to export.');
-      const ws = XLSX.utils.json_to_sheet(invoices.map(i => ({
-        "Invoice No": i.billNo, "Date": i.date, "Customer": i.custName, "Mobile": i.custPhone,
-        "Sales Representative": i.saleBy || 'Admin', "Total (INR)": i.total, "Udhar (INR)": i.udhar
-      })));
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Invoices");
-      XLSX.writeFile(wb, "Shri_Ji_Invoices.xlsx");
+    /* Helper functions for UI Elements */
+    function getNextInvoiceNo() {
+      if (!invoices || invoices.length === 0) return 'SJA-101';
+      let maxNum = 100;
+      invoices.forEach(inv => { if (inv.billNo) { const match = inv.billNo.match(/SJA-(\d+)/i); if (match && parseInt(match[1]) > maxNum) maxNum = parseInt(match[1]); } });
+      return 'SJA-' + (maxNum + 1);
     }
+    function resetInvoiceNumberInput() { const input = document.getElementById('bill-custom-no'); if (input) input.value = getNextInvoiceNo(); }
+    function populateStaffSelect() { const select = document.getElementById('bill-salesperson'); if (select) select.innerHTML = staffMembers.map(s => `<option value="${s}">${s}</option>`).join(''); }
+    function renderStaffSettingsList() { const container = document.getElementById('staff-settings-list'); if (container) container.innerHTML = staffMembers.map(s => `<div class="p-2 bg-slate-50 border rounded text-xs font-bold">${s}</div>`).join(''); }
+    function renderInventoryTable() { const tbody = document.getElementById('inventory-table-body'); if(tbody) tbody.innerHTML = products.map((p, idx) => `<tr class="hover:bg-slate-50"><td class="p-3 font-bold">${p.name}</td><td class="p-3 text-center">${p.unit}</td><td class="p-3 text-center">${p.gstRate}%</td><td class="p-3 text-right">₹${p.cost}</td><td class="p-3 text-right font-bold text-emerald-700">₹${p.price}</td><td class="p-3 text-right font-black">${p.stock}</td><td class="p-3 text-center"><button onclick="adjustProductStock(${idx},'add')" class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">+ Stock</button></td><td class="p-3 text-center"><button onclick="deleteProduct(${idx})" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button></td></tr>`).join('') || '<tr><td colspan="8" class="text-center py-4 text-slate-400">Empty Stock.</td></tr>'; }
+    function adjustProductStock(idx, action) { const qtyStr = prompt('Enter quantity adjustment:'); if(!qtyStr || isNaN(qtyStr)) return; const qty = parseFloat(qtyStr); if(action === 'add') products[idx].stock += qty; saveAll(); renderInventoryTable(); }
+    function deleteProduct(idx) { if(confirm(`Delete ${products[idx].name}?`)) { addAuditLog(`Deleted item ${products[idx].name}`); products.splice(idx,1); saveAll(); renderInventoryTable(); } }
+    function updateProductHint() { const pIdEl = document.getElementById('bill-product-select'); const hintEl = document.getElementById('product-hint'); if(!pIdEl || !hintEl) return; const prod = products.find(p => p.id === pIdEl.value); hintEl.innerText = prod ? `Stock: ${prod.stock} ${prod.unit} | Rate: ₹${prod.price}` : 'Available Stock: -'; }
+    function addItemToCurrentBill() { const pId = document.getElementById('bill-product-select').value; const qty = parseFloat(document.getElementById('bill-qty').value); const prod = products.find(p => p.id === pId); if(!prod || isNaN(qty) || qty <= 0) return alert('Select product and quantity.'); currentCart.push({ ...prod, qty, taxable: qty * prod.price }); renderCartTable(); }
+    function renderCartTable() { const tbody = document.getElementById('cart-table-body'); if(!tbody) return; tbody.innerHTML = currentCart.map((i, idx) => `<tr class="hover:bg-slate-50"><td class="p-2 font-bold">${i.name}</td><td class="p-2 text-center">${i.unit}</td><td class="p-2 text-center">${i.gstRate}%</td><td class="p-2 text-right">${i.qty}</td><td class="p-2 text-right">₹${i.price}</td><td class="p-2 text-right font-bold">₹${i.taxable}</td><td class="p-2 text-right font-black">₹${(i.taxable * (1 + i.gstRate/100)).toFixed(2)}</td><td class="p-2 text-center"><button onclick="currentCart.splice(${idx},1); renderCartTable()"><i class="fa-solid fa-xmark text-red-600"></i></button></td></tr>`).join('') || '<tr><td colspan="8" class="text-center py-4 text-slate-400">Cart Empty</td></tr>'; calculateBillTotal(); }
+    function calculateBillTotal() { const taxMode = document.getElementById('bill-tax-type').value; const discount = parseFloat(document.getElementById('bill-discount').value) || 0; let taxable = 0, tax = 0; currentCart.forEach(i => { taxable += i.taxable; tax += (i.taxable * (taxMode==='nongst'?0:i.gstRate))/100; }); document.getElementById('bill-taxable-amt').innerText = `₹ ${taxable.toFixed(2)}`; document.getElementById('bill-total-tax').innerText = `₹ ${tax.toFixed(2)}`; const grand = Math.max(0, (taxable + tax) - discount); document.getElementById('bill-final-total').innerText = `₹ ${grand.toFixed(2)}`; document.getElementById('pay-cash').value = grand.toFixed(2); calculateUdhar(); }
+    function calculateUdhar() { const grand = parseFloat(document.getElementById('bill-final-total').innerText.replace('₹ ','')) || 0; const cash = parseFloat(document.getElementById('pay-cash').value) || 0; const upi = parseFloat(document.getElementById('pay-upi').value) || 0; document.getElementById('pay-udhar').value = Math.max(0, grand - (cash + upi)).toFixed(2); }
+    async function saveAndProcessInvoice(mode) { const custName = document.getElementById('cust-name').value.trim(); const custPhone = document.getElementById('cust-phone').value.trim(); if(!custName || !custPhone || currentCart.length === 0) return alert('Fill customer and cart details.'); const billNo = document.getElementById('bill-custom-no').value.trim() || getNextInvoiceNo(); const grandTotal = parseFloat(document.getElementById('bill-final-total').innerText.replace('₹ ','')) || 0; const udhar = parseFloat(document.getElementById('pay-udhar').value) || 0; invoices.unshift({ billNo, date: new Date().toLocaleDateString('en-IN'), timestamp: new Date().toISOString(), custName, custPhone, items: [...currentCart], total: grandTotal, udhar }); currentCart.forEach(i => { const p = products.find(prod => prod.id === i.id); if(p) p.stock = Math.max(0, p.stock - i.qty); }); let c = customers.find(cust => cust.phone === custPhone); if(!c) { c = { name: custName, phone: custPhone, udhar: 0 }; customers.push(c); } c.udhar += udhar; addAuditLog(`Generated Invoice #${billNo} for ₹${grandTotal}`); await saveAll(); currentCart = []; renderCartTable(); renderSavedInvoicesTable(); renderReports(); alert(`Invoice #${billNo} Processed!`); }
+    function renderSavedInvoicesTable() { const tbody = document.getElementById('saved-invoices-body'); if(tbody) tbody.innerHTML = invoices.map(i => `<tr class="hover:bg-slate-50"><td class="p-3 font-bold text-blue-700">${i.billNo}</td><td class="p-3">${i.date}</td><td class="p-3 font-bold">${i.custName}</td><td class="p-3">Admin</td><td class="p-3 text-right">₹${i.total.toFixed(2)}</td><td class="p-3 text-right font-bold text-emerald-700">₹0.00</td><td class="p-3 text-right font-black">₹${i.total.toFixed(2)}</td><td class="p-3 text-right font-bold text-red-600">₹${i.udhar.toFixed(2)}</td><td class="p-3 text-center"><button class="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-bold">PDF</button></td><td class="p-3 text-center"><button onclick="deleteInvoice('${i.billNo}')" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button></td></tr>`).join('') || '<tr><td colspan="10" class="text-center py-4 text-slate-400">No invoices.</td></tr>'; }
+    function renderDaybookTable() { const tbody = document.getElementById('daybook-table-body'); if(tbody) tbody.innerHTML = daybook.map(d => `<tr class="hover:bg-slate-50"><td class="p-3 text-slate-500">${d.date}</td><td class="p-3 font-bold">${d.desc}</td><td class="p-3 text-right font-bold text-emerald-700">+ ₹${d.inflow}</td><td class="p-3 text-right font-bold text-red-600">- ₹${d.outflow}</td><td class="p-3 text-right font-black">₹0.00</td><td class="p-3 text-center"><button class="text-slate-400"><i class="fa-solid fa-trash-can"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center py-4 text-slate-400">No cash transactions.</td></tr>'; }
+    function openCustomerModal(phone) { activeCustomerPhone = phone; const c = customers.find(cust => cust.phone === phone); if(!c) return; document.getElementById('modal-cust-name').innerText = c.name; document.getElementById('modal-cust-phone').innerText = c.phone; document.getElementById('modal-cust-balance').innerText = `₹ ${c.udhar.toFixed(2)}`; document.getElementById('customer-modal').classList.remove('hidden'); }
+    function closeCustomerModal() { document.getElementById('customer-modal').classList.add('hidden'); }
+    function processCustomerPayment(dir) { if(!activeCustomerPhone) return; const c = customers.find(cust => cust.phone === activeCustomerPhone); const amt = parseFloat(document.getElementById('modal-payin-amt').value); if(isNaN(amt) || amt <= 0) return; c.udhar -= amt; daybook.unshift({ date: new Date().toLocaleString('en-IN'), desc: `Payment Received: ${c.name}`, inflow: amt, outflow: 0 }); addAuditLog(`Received Payment from ${c.name}: ₹${amt}`); saveAll(); openCustomerModal(c.phone); renderKhataTable(); renderReports(); alert('Payment Recorded!'); }
+    function lookupCustomerByPhone() { const phone = document.getElementById('cust-phone').value.trim(); const c = customers.find(cust => cust.phone === phone); if(c) { document.getElementById('cust-name').value = c.name; document.getElementById('customer-recognition-banner').classList.remove('hidden'); document.getElementById('recognized-cust-text').innerText = `Recognized: ${c.name}`; document.getElementById('recognized-cust-balance').innerText = `Due: ₹${c.udhar.toFixed(2)}`; } }
+    function openScannerModal() { alert('Point camera at Barcode'); }
+    function recordManualTx() { const desc = document.getElementById('manual-tx-desc').value.trim(); const amt = parseFloat(document.getElementById('manual-tx-amt').value); const type = document.getElementById('manual-tx-type').value; if(!desc || isNaN(amt) || amt <= 0) return; daybook.unshift({ date: new Date().toLocaleString('en-IN'), desc, inflow: type==='in'?amt:0, outflow: type==='out'?amt:0 }); saveAll(); renderDaybookTable(); renderReports(); }
   </script>
 </body>
 </html>
