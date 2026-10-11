@@ -468,7 +468,7 @@
         </div>
       </section>
 
-      <!-- 2. SALES RETURN & CREDIT NOTE (सामान वापसी) -->
+      <!-- 2. SALES RETURN & CREDIT NOTE -->
       <section id="section-returns" class="tab-content hidden space-y-6">
         <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
           <h2 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
@@ -869,7 +869,7 @@
           <div class="flex items-center gap-3 border-b border-slate-100 pb-3 mb-3">
             <i class="fa-solid fa-cloud-arrow-up text-3xl text-blue-600"></i>
             <div>
-              <h2 class="text-base font-bold text-slate-800">Supabase Cloud Sync</h2>
+              <h2 class="text-base font-bold text-slate-800">Supabase Cloud Multi-Device Sync</h2>
             </div>
           </div>
 
@@ -954,71 +954,6 @@
     </div>
   </div>
 
-  <!-- PRINTABLE INVOICE -->
-  <div id="invoice-pdf-container" style="position: absolute; left: -9999px; top: -9999px;">
-    <div id="printable-invoice-view" style="width: 760px; padding: 32px; background: #ffffff; color: #0f172a; font-family: 'Inter', sans-serif;">
-      <div style="border-bottom: 2.5px solid #16a34a; padding-bottom: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-start;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <div>
-            <h1 style="font-size: 24px; font-weight: 900; color: #14532d; margin: 0;" id="pdf-company-name">SHRI JI AGRITECH</h1>
-            <p style="font-size: 11px; font-weight: 700; color: #16a34a; margin: 2px 0 4px 0; font-style: italic;">Quality Products, Strong Yields.</p>
-            <p style="font-size: 10px; color: #475569; margin: 0; line-height: 1.4;" id="pdf-company-address"></p>
-          </div>
-        </div>
-        <div style="text-align: right;">
-          <span style="font-size: 12px; font-weight: 800; background: #f0fdf4; color: #166534; padding: 4px 10px; border-radius: 6px; border: 1px solid #bbf7d0;">TAX INVOICE</span>
-          <p style="font-size: 12px; margin: 8px 0 2px 0; font-weight: bold;">Invoice No: <span id="pdf-bill-no">-</span></p>
-          <p style="font-size: 11px; margin: 0; color: #64748b;">Date: <span id="pdf-bill-date">-</span></p>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 16px; background: #f8fafc; padding: 10px 14px; border-radius: 8px; border: 1px solid #e2e8f0;">
-        <div>
-          <span style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase;">Billed To:</span>
-          <p style="margin: 2px 0 0 0; font-size: 13px; font-weight: 800;"><span id="pdf-cust-name">-</span></p>
-          <p style="margin: 2px 0 0 0; color: #475569;">Mobile: <span id="pdf-cust-phone">-</span></p>
-        </div>
-        <div style="text-align: right;">
-          <p style="margin: 2px 0 0 0; font-weight: 700; color: #334155;">Rep: <span id="pdf-sale-by">-</span></p>
-        </div>
-      </div>
-
-      <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 16px;">
-        <thead>
-          <tr style="background: #f1f5f9; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; text-transform: uppercase; color: #475569; font-weight: 700;">
-            <th style="padding: 7px 5px; text-align: left;">Item</th>
-            <th style="padding: 7px 5px; text-align: center;">Unit</th>
-            <th style="padding: 7px 5px; text-align: right;">Qty</th>
-            <th style="padding: 7px 5px; text-align: right;">Rate (₹)</th>
-            <th style="padding: 7px 5px; text-align: right;">Taxable (₹)</th>
-            <th style="padding: 7px 5px; text-align: center;">GST %</th>
-            <th style="padding: 7px 5px; text-align: right;">Total (₹)</th>
-          </tr>
-        </thead>
-        <tbody id="pdf-items-body"></tbody>
-      </table>
-
-      <div style="border-top: 1px solid #cbd5e1; padding-top: 10px; margin-bottom: 12px; font-size: 10px; color: #475569; background: #f8fafc; padding: 8px; border-radius: 6px;" id="pdf-bank-footer">
-        <strong>Bank Details:</strong> <span id="pdf-bank-info">-</span> | <strong>UPI:</strong> <span id="pdf-upi-info">-</span>
-      </div>
-
-      <div style="border-top: 1px solid #cbd5e1; padding-top: 12px; font-size: 12px; display: flex; justify-content: space-between; align-items: flex-end;">
-        <div style="color: #475569;">
-          <p style="margin: 0;">Paid: ₹<span id="pdf-paid">0.00</span> | Balance Due: ₹<span id="pdf-udhar" style="color: #b91c1c; font-weight: bold;">0.00</span></p>
-          <div style="margin-top: 24px;">
-            <p style="font-size: 11px; font-weight: bold; color: #334155;" id="pdf-signature-text">Authorised Signatory</p>
-          </div>
-        </div>
-        <div style="text-align: right; min-width: 200px;">
-          <p style="margin: 0;">Taxable: ₹<span id="pdf-taxable-val">0.00</span></p>
-          <p style="margin: 0; color: #15803d; font-weight: 700;">Total Tax: + ₹<span id="pdf-tax-added">0.00</span></p>
-          <p style="margin: 0; color: #d97706; font-weight: 700;">Discount: - ₹<span id="pdf-discount">0.00</span></p>
-          <h2 style="font-size: 18px; font-weight: 900; margin: 4px 0 0 0;">Total: ₹<span id="pdf-final">0.00</span></h2>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script>
     let products = JSON.parse(localStorage.getItem('shriji_v3_products')) || [];
     let staffMembers = JSON.parse(localStorage.getItem('shriji_v3_staff')) || ['Self / Admin', 'Amrit Prakash'];
@@ -1047,6 +982,26 @@
     let currentCart = [];
     let activeCustomerPhone = null;
     let supabaseClient = null;
+
+    function updateSyncBadge(status, text) {
+      const dot = document.getElementById('sync-dot');
+      const textEl = document.getElementById('sync-text');
+      if (!dot || !textEl) return;
+      
+      if (status === 'success') {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400';
+        textEl.innerText = text || 'Cloud Synced (Live)';
+      } else if (status === 'syncing') {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse';
+        textEl.innerText = text || 'Syncing Cloud...';
+      } else if (status === 'warning') {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
+        textEl.innerText = text || 'Key Needed (Click)';
+      } else {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-red-500';
+        textEl.innerText = text || 'Sync Failed';
+      }
+    }
 
     function addAuditLog(action) {
       const logEntry = { timestamp: new Date().toLocaleString('en-IN'), action, user: 'Admin/Staff' };
@@ -1103,44 +1058,96 @@
     }
 
     window.onload = async function() {
-      document.getElementById('live-clock').innerText = new Date().toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+      const liveClock = document.getElementById('live-clock');
+      if (liveClock) {
+        liveClock.innerText = new Date().toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+      }
+      
+      const urlInput = document.getElementById('supabase-url');
+      const keyInput = document.getElementById('supabase-key');
+      if (urlInput) urlInput.value = cloudConfig.url || '';
+      if (keyInput) keyInput.value = cloudConfig.key || '';
+
       renderAllUI();
       await initCloudClientAndSync();
     };
 
     async function initCloudClientAndSync() {
-      if (!cloudConfig.url || !cloudConfig.key) return;
+      if (!cloudConfig.url || !cloudConfig.key) {
+        updateSyncBadge('warning', 'Key Needed (Click)');
+        return;
+      }
+
+      updateSyncBadge('syncing', 'Connecting Cloud...');
+
       try {
-        if(window.supabase) {
-          supabaseClient = window.supabase.createClient(cloudConfig.url, cloudConfig.key);
+        if (window.supabase) {
+          let cleanUrl = cloudConfig.url.trim().replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
+          supabaseClient = window.supabase.createClient(cleanUrl, cloudConfig.key.trim());
+          
+          const { data, error } = await supabaseClient.from('shriji_store').select('shop_id').limit(1);
+          if (error) throw error;
+
+          updateSyncBadge('success', 'Cloud Synced (Live)');
           await forcePullFromCloud(false);
+        } else {
+          updateSyncBadge('error', 'Supabase Library Error');
         }
-      } catch(e) { console.error(e); }
+      } catch (e) {
+        console.error('Cloud Sync Connection Error:', e);
+        updateSyncBadge('error', 'Sync Failed');
+      }
     }
 
     function saveCloudConfig() {
-      const url = document.getElementById('supabase-url').value.trim();
-      const key = document.getElementById('supabase-key').value.trim();
-      if (!url || !key) return alert('Enter Supabase URL & Key');
-      cloudConfig = { url, key };
+      let rawUrl = document.getElementById('supabase-url').value.trim();
+      let rawKey = document.getElementById('supabase-key').value.trim();
+
+      if (!rawUrl || !rawKey) return alert('Please enter both Supabase URL & Anon Key!');
+
+      let cleanUrl = rawUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
+
+      cloudConfig = { url: cleanUrl, key: rawKey };
       localStorage.setItem('shriji_cloud_config', JSON.stringify(cloudConfig));
-      alert('Cloud Config Saved!');
+      alert('Cloud Credentials Saved! Verifying connection...');
       initCloudClientAndSync();
     }
 
     async function forcePushToCloud(showAlert = true) {
-      if (!supabaseClient) return;
+      if (!supabaseClient) {
+        if (showAlert) alert('Cloud not connected!');
+        return;
+      }
+      
+      updateSyncBadge('syncing', 'Uploading Data...');
+
       try {
         const payload = { products, staffMembers, invoices, customers, daybook, customerLedgers, vendors, salesReturns, auditLogs, companyName, companyAddress, shopGstin, companySignature, bankName, bankAcc, bankIfsc, bankUpi };
-        await supabaseClient.from('shriji_store').upsert([{ shop_id: 'shri_ji_agritech', data: payload, updated_at: new Date().toISOString() }]);
-        if (showAlert) alert('Data Pushed to Cloud!');
-      } catch(err) { console.error(err); }
+        const { error } = await supabaseClient.from('shriji_store').upsert([{ shop_id: 'shri_ji_agritech', data: payload, updated_at: new Date().toISOString() }]);
+        
+        if (error) throw error;
+
+        updateSyncBadge('success', 'Cloud Synced (Live)');
+        if (showAlert) alert('✅ Data successfully pushed & saved to Cloud!');
+      } catch(err) {
+        console.error('Push Error:', err);
+        updateSyncBadge('error', 'Push Failed');
+        if (showAlert) alert('❌ Cloud Save Failed: ' + (err.message || 'Check database permissions.'));
+      }
     }
 
     async function forcePullFromCloud(showAlert = true) {
-      if (!supabaseClient) return;
+      if (!supabaseClient) {
+        if (showAlert) alert('Cloud not connected!');
+        return;
+      }
+
+      updateSyncBadge('syncing', 'Fetching Data...');
+
       try {
-        const { data } = await supabaseClient.from('shriji_store').select('data').eq('shop_id', 'shri_ji_agritech').maybeSingle();
+        const { data, error } = await supabaseClient.from('shriji_store').select('data').eq('shop_id', 'shri_ji_agritech').maybeSingle();
+        if (error) throw error;
+
         if (data && data.data) {
           const s = data.data;
           products = s.products || [];
@@ -1152,11 +1159,19 @@
           vendors = s.vendors || [];
           salesReturns = s.salesReturns || [];
           auditLogs = s.auditLogs || [];
+          
           saveLocalOnly();
           renderAllUI();
-          if (showAlert) alert('Cloud Data Synced!');
+          updateSyncBadge('success', 'Cloud Synced (Live)');
+          if (showAlert) alert('✅ Cloud Data Synced successfully!');
+        } else {
+          await forcePushToCloud(false);
+          updateSyncBadge('success', 'Cloud Synced (Live)');
         }
-      } catch(err) { console.error(err); }
+      } catch(err) {
+        console.error('Pull Error:', err);
+        updateSyncBadge('error', 'Pull Failed');
+      }
     }
 
     function loadCompanyProfile() {
@@ -1464,7 +1479,6 @@
       if(repUdhar) repUdhar.innerText = `₹ ${totalUdhar.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
     }
 
-    /* Helper functions for UI Elements */
     function getNextInvoiceNo() {
       if (!invoices || invoices.length === 0) return 'SJA-101';
       let maxNum = 100;
