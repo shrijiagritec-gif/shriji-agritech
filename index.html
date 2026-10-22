@@ -1032,6 +1032,10 @@
 
             window.addEventListener('online', () => {
                 updateSyncStatusBadge('syncing', 'Internet Restored! Syncing...');
+                if (unsubscribeCloudListener) {
+                    unsubscribeCloudListener(); 
+                    unsubscribeCloudListener = null;
+                }
                 loadStateFromCloud();
             });
             window.addEventListener('offline', () => {
@@ -3905,6 +3909,9 @@
             }
         }
 
+        // ============================================================
+        // 🟢 CRITICAL FIX: FORCES SERVER FETCH SO DATA IS NEVER OVERWRITTEN
+        // ============================================================
         function saveStateToCloud(forceOverwrite = false) {
             saveToLocalCache();
             if (db) {
@@ -3916,11 +3923,10 @@
                     docRef.set(finalPayload).then(() => {
                         updateSyncStatusBadge('online', 'Firebase Cloud Live Synced');
                     }).catch((error) => {
-                        console.warn("Offline: Saved locally.", error);
                         updateSyncStatusBadge('offline', 'Saved Locally (Offline)');
                     });
                 } else {
-                    docRef.get().then((doc) => {
+                    docRef.get({ source: 'server' }).then((doc) => {
                         if (doc.exists) {
                             mergeCloudAndLocalData(doc.data());
                         }
@@ -3929,8 +3935,12 @@
                     }).then(() => {
                         updateSyncStatusBadge('online', 'Firebase Cloud Live Synced');
                     }).catch((error) => {
-                        console.warn("Offline: Saved locally.", error);
-                        updateSyncStatusBadge('offline', 'Saved Locally (Offline)');
+                        docRef.get().then(doc => {
+                            if (doc.exists) mergeCloudAndLocalData(doc.data());
+                            return docRef.set(saveToLocalCache());
+                        }).catch(e => {
+                            updateSyncStatusBadge('offline', 'Saved Locally (Offline)');
+                        });
                     });
                 }
             } else {
@@ -3938,9 +3948,29 @@
             }
         }
 
+        // ============================================================
+        // 🟢 CRITICAL FIX: SYNC CLOUD BUTTON NOW PULLS FRESH DATA
+        // ============================================================
         function forceCloudSyncNow() {
-            saveStateToCloud();
-            showSuccessToast("Sync Triggered", "Data pushed to Cloud!");
+            if (!db) return alert("Offline Mode - Cannot sync with cloud.");
+            updateSyncStatusBadge('syncing', 'Pulling from Cloud...');
+            const docRef = db.collection("shriJiPortal").doc("masterData");
+            
+            docRef.get({ source: 'server' }).then(doc => {
+                if (doc.exists) {
+                    mergeCloudAndLocalData(doc.data());
+                    saveToLocalCache();
+                    refreshAllUIComponents();
+                    showSuccessToast("Cloud Sync", "Latest data pulled from Cloud!");
+                    updateSyncStatusBadge('online', 'Firebase Cloud Live Synced');
+                } else {
+                    saveStateToCloud();
+                }
+            }).catch(err => {
+                console.warn("Pull failed", err);
+                updateSyncStatusBadge('offline', 'Offline (Browser Storage)');
+                alert("Failed to pull from cloud. Check internet.");
+            });
         }
 
         function attachRealtimeListener() {
@@ -3962,6 +3992,7 @@
             }, (err) => {
                 console.warn("Realtime listener offline:", err);
                 updateSyncStatusBadge('offline', 'Offline (Browser Storage)');
+                unsubscribeCloudListener = null; 
             });
         }
 
