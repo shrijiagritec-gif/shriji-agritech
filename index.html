@@ -234,7 +234,7 @@
             <div class="bg-white rounded-2xl shadow-sm border border-indigo-200 overflow-hidden">
                 <div class="bg-indigo-50/80 px-5 py-2.5 border-b border-indigo-200 flex flex-wrap justify-between items-center gap-2">
                     <h3 class="text-xs font-extrabold text-indigo-950 uppercase tracking-wider flex items-center gap-2">
-                        <i class="fa-solid fa-calculator text-indigo-600"></i> Live Staff Task & Payout Summary
+                        <i class="fa-solid fa-calculator text-indigo-600"></i> Live Staff Task & Payout Summary (Filtered)
                     </h3>
                 </div>
                 <div id="inlineStaffSummaryContainer" class="p-3 overflow-x-auto"></div>
@@ -482,6 +482,12 @@
 
             <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
                 <div class="flex flex-wrap items-center gap-3 text-xs font-bold text-slate-700">
+                    
+                    <div class="flex items-center gap-1.5 bg-indigo-50 p-1.5 rounded-xl border border-indigo-200">
+                        <i class="fa-solid fa-calendar text-indigo-600"></i>
+                        <input type="month" id="monthFilter" onchange="onMonthFilterChange()" class="p-1 border border-indigo-200 rounded bg-white text-xs font-bold text-indigo-900">
+                    </div>
+
                     <div class="flex items-center gap-1.5 bg-slate-50 p-1.5 rounded-xl border border-slate-200">
                         <i class="fa-solid fa-calendar-days text-brand-600"></i>
                         <input type="date" id="dateFilterFrom" onchange="clearBulkSelection(); renderTable();" class="p-1 border rounded bg-white text-xs">
@@ -1043,6 +1049,24 @@
             });
         });
 
+        function onMonthFilterChange() {
+            const monthVal = document.getElementById('monthFilter').value; // YYYY-MM
+            if (!monthVal) {
+                document.getElementById('dateFilterFrom').value = '';
+                document.getElementById('dateFilterTo').value = '';
+            } else {
+                const [year, month] = monthVal.split('-');
+                const startDate = `${year}-${month}-01`;
+                const lastDay = new Date(year, month, 0).getDate();
+                const endDate = `${year}-${month}-${lastDay}`;
+                
+                document.getElementById('dateFilterFrom').value = startDate;
+                document.getElementById('dateFilterTo').value = endDate;
+            }
+            clearBulkSelection();
+            renderTable();
+        }
+
         function updateSyncStatusBadge(status, text) {
             const el = document.getElementById('syncStatusIndicator');
             if (!el) return;
@@ -1410,6 +1434,7 @@
 
         function resetAllFilters() {
             clearBulkSelection();
+            document.getElementById('monthFilter').value = '';
             document.getElementById('dateFilterFrom').value = '';
             document.getElementById('dateFilterTo').value = '';
             document.getElementById('filterDealer').value = '';
@@ -2897,9 +2922,6 @@
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        // ============================================================
-        // 🟢 FIXED BACKUP FUNCTION (Blob API)
-        // ============================================================
         function downloadJsonBackup() {
             try {
                 const cleanPayload = saveToLocalCache();
@@ -2927,9 +2949,6 @@
             }
         }
 
-        // ============================================================
-        // 🟢 FIXED RESTORE FUNCTION (No Duplication Race Condition)
-        // ============================================================
         function restoreJsonBackup(event) {
             const fileInput = event.target;
             const file = fileInput.files[0];
@@ -2944,13 +2963,11 @@
                     }
                     if (confirm("Restore backup? Existing cloud & local data will be completely replaced.")) {
                         
-                        // 1. STOP the realtime listener so it doesn't merge old data
                         if (unsubscribeCloudListener) {
                             unsubscribeCloudListener();
                             unsubscribeCloudListener = null;
                         }
 
-                        // 2. Reset local states
                         appState.deletedRecordIds = [];
                         appState.lastMasterResetAtMs = 0;
                         appState.settingsUpdatedAtMs = Date.now() + 10000; 
@@ -2966,13 +2983,10 @@
                             updateSyncStatusBadge('syncing', 'Restoring to Cloud...');
                             const docRef = db.collection("shriJiPortal").doc("masterData");
                             
-                            // 3. Force overwrite cloud data completely
                             docRef.set(saveToLocalCache()).then(() => {
                                 updateSyncStatusBadge('online', 'Firebase Cloud Live Synced');
                                 refreshAllUIComponents();
                                 showSuccessToast("Restore Complete 🎉", "Data successfully restored without duplicates!");
-                                
-                                // 4. Re-attach realtime listener
                                 attachRealtimeListener();
                             }).catch(err => {
                                 console.error("Restore to cloud failed:", err);
@@ -3571,9 +3585,13 @@
                 right: { style: "thin", color: { rgb: "CBD5E1" } }
             };
             const ws = {};
+            
+            const monthVal = document.getElementById('monthFilter').value;
+            const monthTitleSuffix = monthVal ? ` [MONTH: ${monthVal}]` : '';
+            
             const titleText = isUserAdmin
-                ? `SHRI JI AGRITECH - UPMIP PORTAL (${isArchivedTab ? 'ARCHIVED' : 'ACTIVE'})`
-                : `SHRI JI AGRITECH - STAFF VOUCHER (${appState.currentLoggedStaff})`;
+                ? `SHRI JI AGRITECH - UPMIP PORTAL (${isArchivedTab ? 'ARCHIVED' : 'ACTIVE'})${monthTitleSuffix}`
+                : `SHRI JI AGRITECH - STAFF VOUCHER (${appState.currentLoggedStaff})${monthTitleSuffix}`;
             
             ws["A1"] = { v: titleText, t: "s", s: { font: { name: "Calibri", sz: 14, bold: true, color: { rgb: titleTextColor } } } };
             ws["A2"] = { v: `Generated: ${getFormattedTimestamp()}`, t: "s", s: { font: { name: "Calibri", sz: 10, italic: true, color: { rgb: "475569" } } } };
@@ -3832,7 +3850,7 @@
 
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, isUserAdmin ? "Admin_Master" : "Staff_Voucher");
-            XLSX.writeFile(wb, `Shri_Ji_Agritech_${appState.currentUserRole}_${isArchivedTab ? 'Archived_' : ''}${getFormattedDateOnly()}.xlsx`);
+            XLSX.writeFile(wb, `Shri_Ji_Agritech_${appState.currentUserRole}_${monthVal ? monthVal + '_' : ''}${isArchivedTab ? 'Archived_' : ''}${getFormattedDateOnly()}.xlsx`);
         }
         
         function closeModal(id) {
@@ -3909,9 +3927,6 @@
             }
         }
 
-        // ============================================================
-        // 🟢 CRITICAL FIX: FORCES SERVER FETCH SO DATA IS NEVER OVERWRITTEN
-        // ============================================================
         function saveStateToCloud(forceOverwrite = false) {
             saveToLocalCache();
             if (db) {
@@ -3948,9 +3963,6 @@
             }
         }
 
-        // ============================================================
-        // 🟢 CRITICAL FIX: SYNC CLOUD BUTTON NOW PULLS FRESH DATA
-        // ============================================================
         function forceCloudSyncNow() {
             if (!db) return alert("Offline Mode - Cannot sync with cloud.");
             updateSyncStatusBadge('syncing', 'Pulling from Cloud...');
