@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shri Ji Agritech - UPMIP Management Portal (Hybrid Cloud + Offline Sync)</title>
+    <title>Shri Ji Agritech - UPMIP Management Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
-
-    <!-- Firebase SDK Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
     <script>
         if (typeof tailwind !== 'undefined') {
             tailwind.config = {
@@ -20,85 +17,34 @@
                     extend: {
                         colors: {
                             brand: {
-                                50: '#f0fdf4',
-                                100: '#dcfce7',
-                                500: '#22c55e',
-                                600: '#16a34a',
-                                700: '#15803d',
-                                800: '#166534',
-                                900: '#14532d'
+                                50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e',
+                                600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d'
                             }
                         },
-                        fontFamily: {
-                            sans: ['Inter', 'sans-serif']
-                        }
+                        fontFamily: { sans: ['Inter', 'sans-serif'] }
                     }
                 }
             };
         }
     </script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .tab-active {
-            border-bottom: 3px solid #16a34a;
-            color: #16a34a;
-            font-weight: 700;
-            background-color: #f0fdf4;
-        }
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .role-hide {
-            display: none !important;
-        }
-        .duplicate-row {
-            background-color: #fee2e2 !important;
-            border-left: 4px solid #ef4444 !important;
-        }
-        .dept-query-row {
-            background-color: #fef2f2 !important;
-            border-left: 4px solid #b91c1c !important;
-        }
-        .archived-row {
-            background-color: #f8fafc !important;
-            opacity: 0.85;
-            border-left: 4px solid #64748b !important;
-        }
-        .aging-normal {
-            background-color: #ffffff;
-        }
-        .aging-warning {
-            background-color: #fffbeb;
-            border-left: 4px solid #f59e0b;
-        }
-        .aging-critical {
-            background-color: #fef2f2;
-            border-left: 4px solid #ef4444;
-        }
-        .table-scroll-container {
-            max-height: 72vh;
-            overflow-y: auto;
-            overflow-x: auto;
-            position: relative;
-        }
-        .table-scroll-container thead th {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            background-color: #f8fafc;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-bottom: 3px solid #16a34a; color: #16a34a; font-weight: 700; background-color: #f0fdf4; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .role-hide { display: none !important; }
+        .duplicate-row { background-color: #fee2e2 !important; border-left: 4px solid #ef4444 !important; }
+        .dept-query-row { background-color: #fef2f2 !important; border-left: 4px solid #b91c1c !important; }
+        .archived-row { background-color: #f8fafc !important; opacity: 0.85; border-left: 4px solid #64748b !important; }
+        .aging-normal { background-color: #ffffff; }
+        .aging-warning { background-color: #fffbeb; border-left: 4px solid #f59e0b; }
+        .aging-critical { background-color: #fef2f2; border-left: 4px solid #ef4444; }
+        .table-scroll-container { max-height: 72vh; overflow-y: auto; overflow-x: auto; position: relative; }
+        .table-scroll-container thead th { position: sticky; top: 0; z-index: 20; background-color: #f8fafc; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col relative">
 
-    <!-- Toast Notification -->
     <div id="toastNotification" class="fixed top-5 right-5 z-50 transform transition-all duration-300 translate-y-[-150%] opacity-0 pointer-events-none flex items-center gap-3 bg-emerald-600 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-emerald-400">
         <i class="fa-solid fa-circle-check text-2xl text-emerald-100"></i>
         <div>
@@ -107,7 +53,6 @@
         </div>
     </div>
 
-    <!-- 1. LOGIN SCREEN -->
     <div id="loginScreen" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md p-6 sm:p-8 space-y-6">
             <div class="text-center space-y-2">
@@ -115,7 +60,7 @@
                     <i class="fa-solid fa-seedling"></i>
                 </div>
                 <h2 class="text-2xl font-extrabold text-slate-800">Shri Ji Agritech</h2>
-                <p class="text-xs text-slate-500">UPMIP Management Portal - Hybrid Cloud & Offline Ready</p>
+                <p class="text-xs text-slate-500">UPMIP Management Portal</p>
             </div>
             <form onsubmit="handleAuthLogin(event)" class="space-y-4">
                 <div id="loginErrorAlert" class="hidden p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs font-semibold flex items-center gap-2">
@@ -124,11 +69,11 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Username / ID</label>
-                    <input type="text" id="loginUsername" required placeholder="Enter Username (e.g. admin, sonam, amrit)" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                    <input type="text" id="loginUsername" required placeholder="admin / sonam / amrit" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Password</label>
-                    <input type="password" id="loginPassword" required placeholder="Enter Password" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
+                    <input type="password" id="loginPassword" required placeholder="Password" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-500">
                 </div>
                 <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 active:scale-95 text-white font-bold py-2.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
                     <i class="fa-solid fa-right-to-bracket"></i> Login Karein
@@ -137,10 +82,8 @@
         </div>
     </div>
 
-    <!-- 2. MAIN APPLICATION -->
     <div id="mainAppWrapper" class="hidden min-h-screen flex flex-col">
 
-        <!-- Header -->
         <header class="bg-gradient-to-r from-brand-900 via-brand-800 to-emerald-900 text-white shadow-lg sticky top-0 z-40">
             <div class="max-w-[96%] mx-auto px-2 sm:px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-3">
                 <div class="flex items-center space-x-3">
@@ -163,7 +106,7 @@
                     <button onclick="openModal('staffBreakdownModal')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-2 rounded-lg transition shadow-md flex items-center gap-1.5 border border-indigo-400">
                         <i class="fa-solid fa-users-viewfinder"></i> Staff Breakdown
                     </button>
-                    <button onclick="forceCloudSyncNow()" class="bg-teal-600 hover:bg-teal-500 text-white font-bold px-3 py-2 rounded-lg transition shadow-md flex items-center gap-1.5" title="Force Push & Pull with Firebase Cloud">
+                    <button onclick="forceCloudSyncNow()" class="bg-teal-600 hover:bg-teal-500 text-white font-bold px-3 py-2 rounded-lg transition shadow-md flex items-center gap-1.5" title="Force Sync with Firebase Cloud">
                         <i class="fa-solid fa-cloud-arrow-up"></i> Sync Cloud
                     </button>
                     <button onclick="downloadJsonBackup()" class="admin-only bg-blue-700 hover:bg-blue-800 text-white font-bold px-3 py-2 rounded-lg transition shadow-md flex items-center gap-1.5">
@@ -202,10 +145,8 @@
             </div>
         </header>
 
-        <!-- Main Body -->
         <main class="max-w-[96%] mx-auto px-2 sm:px-4 py-6 flex-grow w-full space-y-6">
 
-            <!-- Stat Counters Dashboard (100% Unified Count for Admin & Staff) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
                 <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex items-center justify-between">
                     <div>
@@ -270,7 +211,7 @@
 
                 <div class="staff-only role-hide bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex items-center justify-between">
                     <div>
-                        <p class="text-[10px] font-bold uppercase text-slate-400" id="staffMonthLabel">My All-Time Earnings</p>
+                        <p class="text-[10px] font-bold uppercase text-slate-400">My Earnings</p>
                         <h3 id="statStaffMonthPay" class="text-lg font-extrabold text-brand-600">₹0</h3>
                         <p class="text-[9px] font-bold text-amber-600">Unpaid: <span id="statStaffUnpaid">₹0</span></p>
                     </div>
@@ -281,7 +222,7 @@
 
                 <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex items-center justify-between">
                     <div>
-                        <p class="text-[11px] font-semibold uppercase text-slate-400">Stuck (>3 Days)</p>
+                        <p class="text-[11px] font-semibold uppercase text-slate-400">Stuck (&gt;3 Days)</p>
                         <h3 id="statStuckFiles" class="text-xl font-extrabold text-orange-600">0</h3>
                     </div>
                     <div class="w-9 h-9 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center font-bold">
@@ -290,68 +231,56 @@
                 </div>
             </div>
 
-            <!-- LIVE DASHBOARD STAFF TASK BREAKDOWN WIDGET -->
             <div class="bg-white rounded-2xl shadow-sm border border-indigo-200 overflow-hidden">
                 <div class="bg-indigo-50/80 px-5 py-2.5 border-b border-indigo-200 flex flex-wrap justify-between items-center gap-2">
                     <h3 class="text-xs font-extrabold text-indigo-950 uppercase tracking-wider flex items-center gap-2">
-                        <i class="fa-solid fa-calculator text-indigo-600"></i> Live Staff Task Count & Payout Summary (Active Filtered Files)
+                        <i class="fa-solid fa-calculator text-indigo-600"></i> Live Staff Task & Payout Summary
                     </h3>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] font-bold text-indigo-700 bg-white px-2.5 py-0.5 rounded-full border border-indigo-200">
-                            DGN | BOQ (1+Shares) | KML | Payout
-                        </span>
-                    </div>
                 </div>
                 <div id="inlineStaffSummaryContainer" class="p-3 overflow-x-auto"></div>
             </div>
 
-            <!-- ADMIN ADVANCED CONTROLS -->
             <div class="admin-only bg-white p-3.5 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
                 <span class="text-xs font-extrabold text-slate-700 uppercase">
-                    <i class="fa-solid fa-shield-halved text-brand-600 mr-1"></i> Admin Data Control Panel:
+                    <i class="fa-solid fa-shield-halved text-brand-600 mr-1"></i> Admin Control Panel:
                 </span>
                 <div class="flex flex-wrap items-center gap-2 text-xs">
                     <button onclick="deleteSelectedRecords()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-xl transition shadow-sm">
-                        <i class="fa-solid fa-trash-can mr-1"></i> Delete Selected Rows
+                        <i class="fa-solid fa-trash-can mr-1"></i> Delete Selected
                     </button>
                     <select id="adminDeleteDealerSelect" class="p-1.5 border border-slate-300 rounded-xl bg-slate-50 font-bold text-slate-700">
-                        <option value="">-- Choose Dealer to Delete --</option>
+                        <option value="">-- Choose Dealer --</option>
                     </select>
                     <button onclick="deleteRecordsByDealer()" class="bg-rose-800 hover:bg-rose-900 text-white font-bold px-3 py-1.5 rounded-xl transition shadow-sm">
-                        <i class="fa-solid fa-user-xmark mr-1"></i> Delete Dealer Entries
+                        <i class="fa-solid fa-user-xmark mr-1"></i> Delete Dealer
                     </button>
                     <button onclick="clearAllPortalRecords()" class="bg-slate-900 hover:bg-black text-white font-bold px-3 py-1.5 rounded-xl transition shadow-sm border border-rose-500">
-                        <i class="fa-solid fa-triangle-exclamation mr-1 text-rose-400"></i> Master Reset Portal
+                        <i class="fa-solid fa-triangle-exclamation mr-1 text-rose-400"></i> Master Reset
                     </button>
                 </div>
             </div>
 
-            <!-- New Entry Intake Form -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <div class="bg-slate-50/80 px-6 py-4 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
                     <h2 class="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
-                        <i class="fa-solid fa-circle-plus text-brand-600"></i> New Registration Intake Form
+                        <i class="fa-solid fa-circle-plus text-brand-600"></i> New Registration Intake
                     </h2>
                     <div class="flex flex-wrap items-center gap-2">
-                        <label class="flex items-center gap-1.5 bg-teal-50 border border-teal-300 px-3 py-1.5 rounded-xl cursor-pointer hover:bg-teal-100 transition shadow-sm">
-                            <input type="checkbox" id="lockDealerCompanyToggle" class="w-4 h-4 text-teal-600 rounded border-teal-300 focus:ring-teal-500">
-                            <span class="text-xs font-bold text-teal-900 select-none flex items-center gap-1">
-                                <i class="fa-solid fa-thumbtack text-teal-700"></i> Lock Dealer
-                            </span>
+                        <label class="flex items-center gap-1.5 bg-teal-50 border border-teal-300 px-3 py-1.5 rounded-xl cursor-pointer">
+                            <input type="checkbox" id="lockDealerCompanyToggle" class="w-4 h-4 text-teal-600 rounded border-teal-300">
+                            <span class="text-xs font-bold text-teal-900">Lock Dealer</span>
                         </label>
-                        <label class="flex items-center gap-1.5 bg-sky-50 border border-sky-300 px-3 py-1.5 rounded-xl cursor-pointer hover:bg-sky-100 transition shadow-sm">
-                            <input type="checkbox" id="lockStatusSystemToggle" class="w-4 h-4 text-sky-600 rounded border-sky-300 focus:ring-sky-500">
-                            <span class="text-xs font-bold text-sky-900 select-none flex items-center gap-1">
-                                <i class="fa-solid fa-thumbtack text-sky-700"></i> Lock Status/System
-                            </span>
+                        <label class="flex items-center gap-1.5 bg-sky-50 border border-sky-300 px-3 py-1.5 rounded-xl cursor-pointer">
+                            <input type="checkbox" id="lockStatusSystemToggle" class="w-4 h-4 text-sky-600 rounded border-sky-300">
+                            <span class="text-xs font-bold text-sky-900">Lock Status</span>
                         </label>
                     </div>
                 </div>
 
                 <form id="entryForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4">
-                    <div id="duplicateAlertBanner" class="hidden p-3 bg-rose-100 border-2 border-rose-500 text-rose-900 rounded-xl text-sm font-bold flex items-center gap-2 animate-bounce">
+                    <div id="duplicateAlertBanner" class="hidden p-3 bg-rose-100 border-2 border-rose-500 text-rose-900 rounded-xl text-sm font-bold flex items-center gap-2">
                         <i class="fa-solid fa-triangle-exclamation text-rose-600 text-xl"></i>
-                        <span id="duplicateAlertText">⚠️ Registration number duplicate hai (ya Main aur Sharing me same number hai)! Please check karein.</span>
+                        <span>⚠️ Registration number duplicate hai!</span>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -360,13 +289,13 @@
                             <input type="date" id="entryDate" required class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-teal-900 uppercase mb-1">Dealer Name *</label>
+                            <label class="block text-xs font-bold text-teal-900 uppercase mb-1">Dealer *</label>
                             <select id="dealerSelect" required onchange="onDealerSelected()" class="w-full px-3 py-2 bg-white border border-teal-300 rounded-xl text-sm font-bold">
                                 <option value="">-- Choose Dealer --</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-teal-900 uppercase mb-1">Company Name *</label>
+                            <label class="block text-xs font-bold text-teal-900 uppercase mb-1">Company *</label>
                             <select id="companySelect" required class="w-full px-3 py-2 bg-white border border-teal-300 rounded-xl text-sm font-bold">
                                 <option value="">-- Choose Company --</option>
                             </select>
@@ -375,37 +304,33 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Main Reg. Number</label>
-                            <input type="text" id="regNo" oninput="sanitizeRegInput(this); validateRegistrationNumbers();" placeholder="e.g. 2526-HRP-3300" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-mono uppercase font-bold">
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Main Reg. No</label>
+                            <input type="text" id="regNo" oninput="sanitizeRegInput(this); validateRegistrationNumbers();" placeholder="2526-HRP-3300" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-mono uppercase font-bold">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Sharing Reg. Numbers</label>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Sharing Reg. Nos</label>
                             <input type="text" id="sharingRegNo" oninput="sanitizeSharingInput(this); validateRegistrationNumbers();" placeholder="Comma separated" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-mono uppercase">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Farmer Name (Optional)</label>
-                            <input type="text" id="farmerName" placeholder="e.g. Ramesh Kumar" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm">
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Farmer Name</label>
+                            <input type="text" id="farmerName" placeholder="Ramesh Kumar" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-emerald-50/50 p-3.5 rounded-xl border border-emerald-100">
                         <div>
-                            <label class="block text-xs font-bold text-emerald-900 uppercase mb-1">
-                                <i class="fa-solid fa-clipboard-check text-emerald-600 mr-1"></i> Stage *
-                            </label>
+                            <label class="block text-xs font-bold text-emerald-900 uppercase mb-1">Stage</label>
                             <select id="regStageStatus" required class="w-full px-3 py-2 bg-white border border-emerald-300 rounded-xl text-sm font-bold">
                                 <option value="Complete">Reg Complete</option>
-                                <option value="Incomplete">Reg Incomplete / Query</option>
+                                <option value="Incomplete">Reg Incomplete</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-sky-900 uppercase mb-1">
-                                <i class="fa-solid fa-building-columns text-sky-600 mr-1"></i> Status *
-                            </label>
+                            <label class="block text-xs font-bold text-sky-900 uppercase mb-1">Status</label>
                             <select id="deptStatus" required class="w-full px-3 py-2 bg-white border border-sky-300 rounded-xl text-sm font-bold text-sky-900">
                                 <option value="Preparing">Preparing / Office</option>
                                 <option value="Sent to Department">Sent to Department</option>
-                                <option value="Department Query / Back">Department Query / Back to Supplier</option>
+                                <option value="Department Query / Back">Dept Query / Back</option>
                                 <option value="Work Order Done">Work Order Issued</option>
                             </select>
                         </div>
@@ -420,20 +345,18 @@
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Total Area (Ha)</label>
-                            <input type="number" step="0.01" id="totalArea" placeholder="e.g. 1.25" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm">
+                            <input type="number" step="0.01" id="totalArea" placeholder="1.25" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm">
                         </div>
                     </div>
                     
                     <div class="p-4 bg-slate-100/70 rounded-xl border border-slate-200 space-y-2">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                                <i class="fa-solid fa-list-check text-brand-600 mr-1"></i> Task Allocation & Status (Leave Staff blank if any Staff can pick it up later)
+                            <h3 class="text-xs font-bold text-slate-700 uppercase">
+                                <i class="fa-solid fa-list-check text-brand-600 mr-1"></i> Task Allocation
                             </h3>
-                            <label class="flex items-center gap-1.5 bg-indigo-50 border border-indigo-300 px-2.5 py-1 rounded-lg cursor-pointer hover:bg-indigo-100 transition shadow-sm">
-                                <input type="checkbox" id="lockTasksToggle" class="w-3.5 h-3.5 text-indigo-600 rounded border-indigo-300 focus:ring-indigo-500">
-                                <span class="text-[10px] font-bold text-indigo-900 select-none flex items-center gap-1">
-                                    <i class="fa-solid fa-thumbtack text-indigo-700"></i> Lock Tasks & Staff
-                                </span>
+                            <label class="flex items-center gap-1.5 bg-indigo-50 border border-indigo-300 px-2.5 py-1 rounded-lg cursor-pointer">
+                                <input type="checkbox" id="lockTasksToggle" class="w-3.5 h-3.5 text-indigo-600 rounded border-indigo-300">
+                                <span class="text-[10px] font-bold text-indigo-900">Lock Tasks</span>
                             </label>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -475,14 +398,12 @@
 
                     <div class="admin-only bg-amber-50/70 p-3.5 rounded-xl border border-amber-200 space-y-2">
                         <div class="flex justify-between items-center">
-                            <h4 class="text-xs font-bold text-amber-900 uppercase tracking-wider">
+                            <h4 class="text-xs font-bold text-amber-900 uppercase">
                                 <i class="fa-solid fa-sliders text-amber-700 mr-1"></i> File Pricing & Rates
                             </h4>
-                            <label class="flex items-center gap-1.5 bg-amber-100 border border-amber-300 px-2 py-1 rounded-lg cursor-pointer hover:bg-amber-200 transition shadow-sm">
-                                <input type="checkbox" id="lockRatesToggle" class="w-3.5 h-3.5 text-amber-600 rounded border-amber-300 focus:ring-amber-500">
-                                <span class="text-[10px] font-bold text-amber-900 select-none flex items-center gap-1">
-                                    <i class="fa-solid fa-lock text-amber-700"></i> Lock Rates
-                                </span>
+                            <label class="flex items-center gap-1.5 bg-amber-100 border border-amber-300 px-2 py-1 rounded-lg cursor-pointer">
+                                <input type="checkbox" id="lockRatesToggle" class="w-3.5 h-3.5 text-amber-600 rounded border-amber-300">
+                                <span class="text-[10px] font-bold text-amber-900">Lock Rates</span>
                             </label>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2 text-xs">
@@ -507,7 +428,7 @@
                                 <input type="number" id="customStaffKml" value="10" class="w-full p-1.5 border rounded-lg font-bold">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-rose-700">Re-Correction Fee (₹)</label>
+                                <label class="block text-[11px] font-bold text-rose-700">Re-Corr Fee (₹)</label>
                                 <input type="number" id="recorrectionFee" value="0" class="w-full p-1.5 border border-rose-300 rounded-lg font-bold text-rose-800">
                             </div>
                         </div>
@@ -515,30 +436,29 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Office Remark / Internal Query</label>
-                            <input type="text" id="remark" placeholder="e.g. Khasra/Aadhar missing..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm">
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Office Remark</label>
+                            <input type="text" id="remark" placeholder="Khasra/Aadhar missing..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-rose-700 uppercase mb-1">
                                 <i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1"></i> Reason Back
                             </label>
-                            <input type="text" id="deptQueryNote" placeholder="Write reason... (Auto-sets status to Query)" class="w-full px-3 py-2 bg-rose-50 border border-rose-400 rounded-xl text-sm font-semibold text-rose-900 placeholder-rose-300">
+                            <input type="text" id="deptQueryNote" placeholder="Auto-sets status to Query" class="w-full px-3 py-2 bg-rose-50 border border-rose-400 rounded-xl text-sm font-semibold text-rose-900">
                         </div>
                     </div>
 
                     <div class="flex justify-end pt-2">
                         <button type="submit" class="bg-brand-600 hover:bg-brand-700 active:scale-95 text-white font-bold px-6 py-2.5 rounded-xl transition shadow-md flex items-center gap-2">
-                            <i class="fa-solid fa-floppy-disk"></i> Save Intake Record
+                            <i class="fa-solid fa-floppy-disk"></i> Save Record
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- BATCH ACTION BAR -->
-            <div id="bulkActionBar" class="hidden bg-indigo-900 text-white p-3.5 rounded-2xl shadow-lg flex flex-wrap items-center justify-between gap-3 animate-pulse">
+            <div id="bulkActionBar" class="hidden bg-indigo-900 text-white p-3.5 rounded-2xl shadow-lg flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-2 text-xs sm:text-sm font-bold">
                     <i class="fa-solid fa-square-check text-indigo-300 text-lg"></i>
-                    <span>Selected Files: <span id="selectedCount" class="text-amber-300">0</span></span>
+                    <span>Selected: <span id="selectedCount" class="text-amber-300">0</span></span>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 text-xs">
                     <select id="bulkStaffSelect" class="bg-white text-slate-800 font-bold p-1.5 rounded-lg border staff-dropdown">
@@ -547,20 +467,19 @@
                     <button onclick="applyBulkAction('DGN')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg shadow">Mark DGN Done</button>
                     <button onclick="applyBulkAction('Entry')" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-3 py-1.5 rounded-lg shadow">Mark Entry Done</button>
                     <button onclick="applyBulkAction('KML')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-3 py-1.5 rounded-lg shadow">Mark KML Done</button>
-                    <button onclick="applyBulkNaAction()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-3 py-1.5 rounded-lg shadow">Mark BOQ/KML N/A</button>
-                    <button onclick="applyBulkDeptStatus('Sent to Department')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-lg shadow">Bulk Sent to Dept</button>
-                    <button onclick="applyBulkDeptStatus('Work Order Done')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg shadow border border-emerald-500">Bulk Work Order</button>
-                    <button onclick="applyBulkArchive(true)" class="admin-only bg-slate-800 hover:bg-slate-700 text-white font-bold px-3 py-1.5 rounded-lg shadow border border-slate-600">
-                        <i class="fa-solid fa-box-archive mr-1"></i> Bulk Archive
+                    <button onclick="applyBulkNaAction()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-3 py-1.5 rounded-lg shadow">Mark N/A</button>
+                    <button onclick="applyBulkDeptStatus('Sent to Department')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-lg shadow">Bulk Sent Dept</button>
+                    <button onclick="applyBulkDeptStatus('Work Order Done')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg shadow">Bulk WO</button>
+                    <button onclick="applyBulkArchive(true)" class="admin-only bg-slate-800 hover:bg-slate-700 text-white font-bold px-3 py-1.5 rounded-lg shadow">
+                        <i class="fa-solid fa-box-archive mr-1"></i> Archive
                     </button>
-                    <button onclick="applyBulkArchive(false)" class="admin-only bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-1.5 rounded-lg shadow border border-amber-500">
-                        <i class="fa-solid fa-box-open mr-1"></i> Bulk Restore
+                    <button onclick="applyBulkArchive(false)" class="admin-only bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-1.5 rounded-lg shadow">
+                        <i class="fa-solid fa-box-open mr-1"></i> Restore
                     </button>
                     <button onclick="clearBulkSelection()" class="bg-rose-700 hover:bg-rose-600 text-white px-3 py-1.5 rounded-lg">Cancel</button>
                 </div>
             </div>
 
-            <!-- SEARCH & TOOLBAR FILTERS -->
             <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
                 <div class="flex flex-wrap items-center gap-3 text-xs font-bold text-slate-700">
                     <div class="flex items-center gap-1.5 bg-slate-50 p-1.5 rounded-xl border border-slate-200">
@@ -587,38 +506,36 @@
                     <div class="staff-only role-hide flex items-center gap-1">
                         <label for="staffViewScope" class="text-indigo-900 font-extrabold uppercase text-[11px]">View:</label>
                         <select id="staffViewScope" onchange="clearBulkSelection(); renderTable();" class="p-1.5 border border-indigo-300 rounded-xl bg-indigo-50 text-xs font-bold text-indigo-900">
-                            <option value="ALL">All Intake Files (Pick & Update Tasks)</option>
-                            <option value="MINE">Only My Assigned Files</option>
+                            <option value="ALL">All Files</option>
+                            <option value="MINE">Only My Files</option>
                         </select>
                     </div>
 
-                    <button type="button" onclick="resetAllFilters()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-xl border border-slate-300 transition text-xs flex items-center gap-1 shadow-sm">
-                        <i class="fa-solid fa-rotate-left text-brand-600"></i> Reset All
+                    <button type="button" onclick="resetAllFilters()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-xl border border-slate-300 text-xs flex items-center gap-1">
+                        <i class="fa-solid fa-rotate-left text-brand-600"></i> Reset
                     </button>
                 </div>
 
                 <div class="relative w-full sm:w-64">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-sm"></i>
-                    <input type="text" id="searchInput" oninput="clearBulkSelection(); renderTable();" placeholder="Search Reg, Farmer, System..." class="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-brand-500">
+                    <input type="text" id="searchInput" oninput="clearBulkSelection(); renderTable();" placeholder="Search Reg, Farmer..." class="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs">
                 </div>
             </div>
 
-            <!-- STATUS TABS BAR -->
             <div class="sticky top-[68px] z-30 bg-white/95 backdrop-blur-md p-2 rounded-2xl shadow-sm border border-slate-200 flex space-x-1 overflow-x-auto no-scrollbar" id="filterTabs">
-                <button onclick="setFilter('Active')" data-tab="Active" class="tab-btn tab-active px-3 py-1.5 rounded-xl text-xs font-bold transition">All Active Files</button>
-                <button onclick="setFilter('Dept Query')" data-tab="Dept Query" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-rose-700 bg-rose-50 border border-rose-200">🚨 Dept Query / Back</button>
+                <button onclick="setFilter('Active')" data-tab="Active" class="tab-btn tab-active px-3 py-1.5 rounded-xl text-xs font-bold transition">Active Files</button>
+                <button onclick="setFilter('Dept Query')" data-tab="Dept Query" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-rose-700 bg-rose-50 border border-rose-200">🚨 Dept Query</button>
                 <button onclick="setFilter('Sent to Department')" data-tab="Sent to Department" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-sky-700">Sent to Dept</button>
-                <button onclick="setFilter('Work Order Done')" data-tab="Work Order Done" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-emerald-700">Work Order Done</button>
+                <button onclick="setFilter('Work Order Done')" data-tab="Work Order Done" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-emerald-700">Work Order</button>
                 <button onclick="setFilter('Re-corrected')" data-tab="Re-corrected" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-purple-700">🛠️ Re-corrected</button>
-                <button onclick="setFilter('Stuck')" data-tab="Stuck" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-amber-700">⏳ Stuck (>3 Days)</button>
+                <button onclick="setFilter('Stuck')" data-tab="Stuck" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-amber-700">⏳ Stuck</button>
                 <button onclick="setFilter('DGN Pending')" data-tab="DGN Pending" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-indigo-700">DGN Pending</button>
                 <button onclick="setFilter('Entry Pending')" data-tab="Entry Pending" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-teal-700">Entry Pending</button>
                 <button onclick="setFilter('KML Pending')" data-tab="KML Pending" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-sky-700">KML Pending</button>
-                <button onclick="setFilter('Duplicates')" data-tab="Duplicates" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-rose-700 font-bold">⚠️ Duplicates</button>
-                <button onclick="setFilter('Archived')" data-tab="Archived" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-700 bg-slate-100 border border-slate-300">📦 Archived Vault</button>
+                <button onclick="setFilter('Duplicates')" data-tab="Duplicates" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-rose-700">⚠️ Duplicates</button>
+                <button onclick="setFilter('Archived')" data-tab="Archived" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-700 bg-slate-100 border border-slate-300">📦 Archived</button>
             </div>
 
-            <!-- Master Data Table -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <div class="table-scroll-container">
                     <table class="w-full text-left border-collapse text-xs">
@@ -627,22 +544,22 @@
                                 <th class="p-3 text-center">
                                     <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)">
                                 </th>
-                                <th class="p-3 whitespace-nowrap">Dates (Intake/Dept/WO)</th>
+                                <th class="p-3 whitespace-nowrap">Dates</th>
                                 <th class="p-3">Main Reg No.</th>
                                 <th class="p-3">Sharing Reg</th>
                                 <th class="p-3">Dealer & Company</th>
                                 <th class="p-3">Farmer</th>
-                                <th class="p-3 text-teal-900 font-extrabold">System Type</th>
+                                <th class="p-3 text-teal-900">System Type</th>
                                 <th class="p-3 text-rose-900">Status</th>
-                                <th class="p-3">DGN Task</th>
-                                <th class="p-3">Entry Task</th>
-                                <th class="p-3">KML Task</th>
+                                <th class="p-3">DGN</th>
+                                <th class="p-3">Entry</th>
+                                <th class="p-3">KML</th>
                                 <th class="admin-only p-3">Re-Corr (₹)</th>
-                                <th class="staff-only role-hide p-3">My Pay Info</th>
-                                <th class="admin-only p-3">Client Fee (₹)</th>
-                                <th class="admin-only p-3">Staff Pay (₹)</th>
-                                <th class="admin-only p-3">Admin Profit (₹)</th>
-                                <th class="p-3">Audit Log & Remark</th>
+                                <th class="staff-only role-hide p-3">My Pay</th>
+                                <th class="admin-only p-3">Client (₹)</th>
+                                <th class="admin-only p-3">Staff (₹)</th>
+                                <th class="admin-only p-3">Profit (₹)</th>
+                                <th class="p-3">Remark</th>
                                 <th class="p-3 text-center">Action</th>
                             </tr>
                         </thead>
@@ -652,12 +569,11 @@
             </div>
         </main>
 
-        <!-- MODAL 1: STAFF TASK BREAKDOWN MODAL -->
         <div id="staffBreakdownModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
             <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 space-y-4">
                 <div class="flex justify-between items-center border-b pb-2">
                     <h3 class="text-base font-bold text-slate-800">
-                        <i class="fa-solid fa-users-viewfinder text-indigo-600 mr-2"></i> Staff Task & Payout Breakdown (Active Filtered Files)
+                        <i class="fa-solid fa-users-viewfinder text-indigo-600 mr-2"></i> Staff Task & Payout Breakdown
                     </h3>
                     <button onclick="closeModal('staffBreakdownModal')" class="text-slate-400 font-bold text-xl">
                         <i class="fa-solid fa-xmark"></i>
@@ -667,12 +583,11 @@
             </div>
         </div>
 
-        <!-- MODAL 2: UPDATE FILE WITH DEALER/COMPANY EDIT, PAYMENT CHECKBOXES & CUSTOM RATES -->
         <div id="updateTaskModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
             <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
                 <div class="flex justify-between items-center border-b pb-2">
                     <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-                        <i class="fa-solid fa-pen-to-square text-brand-600"></i> Update File Record:
+                        <i class="fa-solid fa-pen-to-square text-brand-600"></i> Update File:
                         <span id="modalRegNoBadge" class="font-mono text-brand-700"></span>
                     </h3>
                     <button type="button" onclick="closeModal('updateTaskModal')" class="text-slate-400 font-bold text-xl">
@@ -682,32 +597,31 @@
 
                 <div id="modalAuditLogCard" class="bg-slate-100 border border-slate-200 p-2.5 rounded-xl text-[11px] text-slate-600 flex items-center gap-2">
                     <i class="fa-solid fa-clock-rotate-left text-brand-600"></i>
-                    <span><strong>Audit Log:</strong> <span id="modalAuditLogText">No modification recorded yet.</span></span>
+                    <span><strong>Audit:</strong> <span id="modalAuditLogText">No modification yet.</span></span>
                 </div>
 
                 <form onsubmit="handleTaskUpdateSubmit(event)" class="space-y-4 text-xs">
                     <input type="hidden" id="modalRecordId">
 
-                    <!-- Dealer & Company Change Option in Edit Modal -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-teal-50/70 p-2.5 rounded-xl border border-teal-200">
                         <div>
-                            <label class="block font-bold text-teal-900 text-[11px] mb-0.5">Dealer Name:</label>
-                            <select id="modalDealerSelect" onchange="onModalDealerSelected()" class="w-full p-1.5 border border-teal-300 rounded-lg font-bold bg-white text-slate-800"></select>
+                            <label class="block font-bold text-teal-900 text-[11px] mb-0.5">Dealer:</label>
+                            <select id="modalDealerSelect" onchange="onModalDealerSelected()" class="w-full p-1.5 border border-teal-300 rounded-lg font-bold bg-white"></select>
                         </div>
                         <div>
-                            <label class="block font-bold text-teal-900 text-[11px] mb-0.5">Company Name:</label>
-                            <select id="modalCompanySelect" class="w-full p-1.5 border border-teal-300 rounded-lg font-bold bg-white text-teal-800"></select>
+                            <label class="block font-bold text-teal-900 text-[11px] mb-0.5">Company:</label>
+                            <select id="modalCompanySelect" class="w-full p-1.5 border border-teal-300 rounded-lg font-bold bg-white"></select>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-emerald-50/70 p-2.5 rounded-xl border border-emerald-200">
                         <div>
-                            <label class="block font-bold text-emerald-900 text-[11px] mb-0.5">Farmer Name:</label>
-                            <input type="text" id="modalFarmerName" class="w-full p-1.5 border border-emerald-300 rounded-lg font-semibold bg-white text-slate-800">
+                            <label class="block font-bold text-emerald-900 text-[11px] mb-0.5">Farmer:</label>
+                            <input type="text" id="modalFarmerName" class="w-full p-1.5 border border-emerald-300 rounded-lg font-semibold bg-white">
                         </div>
                         <div>
-                            <label class="block font-bold text-emerald-900 text-[11px] mb-0.5">System Type:</label>
-                            <select id="modalSystemType" class="w-full p-1.5 border border-emerald-300 rounded-lg font-bold bg-white text-teal-800">
+                            <label class="block font-bold text-emerald-900 text-[11px] mb-0.5">System:</label>
+                            <select id="modalSystemType" class="w-full p-1.5 border border-emerald-300 rounded-lg font-bold bg-white">
                                 <option value="Mini sprinkler">Mini sprinkler</option>
                                 <option value="Drip Irrigation">Drip Irrigation</option>
                                 <option value="Portable Sprinkler">Portable Sprinkler</option>
@@ -718,26 +632,26 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-slate-50 p-2.5 rounded-xl border">
                         <div>
-                            <label class="block font-bold text-slate-700 text-[11px] mb-0.5">Main Reg No:</label>
+                            <label class="block font-bold text-slate-700 text-[11px] mb-0.5">Main Reg:</label>
                             <input type="text" id="modalMainRegNo" oninput="sanitizeRegInput(this)" class="w-full p-1.5 border rounded-lg font-mono font-bold uppercase bg-white">
                         </div>
                         <div>
-                            <label class="block font-bold text-slate-700 text-[11px] mb-0.5">Sharing Reg Nos:</label>
+                            <label class="block font-bold text-slate-700 text-[11px] mb-0.5">Sharing Reg:</label>
                             <input type="text" id="modalSharingRegNo" oninput="sanitizeSharingInput(this)" class="w-full p-1.5 border rounded-lg font-mono uppercase bg-white">
                         </div>
                     </div>
 
                     <div class="bg-slate-50 p-3 rounded-xl border grid grid-cols-1 sm:grid-cols-3 gap-2">
                         <div>
-                            <label class="block font-bold text-slate-600 mb-0.5">Intake Date:</label>
+                            <label class="block font-bold text-slate-600 mb-0.5">Intake:</label>
                             <input type="date" id="modalIntakeDate" class="w-full p-1.5 border rounded-lg bg-white">
                         </div>
                         <div>
-                            <label class="block font-bold text-sky-700 mb-0.5">Sent to Dept Date:</label>
+                            <label class="block font-bold text-sky-700 mb-0.5">Sent Dept:</label>
                             <input type="date" id="modalSentDeptDate" class="w-full p-1.5 border rounded-lg bg-white">
                         </div>
                         <div>
-                            <label class="block font-bold text-emerald-700 mb-0.5">Work Order Date:</label>
+                            <label class="block font-bold text-emerald-700 mb-0.5">WO Date:</label>
                             <input type="date" id="modalWorkOrderDate" class="w-full p-1.5 border rounded-lg bg-white">
                         </div>
                     </div>
@@ -746,21 +660,21 @@
                         <div class="flex justify-between items-center">
                             <label class="font-bold text-sky-900">Status:</label>
                             <select id="modalDeptStatus" class="p-1.5 border rounded-lg font-bold text-sky-900 bg-white">
-                                <option value="Preparing">Preparing / Office</option>
-                                <option value="Sent to Department">Sent to Department</option>
-                                <option value="Department Query / Back">Department Query / Back to Supplier</option>
-                                <option value="Work Order Done">Work Order Issued</option>
+                                <option value="Preparing">Preparing</option>
+                                <option value="Sent to Department">Sent to Dept</option>
+                                <option value="Department Query / Back">Dept Query</option>
+                                <option value="Work Order Done">Work Order</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block font-bold text-rose-800 mb-0.5">Reason Back (Auto-sets to Query):</label>
+                            <label class="block font-bold text-rose-800 mb-0.5">Reason Back:</label>
                             <input type="text" id="modalDeptQueryNote" class="w-full p-2 border border-rose-300 rounded-lg bg-white font-medium text-rose-900">
                         </div>
                     </div>
 
                     <div class="space-y-3 bg-slate-50 p-3.5 rounded-xl border">
                         <div class="flex items-center justify-between gap-2">
-                            <span class="w-1/4 font-bold text-slate-700">Design (DGN):</span>
+                            <span class="w-1/4 font-bold text-slate-700">DGN:</span>
                             <select id="modalDgnStatus" class="w-1/4 p-1.5 border rounded-lg bg-white">
                                 <option value="Pending">Pending</option>
                                 <option value="Done">Done</option>
@@ -768,14 +682,14 @@
                             </select>
                             <select id="modalDgnStaff" class="w-1/4 p-1.5 border rounded-lg bg-white staff-dropdown"></select>
                             <div class="w-1/4 admin-only flex items-center justify-center">
-                                <label class="text-[11px] font-extrabold text-emerald-700 cursor-pointer flex items-center gap-1.5 border border-emerald-300 bg-emerald-50 px-2 py-1 rounded shadow-sm">
+                                <label class="text-[11px] font-extrabold text-emerald-700 cursor-pointer flex items-center gap-1.5 border border-emerald-300 bg-emerald-50 px-2 py-1 rounded">
                                     <input type="checkbox" id="modalDgnPaid" class="w-3.5 h-3.5 rounded"> PAID
                                 </label>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-between gap-2">
-                            <span class="w-1/4 font-bold text-slate-700">BOQ Entry:</span>
+                            <span class="w-1/4 font-bold text-slate-700">BOQ:</span>
                             <select id="modalEntryStatus" class="w-1/4 p-1.5 border rounded-lg bg-white">
                                 <option value="Pending">Pending</option>
                                 <option value="Done">Done</option>
@@ -783,14 +697,14 @@
                             </select>
                             <select id="modalEntryStaff" class="w-1/4 p-1.5 border rounded-lg bg-white staff-dropdown"></select>
                             <div class="w-1/4 admin-only flex items-center justify-center">
-                                <label class="text-[11px] font-extrabold text-emerald-700 cursor-pointer flex items-center gap-1.5 border border-emerald-300 bg-emerald-50 px-2 py-1 rounded shadow-sm">
+                                <label class="text-[11px] font-extrabold text-emerald-700 cursor-pointer flex items-center gap-1.5 border border-emerald-300 bg-emerald-50 px-2 py-1 rounded">
                                     <input type="checkbox" id="modalEntryPaid" class="w-3.5 h-3.5 rounded"> PAID
                                 </label>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-between gap-2">
-                            <span class="w-1/4 font-bold text-slate-700">KML Mapping:</span>
+                            <span class="w-1/4 font-bold text-slate-700">KML:</span>
                             <select id="modalKmlStatus" class="w-1/4 p-1.5 border rounded-lg bg-white">
                                 <option value="Pending">Pending</option>
                                 <option value="Done">Done</option>
@@ -798,17 +712,16 @@
                             </select>
                             <select id="modalKmlStaff" class="w-1/4 p-1.5 border rounded-lg bg-white staff-dropdown"></select>
                             <div class="w-1/4 admin-only flex items-center justify-center">
-                                <label class="text-[11px] font-extrabold text-emerald-700 cursor-pointer flex items-center gap-1.5 border border-emerald-300 bg-emerald-50 px-2 py-1 rounded shadow-sm">
+                                <label class="text-[11px] font-extrabold text-emerald-700 cursor-pointer flex items-center gap-1.5 border border-emerald-300 bg-emerald-50 px-2 py-1 rounded">
                                     <input type="checkbox" id="modalKmlPaid" class="w-3.5 h-3.5 rounded"> PAID
                                 </label>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Admin Custom Rates Edit Section in Modal -->
                     <div class="admin-only bg-amber-50/80 p-3 rounded-xl border border-amber-200 space-y-2">
                         <label class="font-bold text-amber-900 block">
-                            <i class="fa-solid fa-sliders mr-1"></i> File Unit Rates (₹):
+                            <i class="fa-solid fa-sliders mr-1"></i> Rates (₹):
                         </label>
                         <div class="grid grid-cols-5 gap-2">
                             <div>
@@ -837,27 +750,27 @@
                     <div class="bg-purple-50 p-3 rounded-xl border border-purple-200 space-y-2">
                         <div class="flex justify-between items-center">
                             <label class="font-bold text-purple-900">
-                                <i class="fa-solid fa-wrench mr-1"></i> Re-Correction Details:
+                                <i class="fa-solid fa-wrench mr-1"></i> Re-Correction:
                             </label>
                             <div class="admin-only flex items-center gap-1">
-                                <span class="font-bold text-slate-600">Charge (₹):</span>
+                                <span class="font-bold text-slate-600">Fee (₹):</span>
                                 <input type="number" id="modalRecorrectionFee" class="w-20 p-1 border rounded-lg font-bold text-purple-900 bg-white">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <label class="block text-[11px] font-bold text-slate-600">Re-Correction Date:</label>
+                                <label class="block text-[11px] font-bold text-slate-600">Date:</label>
                                 <input type="date" id="modalRecorrectionDate" class="w-full p-1.5 border rounded-lg bg-white">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-slate-600">Reason / Change Note:</label>
+                                <label class="block text-[11px] font-bold text-slate-600">Reason:</label>
                                 <input type="text" id="modalRecorrectionReason" class="w-full p-1.5 border rounded-lg bg-white">
                             </div>
                         </div>
                     </div>
                     
                     <div>
-                        <label class="block font-bold text-slate-700 mb-1">Internal Office Remark:</label>
+                        <label class="block font-bold text-slate-700 mb-1">Internal Remark:</label>
                         <input type="text" id="modalRemark" class="w-full p-2.5 border rounded-xl bg-slate-50">
                     </div>
 
@@ -869,12 +782,11 @@
             </div>
         </div>
 
-        <!-- MODAL 3: Analytics / Staff Performance Modal -->
         <div id="analyticsModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
             <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-5xl max-h-[90vh] overflow-y-auto p-6 space-y-4">
                 <div class="flex justify-between items-center border-b pb-2">
                     <h3 class="text-base font-bold text-slate-800">
-                        <i class="fa-solid fa-chart-pie text-cyan-600 mr-2"></i> Analytics & Detailed Breakdown
+                        <i class="fa-solid fa-chart-pie text-cyan-600 mr-2"></i> Analytics
                     </h3>
                     <button type="button" onclick="closeModal('analyticsModal')" class="text-slate-400 font-bold text-xl">
                         <i class="fa-solid fa-xmark"></i>
@@ -882,8 +794,8 @@
                 </div>
 
                 <div class="flex gap-2 border-b pb-3 mb-3">
-                    <button type="button" id="tabBtnDealer" onclick="switchAnalyticsTab('dealer')" class="px-4 py-2 text-xs font-bold rounded-xl bg-cyan-600 text-white shadow-md">Dealer & Company Breakdown</button>
-                    <button type="button" id="tabBtnStaff" onclick="switchAnalyticsTab('staff')" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Staff Payouts & Payroll</button>
+                    <button type="button" id="tabBtnDealer" onclick="switchAnalyticsTab('dealer')" class="px-4 py-2 text-xs font-bold rounded-xl bg-cyan-600 text-white shadow-md">Dealer & Company</button>
+                    <button type="button" id="tabBtnStaff" onclick="switchAnalyticsTab('staff')" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600">Staff Payouts</button>
                 </div>
 
                 <div id="analyticsDealerTab" class="overflow-x-auto">
@@ -892,15 +804,15 @@
                             <tr class="bg-slate-100 font-semibold uppercase text-slate-600">
                                 <th class="p-3">Dealer</th>
                                 <th class="p-3">Company</th>
-                                <th class="p-3 text-center">Total Files</th>
-                                <th class="p-3 text-center">DGN Count</th>
+                                <th class="p-3 text-center">Files</th>
+                                <th class="p-3 text-center">DGN</th>
                                 <th class="p-3 text-center">Main BOQ</th>
                                 <th class="p-3 text-center">Sharing BOQ</th>
-                                <th class="p-3 text-center">Total BOQ (1+Sh)</th>
-                                <th class="p-3 text-center">KML Count</th>
-                                <th class="admin-only p-3 text-right">Base Bill (₹)</th>
+                                <th class="p-3 text-center">Total (1+Sh)</th>
+                                <th class="p-3 text-center">KML</th>
+                                <th class="admin-only p-3 text-right">Base (₹)</th>
                                 <th class="admin-only p-3 text-right">Re-Corr (₹)</th>
-                                <th class="admin-only p-3 text-right">Total Billed (₹)</th>
+                                <th class="admin-only p-3 text-right">Total (₹)</th>
                             </tr>
                         </thead>
                         <tbody id="analyticsTableBody" class="divide-y"></tbody>
@@ -911,13 +823,13 @@
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
                             <tr class="bg-indigo-50 font-semibold uppercase text-indigo-900 border-y border-indigo-200">
-                                <th class="p-3">Staff Name</th>
-                                <th class="p-3 text-center">DGN Count</th>
-                                <th class="p-3 text-center">BOQ Units (1+Shares)</th>
-                                <th class="p-3 text-center">KML Count</th>
-                                <th class="p-3 text-right text-emerald-700">Paid Amount</th>
-                                <th class="p-3 text-right text-rose-600">Pending Payable</th>
-                                <th class="p-3 text-right">All-Time Total Earned</th>
+                                <th class="p-3">Staff</th>
+                                <th class="p-3 text-center">DGN</th>
+                                <th class="p-3 text-center">BOQ Units</th>
+                                <th class="p-3 text-center">KML</th>
+                                <th class="p-3 text-right text-emerald-700">Paid</th>
+                                <th class="p-3 text-right text-rose-600">Unpaid</th>
+                                <th class="p-3 text-right">Total</th>
                             </tr>
                         </thead>
                         <tbody id="staffAnalyticsTableBody" class="divide-y"></tbody>
@@ -926,12 +838,11 @@
             </div>
         </div>
 
-        <!-- MODAL 4: STAFF & USER ACCESS MANAGER -->
         <div id="staffUserManageModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
              <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4">
                 <div class="flex justify-between items-center border-b pb-2">
                     <h3 class="text-base font-bold text-slate-800">
-                        <i class="fa-solid fa-user-shield text-indigo-600 mr-2"></i> Staff List & Login Manager
+                        <i class="fa-solid fa-user-shield text-indigo-600 mr-2"></i> Staff Manager
                     </h3>
                     <button onclick="closeModal('staffUserManageModal')" class="text-slate-400 font-bold text-xl">
                         <i class="fa-solid fa-xmark"></i>
@@ -944,40 +855,38 @@
                         <input type="password" id="newStaffPassword" placeholder="Password" class="p-2 border rounded-xl">
                     </div>
                     <button onclick="saveStaffUser()" class="bg-indigo-600 text-white font-bold px-4 py-2 rounded-xl text-xs">
-                        Save Staff & Access
+                        Save Staff
                     </button>
                 </div>
                 <div id="staffUserListContainer" class="divide-y border rounded-xl max-h-60 overflow-y-auto text-xs bg-white"></div>
             </div>
         </div>
         
-        <!-- MODAL 5: DEALER PAYMENT LEDGER & COMPANY-WISE BREAKDOWN -->
         <div id="paymentLedgerModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
             <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-6xl max-h-[90vh] overflow-y-auto p-6 space-y-5">
                 <div class="flex justify-between items-center border-b pb-2">
                     <h3 class="text-base font-bold text-slate-800">
-                        <i class="fa-solid fa-scale-balanced text-amber-600 mr-2"></i> Dealer Payment Ledger & Company-Wise Breakdown
+                        <i class="fa-solid fa-scale-balanced text-amber-600 mr-2"></i> Dealer Ledger
                     </h3>
                     <button onclick="closeModal('paymentLedgerModal')" class="text-slate-400 font-bold text-xl">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
 
-                <!-- Dealer Payment Input Table -->
                 <div>
-                    <h4 class="text-xs font-extrabold uppercase text-slate-600 mb-2">1. Dealer Payment & Net Outstanding Summary</h4>
+                    <h4 class="text-xs font-extrabold uppercase text-slate-600 mb-2">1. Dealer Payment Summary</h4>
                     <div class="overflow-x-auto border rounded-xl">
                         <table class="w-full text-left text-xs border-collapse">
                             <thead class="bg-slate-100 font-semibold uppercase text-slate-600">
                                 <tr>
                                     <th class="p-2.5">Dealer</th>
-                                    <th class="p-2.5 text-center">Total Files</th>
+                                    <th class="p-2.5 text-center">Files</th>
                                     <th class="p-2.5 text-center">DGN</th>
                                     <th class="p-2.5 text-center">Sharing BOQ</th>
-                                    <th class="p-2.5 text-right">Base Billed</th>
+                                    <th class="p-2.5 text-right">Base</th>
                                     <th class="p-2.5 text-right">Re-Corr</th>
-                                    <th class="p-2.5 text-right">Total Billed</th>
-                                    <th class="p-2.5 text-right">Paid Received (₹)</th>
+                                    <th class="p-2.5 text-right">Total</th>
+                                    <th class="p-2.5 text-right">Paid</th>
                                     <th class="p-2.5 text-right">Outstanding</th>
                                     <th class="p-2.5 text-center">Action</th>
                                 </tr>
@@ -987,29 +896,25 @@
                     </div>
                 </div>
 
-                <!-- Company-Wise Copy-Paste Ready Breakdown Table -->
                 <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <h4 class="text-xs font-extrabold uppercase text-teal-800">2. Dealer & Company-Wise Detailed Breakdown (Direct Copy-Paste Ready)</h4>
-                        <span class="text-[11px] text-slate-500">Same table is also exported at the top of Admin Excel</span>
-                    </div>
+                    <h4 class="text-xs font-extrabold uppercase text-teal-800 mb-2">2. Dealer & Company Breakdown</h4>
                     <div class="overflow-x-auto border border-teal-200 rounded-xl">
                         <table class="w-full text-left text-xs border-collapse">
                             <thead class="bg-teal-700 text-white font-semibold uppercase text-[11px]">
                                 <tr>
-                                    <th class="p-2.5">Dealer Name</th>
-                                    <th class="p-2.5">Company Name</th>
-                                    <th class="p-2.5 text-center">Total Files</th>
-                                    <th class="p-2.5 text-center">DGN Count</th>
+                                    <th class="p-2.5">Dealer</th>
+                                    <th class="p-2.5">Company</th>
+                                    <th class="p-2.5 text-center">Files</th>
+                                    <th class="p-2.5 text-center">DGN</th>
                                     <th class="p-2.5 text-center">Main BOQ</th>
                                     <th class="p-2.5 text-center">Sharing BOQ</th>
-                                    <th class="p-2.5 text-center">Total BOQ (1+Sh)</th>
-                                    <th class="p-2.5 text-center">KML Count</th>
-                                    <th class="p-2.5 text-right">Base Bill (₹)</th>
-                                    <th class="p-2.5 text-right">Re-Corr (₹)</th>
-                                    <th class="p-2.5 text-right">Company Total (₹)</th>
-                                    <th class="p-2.5 text-right">Dealer Paid (₹)</th>
-                                    <th class="p-2.5 text-right">Net Balance (₹)</th>
+                                    <th class="p-2.5 text-center">Total (1+Sh)</th>
+                                    <th class="p-2.5 text-center">KML</th>
+                                    <th class="p-2.5 text-right">Base</th>
+                                    <th class="p-2.5 text-right">Re-Corr</th>
+                                    <th class="p-2.5 text-right">Total</th>
+                                    <th class="p-2.5 text-right">Paid</th>
+                                    <th class="p-2.5 text-right">Balance</th>
                                 </tr>
                             </thead>
                             <tbody id="dealerCompanyBreakdownBody" class="divide-y"></tbody>
@@ -1019,7 +924,6 @@
             </div>
         </div>
 
-        <!-- MODAL 6: DEALER & COMPANY MAPPING -->
         <div id="companyDealerManageModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
             <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-4">
                 <div class="flex justify-between items-center border-b pb-2">
@@ -1033,22 +937,21 @@
                 <div class="bg-slate-50 p-4 rounded-xl border space-y-3">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         <input type="text" id="newDealerName" placeholder="Dealer Name" class="p-2 border rounded-xl font-bold uppercase">
-                        <input type="text" id="newDealerCompanies" placeholder="Companies (Comma separated)" class="p-2 border rounded-xl uppercase">
+                        <input type="text" id="newDealerCompanies" placeholder="Companies (comma separated)" class="p-2 border rounded-xl uppercase">
                     </div>
                     <button onclick="addDealerMapping()" class="bg-emerald-600 text-white font-bold px-4 py-2 rounded-xl text-xs">
-                        Save Dealer Mapping
+                        Save Dealer
                     </button>
                 </div>
                 <div id="dealerMappingList" class="divide-y border rounded-xl max-h-56 overflow-y-auto text-xs bg-white"></div>
             </div>
         </div>
 
-        <!-- MODAL 7: LOGO UPLOADER -->
         <div id="logoModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
             <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm p-6 space-y-4">
                 <div class="flex justify-between items-center border-b pb-2">
                     <h3 class="text-sm font-bold text-slate-800">
-                        <i class="fa-solid fa-image text-sky-600 mr-2"></i> Logo (Auto-Compressed for Cloud)
+                        <i class="fa-solid fa-image text-sky-600 mr-2"></i> Logo Upload
                     </h3>
                     <button onclick="closeModal('logoModal')" class="text-slate-400 font-bold text-xl">
                         <i class="fa-solid fa-xmark"></i>
@@ -1060,16 +963,15 @@
 
     </div>
 
-    <!-- JAVASCRIPT & HYBRID CLOUD + OFFLINE SYNC LOGIC -->
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyAtN0BaKSWc341C9JmbhZj36OFWXuemF3Y",
-            authDomain: "shri-ji-agritechupmip.firebaseapp.com",
-            projectId: "shri-ji-agritechupmip",
-            storageBucket: "shri-ji-agritechupmip.firebasestorage.app",
-            messagingSenderId: "607392346800",
-            appId: "1:607392346800:web:e83b791e35ece720640175",
-            measurementId: "G-6DGMW8W3F6"
+            apiKey: "AIzaSyAp38xnbiKoTIAFt9O_Loa_nDy17bLG7OA",
+            authDomain: "shri-ji-agritech4.firebaseapp.com",
+            projectId: "shri-ji-agritech4",
+            storageBucket: "shri-ji-agritech4.firebasestorage.app",
+            messagingSenderId: "659989441826",
+            appId: "1:659989441826:web:ab3bb59ecad4ff9993c97b",
+            measurementId: "G-KMTYJMZZM6"
         };
 
         let db = null;
@@ -1081,21 +983,16 @@
                     firebase.initializeApp(firebaseConfig);
                 }
                 db = firebase.firestore();
-                // Enable Native Multi-Tab Offline Persistence
                 if (db && db.enablePersistence) {
                     db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
                 }
             }
         } catch (err) {
-            console.warn("Offline Mode Active: Firebase not reachable, using LocalStorage.");
+            console.warn("Offline Mode: Using LocalStorage.", err);
         }
 
         const DEFAULT_RATES = {
-            clientDgn: 200,
-            clientShare: 50,
-            staffDgn: 75,
-            staffEntry: 25,
-            staffKml: 10
+            clientDgn: 200, clientShare: 50, staffDgn: 75, staffEntry: 25, staffKml: 10
         };
         const STORAGE_KEY = 'shriJiMasterStorage';
 
@@ -1133,25 +1030,12 @@
                 finishLogin();
             }
 
-            // Safety Guard: Auto-Reconnect Cloud Sync when Internet returns
             window.addEventListener('online', () => {
                 updateSyncStatusBadge('syncing', 'Internet Restored! Syncing...');
                 loadStateFromCloud();
             });
             window.addEventListener('offline', () => {
-                updateSyncStatusBadge('offline', 'Offline Mode (Saved in Browser Storage)');
-            });
-
-            // Safety Guard: Instant Cross-Tab Sync within Same Browser
-            window.addEventListener('storage', (evt) => {
-                if (evt.key === STORAGE_KEY && evt.newValue) {
-                    try {
-                        applyParsedDataToState(JSON.parse(evt.newValue));
-                        const editModalOpen = !document.getElementById('updateTaskModal').classList.contains('hidden');
-                        if (!editModalOpen) refreshAllUIComponents();
-                        else renderTable();
-                    } catch (err) {}
-                }
+                updateSyncStatusBadge('offline', 'Offline Mode');
             });
         });
 
@@ -1161,20 +1045,15 @@
             if (status === 'online') {
                 el.innerHTML = `<i class="fa-solid fa-cloud-check text-emerald-300 mr-1"></i>${text || 'Firebase Cloud Live Synced'}`;
             } else if (status === 'syncing') {
-                el.innerHTML = `<i class="fa-solid fa-rotate fa-spin text-amber-300 mr-1"></i>${text || 'Syncing with Cloud...'}`;
+                el.innerHTML = `<i class="fa-solid fa-rotate fa-spin text-amber-300 mr-1"></i>${text || 'Syncing...'}`;
             } else {
-                el.innerHTML = `<i class="fa-solid fa-hard-drive text-amber-300 mr-1"></i>${text || 'Offline Mode (Saved in Browser Storage)'}`;
+                el.innerHTML = `<i class="fa-solid fa-hard-drive text-amber-300 mr-1"></i>${text || 'Offline Mode'}`;
             }
         }
 
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
         function getRate(val, fallback) {
@@ -1187,7 +1066,6 @@
             return `${now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}, ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}`;
         }
 
-        // Local IST Date Formatter (Avoids UTC 5:30 AM Timezone Bug)
         function getFormattedDateOnly(dateObjInput = null) {
             const d = dateObjInput instanceof Date && !isNaN(dateObjInput.getTime()) ? dateObjInput : new Date();
             const yr = d.getFullYear();
@@ -1242,16 +1120,11 @@
             input.value = input.value.toUpperCase().split(',').map(p => p.trim().replace(/\s+/g, '-').replace(/[^A-Z0-9-]/g, '')).join(', ');
         }
 
-        // Strips trailing/empty commas so Excel formula and Portal count always match 100%
         function normalizeSharingString(sharingStr) {
             if (!sharingStr) return '';
             const clean = String(sharingStr).trim().toUpperCase();
             if (!clean || clean === '-' || clean === 'N/A') return '';
-            return clean
-                .split(',')
-                .map(s => s.trim().replace(/\s+/g, '-').replace(/[^A-Z0-9-]/g, ''))
-                .filter(s => s.length > 0 && s !== '-' && s !== 'N/A')
-                .join(', ');
+            return clean.split(',').map(s => s.trim().replace(/\s+/g, '-').replace(/[^A-Z0-9-]/g, '')).filter(s => s.length > 0 && s !== '-' && s !== 'N/A').join(', ');
         }
 
         function computeCleanSharingCount(sharingStr) {
@@ -1261,7 +1134,6 @@
         }
 
         function saveToLocalCache() {
-            // Keep deletedRecordIds bounded to last 800 IDs to prevent memory bloat
             if (Array.isArray(appState.deletedRecordIds) && appState.deletedRecordIds.length > 800) {
                 appState.deletedRecordIds = appState.deletedRecordIds.slice(-800);
             }
@@ -1285,7 +1157,7 @@
             return cleanData;
         }
 
-        function applyParsedDataToState(parsed) {
+        function applyParsedDataToState(parsed, fullReplace = false) {
             if (!parsed) return;
             appState.logoUrl = parsed.logoUrl || '';
             appState.settingsUpdatedAtMs = parsed.settingsUpdatedAtMs || 0;
@@ -1304,14 +1176,21 @@
                         return r;
                     });
             }
-            if (parsed.dealerMap && Object.keys(parsed.dealerMap).length > 0) {
-                appState.dealerMap = parsed.dealerMap;
-            }
-            if (parsed.dealerPayments) {
-                appState.dealerPayments = parsed.dealerPayments;
-            }
-            if (Array.isArray(parsed.staffUsers) && parsed.staffUsers.length > 0) {
-                appState.staffUsers = parsed.staffUsers;
+
+            if (fullReplace) {
+                appState.dealerMap = (parsed.dealerMap && typeof parsed.dealerMap === 'object') ? parsed.dealerMap : {};
+                appState.dealerPayments = (parsed.dealerPayments && typeof parsed.dealerPayments === 'object') ? parsed.dealerPayments : {};
+                appState.staffUsers = Array.isArray(parsed.staffUsers) ? parsed.staffUsers : [];
+            } else {
+                if (parsed.dealerMap && Object.keys(parsed.dealerMap).length > 0) {
+                    appState.dealerMap = parsed.dealerMap;
+                }
+                if (parsed.dealerPayments) {
+                    appState.dealerPayments = parsed.dealerPayments;
+                }
+                if (Array.isArray(parsed.staffUsers) && parsed.staffUsers.length > 0) {
+                    appState.staffUsers = parsed.staffUsers;
+                }
             }
         }
 
@@ -1321,7 +1200,6 @@
             const localSettingsMs = appState.settingsUpdatedAtMs || 0;
             const cloudSettingsMs = cloudData.settingsUpdatedAtMs || 0;
 
-            // Sync settings (Dealers, Payments, Staff, Logo) based on newest settingsUpdatedAtMs
             if (cloudSettingsMs > localSettingsMs) {
                 if (cloudData.logoUrl !== undefined) appState.logoUrl = cloudData.logoUrl;
                 if (cloudData.dealerMap && Object.keys(cloudData.dealerMap).length > 0) appState.dealerMap = cloudData.dealerMap;
@@ -1397,7 +1275,7 @@
                 try {
                     applyParsedDataToState(JSON.parse(localRaw));
                 } catch (err) {
-                    console.error("Login local parse error:", err);
+                    console.error("Login parse error:", err);
                 }
             }
 
@@ -1460,14 +1338,13 @@
             document.getElementById('loginScreen').classList.remove('hidden');
         }
 
-        // --- DEALER & STAFF MAPPING ---
         function populateDealerDropdown() {
             const dSelect = document.getElementById('dealerSelect');
             const adminDelSelect = document.getElementById('adminDeleteDealerSelect');
             const curD = dSelect.value;
             const curAdminDel = adminDelSelect ? adminDelSelect.value : '';
             dSelect.innerHTML = '<option value="">-- Choose Dealer --</option>';
-            if (adminDelSelect) adminDelSelect.innerHTML = '<option value="">-- Choose Dealer to Delete --</option>';
+            if (adminDelSelect) adminDelSelect.innerHTML = '<option value="">-- Choose Dealer --</option>';
             Object.keys(appState.dealerMap).forEach(d => {
                 const escD = escapeHtml(d);
                 dSelect.innerHTML += `<option value="${escD}">${escD}</option>`;
@@ -1489,11 +1366,8 @@
                 const escD = escapeHtml(d);
                 fd.innerHTML += `<option value="${escD}">${escD}</option>`;
             });
-            if (allDealers.has(currentDealer)) {
-                fd.value = currentDealer;
-            } else {
-                fd.value = '';
-            }
+            if (allDealers.has(currentDealer)) fd.value = currentDealer;
+            else fd.value = '';
             populateFilterCompanyDropdown();
         }
 
@@ -1520,11 +1394,8 @@
                 const escC = escapeHtml(c);
                 fc.innerHTML += `<option value="${escC}">${escC}</option>`;
             });
-            if (companies.has(currentCompany)) {
-                fc.value = currentCompany;
-            } else {
-                fc.value = '';
-            }
+            if (companies.has(currentCompany)) fc.value = currentCompany;
+            else fc.value = '';
         }
 
         function onFilterDealerChange() {
@@ -1544,7 +1415,7 @@
             const scopeSel = document.getElementById('staffViewScope');
             if (scopeSel) scopeSel.value = 'ALL';
             setFilter('Active');
-            showSuccessToast("Filters Reset", "Sabhi filters aur search clear ho gaye hain.");
+            showSuccessToast("Filters Reset", "Done.");
         }
 
         function onDealerSelected(selectedCompanyToKeep = '') {
@@ -1584,7 +1455,7 @@
             list.innerHTML = '';
             const dealers = Object.keys(appState.dealerMap);
             if (dealers.length === 0) {
-                list.innerHTML = '<p class="p-3 text-slate-400 text-center">Koi dealer add nahi hai.</p>';
+                list.innerHTML = '<p class="p-3 text-slate-400 text-center">No dealers yet.</p>';
                 return;
             }
             dealers.forEach(dealer => {
@@ -1619,7 +1490,7 @@
             renderDealerMappingManager();
             document.getElementById('newDealerName').value = '';
             document.getElementById('newDealerCompanies').value = '';
-            showSuccessToast("Dealer Mapping Saved", "Done!");
+            showSuccessToast("Dealer Saved", "Done!");
         }
 
         function editDealerMapping(d) {
@@ -1650,10 +1521,10 @@
                             <span class="ml-2 text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">User: ${escapeHtml(st.username)}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button onclick="editStaffPassword(${idx})" class="text-indigo-600 hover:indigo-800 font-bold text-[11px]">
+                            <button onclick="editStaffPassword(${idx})" class="text-indigo-600 font-bold text-[11px]">
                                 <i class="fa-solid fa-key mr-0.5"></i> Change Password
                             </button>
-                            <button onclick="deleteStaffUser(${idx})" class="text-rose-500 hover:text-rose-700 font-bold ml-2">
+                            <button onclick="deleteStaffUser(${idx})" class="text-rose-500 font-bold ml-2">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -1666,7 +1537,7 @@
             const username = document.getElementById('newStaffUsername').value.trim().toLowerCase();
             const pass = document.getElementById('newStaffPassword').value.trim();
             if (!name || !username || !pass) {
-                alert("Please fill details!");
+                alert("Please fill all details!");
                 return;
             }
             const existingIndex = appState.staffUsers.findIndex(s => s.username.toLowerCase() === username || s.name.toUpperCase() === name);
@@ -1691,11 +1562,11 @@
             document.getElementById('newStaffName').value = '';
             document.getElementById('newStaffUsername').value = '';
             document.getElementById('newStaffPassword').value = '';
-            showSuccessToast("Staff Access Saved", "Done!");
+            showSuccessToast("Staff Saved", "Done!");
         }
 
         function editStaffPassword(idx) {
-            const newP = prompt(`Enter new password for ${appState.staffUsers[idx].name}:`);
+            const newP = prompt(`New password for ${appState.staffUsers[idx].name}:`);
             if (newP) {
                 appState.staffUsers[idx].password = newP.trim();
                 appState.settingsUpdatedAtMs = Date.now();
@@ -1828,7 +1699,6 @@
             const savedDealer = document.getElementById('dealerSelect').value;
             const savedCompany = document.getElementById('companySelect').value;
             const savedStage = document.getElementById('regStageStatus').value;
-            const savedDeptStatus = document.getElementById('deptStatus').value;
             const savedSystemType = document.getElementById('systemType').value;
             const savedDgnStatus = document.getElementById('dgnStatus').value;
             const savedDgnStaff = (document.getElementById('dgnStaff').value || '').trim().toUpperCase();
@@ -1922,7 +1792,7 @@
                 document.getElementById('systemType').value = 'Mini sprinkler';
             } else {
                 document.getElementById('regStageStatus').value = savedStage;
-                document.getElementById('deptStatus').value = savedDeptStatus;
+                document.getElementById('deptStatus').value = finalDeptStatus;
                 document.getElementById('systemType').value = savedSystemType;
             }
 
@@ -1958,7 +1828,7 @@
                 document.getElementById('recorrectionFee').value = savedRecorrFee;
             }
 
-            showSuccessToast("Entry Save Ho Gayi!", "Record sabhi staff aur admin ke liye darj ho gaya.");
+            showSuccessToast("Entry Saved!", "Record sabhi users ko dikhega.");
         }
 
         function toggleArchiveRecord(id) {
@@ -1970,7 +1840,7 @@
                 if (rec.entryStatus === 'Done' && !rec.entryPaid) unpaid = true;
                 if (rec.kmlStatus === 'Done' && !rec.kmlPaid) unpaid = true;
                 if (unpaid) {
-                    if (!confirm("⚠️ Rukiye! Is file ka staff payment abhi clear nahi hua hai (Unpaid). Kya aap phir bhi isse Archived Vault me bhejna chahte hain?")) return;
+                    if (!confirm("⚠️ Is file ka staff payment Unpaid hai. Phir bhi Archive karein?")) return;
                 }
             }
             rec.isArchived = !rec.isArchived;
@@ -1979,7 +1849,7 @@
             rec.lastModifiedAt = getFormattedTimestamp();
             saveStateToCloud();
             renderTable();
-            showSuccessToast(rec.isArchived ? "File Archived" : "File Restored", "Status updated successfully.");
+            showSuccessToast(rec.isArchived ? "File Archived" : "File Restored", "Done.");
         }
 
         function applyBulkArchive(archiveStatus) {
@@ -1988,7 +1858,7 @@
                     const r = appState.records.find(rec => rec.id === id);
                     return r && ((r.dgnStatus === 'Done' && !r.dgnPaid) || (r.entryStatus === 'Done' && !r.entryPaid) || (r.kmlStatus === 'Done' && !r.kmlPaid));
                 });
-                if (hasUnpaid && !confirm("⚠️ Rukiye! Select ki gayi files me kuch staff payment abhi UNPAID hain. Kya aap phir bhi unhe Archive me dalna chahte hain?")) return;
+                if (hasUnpaid && !confirm("⚠️ Kuch files me Unpaid payment hai. Phir bhi Archive karein?")) return;
             }
             const nowMs = Date.now();
             selectedRecordIds.forEach(id => {
@@ -2003,7 +1873,7 @@
             saveStateToCloud();
             clearBulkSelection();
             renderTable();
-            showSuccessToast("Bulk Action Complete", `Files ${archiveStatus ? 'archived' : 'restored'}!`);
+            showSuccessToast("Bulk Action Done", `Files ${archiveStatus ? 'archived' : 'restored'}!`);
         }
 
         function openUpdateTaskModal(id) {
@@ -2014,7 +1884,6 @@
             document.getElementById('modalRegNoBadge').innerText = rec.regNo || rec.farmerName || 'File';
             document.getElementById('modalAuditLogText').innerText = rec.lastModifiedBy ? `Last modified by ${rec.lastModifiedBy} on ${rec.lastModifiedAt}` : `Initial intake`;
 
-            // Populate Dealer & Company Dropdowns in Edit Modal
             const mDealerSel = document.getElementById('modalDealerSelect');
             mDealerSel.innerHTML = '';
             const allDealers = new Set(Object.keys(appState.dealerMap));
@@ -2103,26 +1972,41 @@
             rec.deptQueryNote = finalReasonBack;
 
             if (!document.getElementById('modalDgnStatus').disabled) {
+                const oldDgnStaff = (rec.dgnStaff || '').trim().toUpperCase();
                 const nDgn = document.getElementById('modalDgnStatus').value;
                 let nDgnStf = (document.getElementById('modalDgnStaff').value || '').trim().toUpperCase();
                 if (nDgn === 'Done' && !nDgnStf && appState.currentUserRole === 'staff') nDgnStf = appState.currentLoggedStaff;
-                if (rec.dgnStatus !== 'Done' && nDgn === 'Done') rec.dgnDoneDate = today; else if (nDgn !== 'Done') { rec.dgnDoneDate = ''; rec.dgnPaid = false; }
+                if (nDgn === 'Done' && nDgnStf && oldDgnStaff && nDgnStf !== oldDgnStaff && rec.dgnPaid) {
+                    rec.dgnPaid = false;
+                }
+                if (rec.dgnStatus !== 'Done' && nDgn === 'Done') rec.dgnDoneDate = today;
+                else if (nDgn !== 'Done') { rec.dgnDoneDate = ''; rec.dgnPaid = false; }
                 rec.dgnStatus = nDgn;
                 rec.dgnStaff = nDgnStf;
             }
             if (!document.getElementById('modalEntryStatus').disabled) {
+                const oldEntryStaff = (rec.entryStaff || '').trim().toUpperCase();
                 const nEnt = document.getElementById('modalEntryStatus').value;
                 let nEntStf = (document.getElementById('modalEntryStaff').value || '').trim().toUpperCase();
                 if (nEnt === 'Done' && !nEntStf && appState.currentUserRole === 'staff') nEntStf = appState.currentLoggedStaff;
-                if (rec.entryStatus !== 'Done' && nEnt === 'Done') rec.entryDoneDate = today; else if (nEnt !== 'Done') { rec.entryDoneDate = ''; rec.entryPaid = false; }
+                if (nEnt === 'Done' && nEntStf && oldEntryStaff && nEntStf !== oldEntryStaff && rec.entryPaid) {
+                    rec.entryPaid = false;
+                }
+                if (rec.entryStatus !== 'Done' && nEnt === 'Done') rec.entryDoneDate = today;
+                else if (nEnt !== 'Done') { rec.entryDoneDate = ''; rec.entryPaid = false; }
                 rec.entryStatus = nEnt;
                 rec.entryStaff = nEntStf;
             }
             if (!document.getElementById('modalKmlStatus').disabled) {
+                const oldKmlStaff = (rec.kmlStaff || '').trim().toUpperCase();
                 const nKml = document.getElementById('modalKmlStatus').value;
                 let nKmlStf = (document.getElementById('modalKmlStaff').value || '').trim().toUpperCase();
                 if (nKml === 'Done' && !nKmlStf && appState.currentUserRole === 'staff') nKmlStf = appState.currentLoggedStaff;
-                if (rec.kmlStatus !== 'Done' && nKml === 'Done') rec.kmlDoneDate = today; else if (nKml !== 'Done') { rec.kmlDoneDate = ''; rec.kmlPaid = false; }
+                if (nKml === 'Done' && nKmlStf && oldKmlStaff && nKmlStf !== oldKmlStaff && rec.kmlPaid) {
+                    rec.kmlPaid = false;
+                }
+                if (rec.kmlStatus !== 'Done' && nKml === 'Done') rec.kmlDoneDate = today;
+                else if (nKml !== 'Done') { rec.kmlDoneDate = ''; rec.kmlPaid = false; }
                 rec.kmlStatus = nKml;
                 rec.kmlStaff = nKmlStf;
             }
@@ -2148,7 +2032,7 @@
             saveStateToCloud();
             closeModal('updateTaskModal');
             renderTable();
-            showSuccessToast("Record Updated", `Details updated successfully.`);
+            showSuccessToast("Record Updated", "Details updated.");
         }
 
         function applyBulkDeptStatus(status) {
@@ -2178,7 +2062,7 @@
                 return;
             }
             if (appState.currentUserRole === 'staff' && staff !== appState.currentLoggedStaff) {
-                alert("Staff can only bulk-assign tasks to themselves!");
+                alert("Staff can only assign tasks to themselves!");
                 return;
             }
             const today = getFormattedDateOnly();
@@ -2186,9 +2070,27 @@
             selectedRecordIds.forEach(id => {
                 const rec = appState.records.find(r => r.id === id);
                 if (rec) {
-                    if (taskType === 'DGN') { if (rec.dgnStatus !== 'Done') rec.dgnDoneDate = today; rec.dgnStatus = 'Done'; rec.dgnStaff = staff; }
-                    if (taskType === 'Entry') { if (rec.entryStatus !== 'Done') rec.entryDoneDate = today; rec.entryStatus = 'Done'; rec.entryStaff = staff; }
-                    if (taskType === 'KML') { if (rec.kmlStatus !== 'Done') rec.kmlDoneDate = today; rec.kmlStatus = 'Done'; rec.kmlStaff = staff; }
+                    if (taskType === 'DGN') {
+                        const oldStaff = (rec.dgnStaff || '').trim().toUpperCase();
+                        if (oldStaff && oldStaff !== staff && rec.dgnPaid) rec.dgnPaid = false;
+                        if (rec.dgnStatus !== 'Done') rec.dgnDoneDate = today;
+                        rec.dgnStatus = 'Done';
+                        rec.dgnStaff = staff;
+                    }
+                    if (taskType === 'Entry') {
+                        const oldStaff = (rec.entryStaff || '').trim().toUpperCase();
+                        if (oldStaff && oldStaff !== staff && rec.entryPaid) rec.entryPaid = false;
+                        if (rec.entryStatus !== 'Done') rec.entryDoneDate = today;
+                        rec.entryStatus = 'Done';
+                        rec.entryStaff = staff;
+                    }
+                    if (taskType === 'KML') {
+                        const oldStaff = (rec.kmlStaff || '').trim().toUpperCase();
+                        if (oldStaff && oldStaff !== staff && rec.kmlPaid) rec.kmlPaid = false;
+                        if (rec.kmlStatus !== 'Done') rec.kmlDoneDate = today;
+                        rec.kmlStatus = 'Done';
+                        rec.kmlStaff = staff;
+                    }
                     rec.updatedAtMs = nowMs;
                     rec.lastModifiedBy = appState.currentLoggedStaff;
                     rec.lastModifiedAt = getFormattedTimestamp();
@@ -2203,7 +2105,7 @@
 
         function applyBulkNaAction() {
             if (selectedRecordIds.size === 0) {
-                alert("Pehle files select karein!");
+                alert("Select files first!");
                 return;
             }
             const nowMs = Date.now();
@@ -2255,8 +2157,8 @@
 
         function deleteSelectedRecords() {
             if (appState.currentUserRole !== 'admin') { alert("Unauthorized!"); return; }
-            if (selectedRecordIds.size === 0) { alert("Pehle table me se kuch rows select karein!"); return; }
-            if (confirm(`Kya aap select ki gayi ${selectedRecordIds.size} files ko delete karna chahte hain?`)) {
+            if (selectedRecordIds.size === 0) { alert("Select rows first!"); return; }
+            if (confirm(`Delete ${selectedRecordIds.size} files?`)) {
                 selectedRecordIds.forEach(id => {
                     if (!appState.deletedRecordIds.includes(id)) appState.deletedRecordIds.push(id);
                 });
@@ -2264,15 +2166,15 @@
                 clearBulkSelection();
                 saveStateToCloud();
                 renderTable();
-                showSuccessToast("Bulk Delete Complete", "Selected records delete kar diye gaye hain.");
+                showSuccessToast("Deleted", "Selected records removed.");
             }
         }
 
         function deleteRecordsByDealer() {
             if (appState.currentUserRole !== 'admin') { alert("Unauthorized!"); return; }
             const dealer = document.getElementById('adminDeleteDealerSelect').value;
-            if (!dealer) { alert("Pehle dealer select karein!"); return; }
-            if (confirm(`⚠️ DHYAN DEIN: Kya aap dealer "${dealer}" ki saari entries permanently delete karna chahte hain?`)) {
+            if (!dealer) { alert("Select dealer first!"); return; }
+            if (confirm(`⚠️ Delete ALL entries for dealer "${dealer}"?`)) {
                 appState.records.forEach(r => {
                     if (r.dealerName === dealer && !appState.deletedRecordIds.includes(r.id)) {
                         appState.deletedRecordIds.push(r.id);
@@ -2284,13 +2186,13 @@
                 populateDealerDropdown();
                 populateFilterDropdowns();
                 renderTable();
-                showSuccessToast("Dealer Entries Deleted", `Dealer ${dealer} ka saara data hata diya gaya.`);
+                showSuccessToast("Deleted", `All entries for ${dealer} removed.`);
             }
         }
 
         function clearAllPortalRecords() {
             if (appState.currentUserRole !== 'admin') { alert("Unauthorized!"); return; }
-            if (prompt("⚠️ MASTER RESET: Portal ka poora data zero karne ke liye 'DELETE' type karein:") === 'DELETE') {
+            if (prompt("⚠️ MASTER RESET: Type 'DELETE' to wipe all data:") === 'DELETE') {
                 appState.records = [];
                 appState.dealerPayments = {};
                 appState.deletedRecordIds = [];
@@ -2300,20 +2202,20 @@
                 saveStateToCloud();
                 populateFilterDropdowns();
                 renderTable();
-                showSuccessToast("Master Reset Done", "Portal ka sara data clear kar diya gaya hai.");
+                showSuccessToast("Master Reset Done", "All data cleared.");
             }
         }
 
         function deleteRecord(id) {
             if (appState.currentUserRole !== 'admin') return;
-            if (confirm("Kya aap is record ko delete karna chahte hain?")) {
+            if (confirm("Delete this record?")) {
                 if (!appState.deletedRecordIds.includes(id)) appState.deletedRecordIds.push(id);
                 appState.records = appState.records.filter(r => r.id !== id);
                 selectedRecordIds.delete(id);
                 updateBulkActionBar();
                 saveStateToCloud();
                 renderTable();
-                showSuccessToast("File Deleted", "Record delete ho gaya.");
+                showSuccessToast("Deleted", "Record removed.");
             }
         }
 
@@ -2444,10 +2346,10 @@
                         if (sumUnpaid > 0) {
                             myPayInfoHtml += `<div class="text-[10px] text-rose-600 font-extrabold mt-0.5 border border-rose-200 bg-rose-50 px-1 rounded inline-block">Unpaid: ₹${sumUnpaid}</div>`;
                         } else {
-                            myPayInfoHtml += `<div class="text-[10px] text-emerald-700 font-extrabold mt-0.5 border border-emerald-200 bg-emerald-50 px-1 rounded inline-block"><i class="fa-solid fa-check"></i> ALL PAID</div>`;
+                            myPayInfoHtml += `<div class="text-[10px] text-emerald-700 font-extrabold mt-0.5 border border-emerald-200 bg-emerald-50 px-1 rounded inline-block"><i class="fa-solid fa-check"></i> PAID</div>`;
                         }
                     } else {
-                        myPayInfoHtml = '<span class="text-slate-400 text-[10px]">Unassigned / Pending</span>';
+                        myPayInfoHtml = '<span class="text-slate-400 text-[10px]">Unassigned</span>';
                     }
                 }
 
@@ -2457,7 +2359,7 @@
                 const getTaskBadge = (status, staff, isPaid) => {
                     const escStaff = escapeHtml(staff);
                     if (status === 'Done') {
-                        return `<span class="text-emerald-700 font-bold flex items-center gap-1">Done ${isPaid ? '<i class="fa-solid fa-circle-check text-emerald-500 text-[10px]" title="Paid"></i>' : '<i class="fa-regular fa-clock text-rose-500 text-[10px]" title="Unpaid"></i>'}</span><div class="text-[10px] text-slate-500">${escStaff || 'Staff'}</div>`;
+                        return `<span class="text-emerald-700 font-bold flex items-center gap-1">Done ${isPaid ? '<i class="fa-solid fa-circle-check text-emerald-500 text-[10px]"></i>' : '<i class="fa-regular fa-clock text-rose-500 text-[10px]"></i>'}</span><div class="text-[10px] text-slate-500">${escStaff || 'Staff'}</div>`;
                     }
                     if (status === 'N/A') {
                         return `<span class="text-slate-400 font-semibold italic">N/A</span>`;
@@ -2502,19 +2404,19 @@
                         <td class="admin-only ${appState.currentUserRole !== 'admin' ? 'role-hide' : ''} p-3 font-semibold text-rose-600">₹${totalStaffPayout}</td>
                         <td class="admin-only ${appState.currentUserRole !== 'admin' ? 'role-hide' : ''} p-3 font-bold text-emerald-700">₹${totalClientFee - totalStaffPayout}</td>
                         <td class="p-3 text-[11px] max-w-xs">
-                            ${isDup ? `<div class="text-rose-700 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Duplicate Reg!</div>` : ''}
+                            ${isDup ? `<div class="text-rose-700 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Duplicate!</div>` : ''}
                             ${r.deptQueryNote ? `<div class="text-rose-700 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>${escapeHtml(r.deptQueryNote)}</div>` : ''}
                             ${r.recorrectionReason ? `<div class="text-purple-700 font-semibold"><i class="fa-solid fa-wrench mr-1"></i>${escapeHtml(r.recorrectionReason)}</div>` : ''}
                             <div class="text-slate-500 truncate" title="${escapeHtml(r.remark || '')}">${escapeHtml(r.remark) || '-'}</div>
                         </td>
                         <td class="p-3 text-center whitespace-nowrap">
-                            <button onclick="sendWhatsAppQuery(${r.id})" title="Share to WhatsApp" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg text-xs mr-1">
+                            <button onclick="sendWhatsAppQuery(${r.id})" title="WhatsApp" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg text-xs mr-1">
                                 <i class="fa-brands fa-whatsapp"></i>
                             </button>
                             <button onclick="openUpdateTaskModal(${r.id})" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-2 py-1 rounded-lg font-bold text-[11px] mr-1">
                                 <i class="fa-solid fa-pen-to-square"></i> Edit
                             </button>
-                            <button onclick="toggleArchiveRecord(${r.id})" title="${isArchived ? 'Restore' : 'Move to Vault'}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-1.5 rounded-lg text-xs mr-1">
+                            <button onclick="toggleArchiveRecord(${r.id})" title="${isArchived ? 'Restore' : 'Vault'}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-1.5 rounded-lg text-xs mr-1">
                                 <i class="fa-solid ${isArchived ? 'fa-box-open text-emerald-600' : 'fa-box-archive'}"></i>
                             </button>
                             ${appState.currentUserRole === 'admin' ? `<button onclick="deleteRecord(${r.id})" class="text-rose-500 hover:text-rose-700 p-1"><i class="fa-solid fa-trash"></i></button>` : ''}
@@ -2523,7 +2425,6 @@
                 `;
             });
 
-            // Per-Dealer Accurate Outstanding Calculation (Prevents one dealer's advance from reducing another dealer's due)
             let totalOutstandingFiltered = 0;
             const allKnownDealers = new Set(Object.keys(appState.dealerMap));
             appState.records.forEach(r => { if (r && r.dealerName) allKnownDealers.add(r.dealerName); });
@@ -2568,11 +2469,6 @@
                 });
                 document.getElementById('statStaffMonthPay').innerText = `₹${myTotalEarned}`;
                 document.getElementById('statStaffUnpaid').innerText = `₹${myTotalUnpaid}`;
-                if (myTotalUnpaid === 0) {
-                    document.getElementById('statStaffUnpaid').parentElement.classList.replace('text-amber-600', 'text-emerald-600');
-                } else {
-                    document.getElementById('statStaffUnpaid').parentElement.classList.replace('text-emerald-600', 'text-amber-600');
-                }
             }
 
             document.getElementById('statTotalEntries').innerText = countTotalEntries;
@@ -2662,7 +2558,6 @@
             return staffStats;
         }
 
-        // FEATURE 1 & 2: DEALER & COMPANY-WISE DETAILED BREAKDOWN CALCULATOR
         function calculateDealerCompanyBreakdown(recordsSubset = null) {
             const targetRecords = recordsSubset || getFilteredActiveRecords(false);
             const groups = {};
@@ -2674,19 +2569,9 @@
 
                 if (!groups[key]) {
                     groups[key] = {
-                        dealerName: dealer,
-                        companyName: company,
-                        totalFiles: 0,
-                        dgnCount: 0,
-                        mainBoqCount: 0,
-                        sharingBoqCount: 0,
-                        totalBoqUnits: 0,
-                        kmlCount: 0,
-                        dgnBilled: 0,
-                        sharingBilled: 0,
-                        baseBilled: 0,
-                        recorrBilled: 0,
-                        totalBilled: 0
+                        dealerName: dealer, companyName: company,
+                        totalFiles: 0, dgnCount: 0, mainBoqCount: 0, sharingBoqCount: 0, totalBoqUnits: 0, kmlCount: 0,
+                        dgnBilled: 0, sharingBilled: 0, baseBilled: 0, recorrBilled: 0, totalBilled: 0
                     };
                 }
 
@@ -2758,13 +2643,13 @@
                 <table class="w-full text-left text-xs border-collapse">
                     <thead>
                         <tr class="bg-indigo-50/90 font-bold uppercase text-indigo-950 border-y border-indigo-200 text-[11px]">
-                            <th class="p-2.5">Staff Name</th>
-                            <th class="p-2.5 text-center">DGN Done Count</th>
-                            <th class="p-2.5 text-center">BOQ Done (Units: 1+Shares)</th>
-                            <th class="p-2.5 text-center">KML Done Count</th>
-                            <th class="p-2.5 text-right text-emerald-700">Paid Payout (₹)</th>
-                            <th class="p-2.5 text-right text-rose-600">Unpaid Payout (₹)</th>
-                            <th class="p-2.5 text-right text-indigo-900">Total Earned (₹)</th>
+                            <th class="p-2.5">Staff</th>
+                            <th class="p-2.5 text-center">DGN</th>
+                            <th class="p-2.5 text-center">BOQ Units</th>
+                            <th class="p-2.5 text-center">KML</th>
+                            <th class="p-2.5 text-right text-emerald-700">Paid (₹)</th>
+                            <th class="p-2.5 text-right text-rose-600">Unpaid (₹)</th>
+                            <th class="p-2.5 text-right text-indigo-900">Total (₹)</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200">`;
@@ -2796,7 +2681,7 @@
             if (appState.currentUserRole === 'admin') {
                 html += `
                     <tr class="bg-slate-100 font-extrabold text-slate-900 border-t-2 border-slate-300">
-                        <td class="p-2.5">TOTAL ALL STAFF:</td>
+                        <td class="p-2.5">TOTAL:</td>
                         <td class="p-2.5 text-center">${grandDgn}</td>
                         <td class="p-2.5 text-center">${grandBoqUnits}</td>
                         <td class="p-2.5 text-center">${grandKml}</td>
@@ -2815,11 +2700,11 @@
             const r = appState.records.find(rec => rec.id === id);
             if (!r) return;
             const isQuery = (r.deptStatus && (r.deptStatus.toLowerCase().includes('query') || r.deptStatus.toLowerCase().includes('back'))) || (r.deptQueryNote && r.deptQueryNote.trim().length > 0);
-            let text = `*Shri Ji Agritech - File Verification Alert*\n\n*Dealer:* ${r.dealerName}\n*Farmer:* ${r.farmerName || 'N/A'}\n*Reg No:* ${r.regNo || 'Docs Pending'}\n*Company:* ${r.companyName}\n*System Type:* ${r.systemType || 'Mini sprinkler'}\n*Intake Date:* ${formatExcelDate(r.date)}\n*Status:* ${r.deptStatus}\n`;
+            let text = `*Shri Ji Agritech - File Alert*\n\n*Dealer:* ${r.dealerName}\n*Farmer:* ${r.farmerName || 'N/A'}\n*Reg No:* ${r.regNo || 'Pending'}\n*Company:* ${r.companyName}\n*System:* ${r.systemType || 'Mini sprinkler'}\n*Date:* ${formatExcelDate(r.date)}\n*Status:* ${r.deptStatus}\n`;
             if (isQuery) {
-                text += `*⚠️ Reason Back:* ${r.deptQueryNote || 'Department objection, please check documents'}\n\n_Kripya is query ko turant clear karwayein._`;
+                text += `*⚠️ Reason:* ${r.deptQueryNote || 'Please check documents'}\n\n_Kripya jald clear karwayein._`;
             } else {
-                text += `*Office Remark:* ${r.remark || 'Documents incomplete. Please update soon.'}\n\n_Kripya ise jald check karein._`;
+                text += `*Remark:* ${r.remark || 'Documents incomplete.'}\n\n_Kripya check karein._`;
             }
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
         }
@@ -2827,19 +2712,15 @@
         function switchAnalyticsTab(tab) {
             document.getElementById('analyticsDealerTab').classList.add('hidden');
             document.getElementById('analyticsStaffTab').classList.add('hidden');
-            document.getElementById('tabBtnDealer').classList.replace('bg-cyan-600', 'bg-slate-100');
-            document.getElementById('tabBtnDealer').classList.replace('text-white', 'text-slate-600');
-            document.getElementById('tabBtnStaff').classList.replace('bg-cyan-600', 'bg-slate-100');
-            document.getElementById('tabBtnStaff').classList.replace('text-white', 'text-slate-600');
+            document.getElementById('tabBtnDealer').className = "px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600";
+            document.getElementById('tabBtnStaff').className = "px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600";
             if (tab === 'dealer') {
                 document.getElementById('analyticsDealerTab').classList.remove('hidden');
-                document.getElementById('tabBtnDealer').classList.replace('bg-slate-100', 'bg-cyan-600');
-                document.getElementById('tabBtnDealer').classList.replace('text-slate-600', 'text-white');
+                document.getElementById('tabBtnDealer').className = "px-4 py-2 text-xs font-bold rounded-xl bg-cyan-600 text-white shadow-md";
                 renderAnalytics();
             } else {
                 document.getElementById('analyticsStaffTab').classList.remove('hidden');
-                document.getElementById('tabBtnStaff').classList.replace('bg-slate-100', 'bg-cyan-600');
-                document.getElementById('tabBtnStaff').classList.replace('text-slate-600', 'text-white');
+                document.getElementById('tabBtnStaff').className = "px-4 py-2 text-xs font-bold rounded-xl bg-cyan-600 text-white shadow-md";
                 renderStaffAnalytics();
             }
         }
@@ -2978,7 +2859,7 @@
 
                 compBody.innerHTML += `
                     <tr class="bg-teal-50 font-extrabold text-slate-900 border-t-2 border-teal-300">
-                        <td class="p-2.5" colspan="2">TOTAL ALL DEALERS & COMPANIES:</td>
+                        <td class="p-2.5" colspan="2">TOTAL:</td>
                         <td class="p-2.5 text-center">${gFiles}</td>
                         <td class="p-2.5 text-center">${gDgn}</td>
                         <td class="p-2.5 text-center">${gMainBoq}</td>
@@ -3008,52 +2889,89 @@
             companyRows.forEach(c => {
                 compBreakdownText += `• *${c.companyName}:* Files: ${c.totalFiles} | DGN: ${c.dgnCount} | Sharing BOQ: ${c.sharingBoqCount} | Bill: ₹${c.totalBilled}\n`;
             });
-            const text = `*Shri Ji Agritech - Dealer Account Statement*\n\n*Dealer:* ${dealer}\n*Total Main Files:* ${files}\n*Total DGN Count:* ${dgnCnt}\n*Total Sharing BOQ:* ${shareCnt}\n\n*Company-Wise Breakdown:*\n${compBreakdownText}\n*Base Work Billing:* ₹${base}\n*Re-Correction Charges:* ₹${recMod}\n*Total Payable:* ₹${total}\n*Payment Received:* ₹${paid}\n*Net Outstanding Balance:* ₹${outstanding}\n\n_Kripya baki rashi ka bhugtan jald karein. Dhanyawaad!_`;
+            const text = `*Shri Ji Agritech - Dealer Statement*\n\n*Dealer:* ${dealer}\n*Total Files:* ${files}\n*DGN Count:* ${dgnCnt}\n*Sharing BOQ:* ${shareCnt}\n\n*Company Breakdown:*\n${compBreakdownText}\n*Base Billing:* ₹${base}\n*Re-Correction:* ₹${recMod}\n*Total Payable:* ₹${total}\n*Received:* ₹${paid}\n*Outstanding:* ₹${outstanding}\n\n_Kripya bhugtan karein. Dhanyawaad!_`;
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
         }
 
+        // ============================================================
+        // 🟢 FIXED BACKUP FUNCTION (Blob API)
+        // ============================================================
         function downloadJsonBackup() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
-            const dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", `Shri_Ji_Full_Backup_${getFormattedDateOnly()}.json`);
-            document.body.appendChild(dlAnchor);
-            dlAnchor.click();
-            dlAnchor.remove();
-            showSuccessToast("Backup Downloaded", "Data backup file safe save ho gayi.");
+            try {
+                const cleanPayload = saveToLocalCache();
+                const jsonStr = JSON.stringify(cleanPayload, null, 2);
+                const blob = new Blob([jsonStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+
+                const dlAnchor = document.createElement('a');
+                dlAnchor.href = url;
+                dlAnchor.download = `Shri_Ji_Full_Backup_${getFormattedDateOnly()}.json`;
+                dlAnchor.style.display = 'none';
+                document.body.appendChild(dlAnchor);
+                dlAnchor.click();
+                document.body.removeChild(dlAnchor);
+
+                setTimeout(() => URL.revokeObjectURL(url), 2000);
+
+                const sizeKB = (blob.size / 1024).toFixed(1);
+                const sizeMB = (blob.size / (1024 * 1024)).toFixed(2);
+                const sizeLabel = blob.size > 1024 * 1024 ? `${sizeMB} MB` : `${sizeKB} KB`;
+                showSuccessToast("Backup Downloaded ✅", `File (${sizeLabel}) save ho gayi.`);
+            } catch (err) {
+                console.error("Backup failed:", err);
+                alert("⚠️ Backup error:\n\n" + (err.message || err) + "\n\nBrowser download permission check karein.");
+            }
         }
 
+        // ============================================================
+        // 🟢 FIXED RESTORE FUNCTION (Force Overwrite + Cache Fix)
+        // ============================================================
         function restoreJsonBackup(event) {
-            const file = event.target.files[0];
+            const fileInput = event.target;
+            const file = fileInput.files[0];
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
                     const parsed = JSON.parse(e.target.result);
                     if (!parsed.records || !Array.isArray(parsed.records)) {
-                        alert("Galat backup file! Isme records nahi mile.");
+                        alert("Invalid backup file! No records found.");
                         return;
                     }
-                    if (confirm("Kya aap sach me backup restore karna chahte hain? Existing data backup se replace ho jayega.")) {
+                    if (confirm("Restore backup? Existing cloud & local data will be completely replaced.")) {
+                        // 1. Reset states
                         appState.deletedRecordIds = [];
-                        appState.settingsUpdatedAtMs = Date.now();
-                        applyParsedDataToState(parsed);
-                        saveStateToCloud();
+                        appState.lastMasterResetAtMs = 0;
+                        appState.settingsUpdatedAtMs = Date.now() + 10000; // Force newer
+                        
+                        // 2. Force records to be newer than cloud so they win
+                        parsed.records.forEach(r => {
+                            r.updatedAtMs = Date.now() + 10000;
+                        });
+
+                        // 3. Apply parsed data to local state
+                        applyParsedDataToState(parsed, true);
+                        
+                        // 4. Force save to cloud (bypassing merge)
+                        saveStateToCloud(true);
+                        
+                        // 5. Refresh UI
                         refreshAllUIComponents();
-                        showSuccessToast("Restore Complete", "Sara data restore ho gaya!");
+                        
+                        showSuccessToast("Restore Complete 🎉", "Data successfully restored to Cloud & Browser!");
                     }
                 } catch (err) {
-                    alert("Backup file corrupt ya invalid hai!");
+                    console.error("Restore error:", err);
+                    alert("Backup file corrupt or invalid JSON!");
                 }
-                event.target.value = '';
+                fileInput.value = ''; // Reset file input
             };
             reader.readAsText(file);
         }
 
-        // Smart Excel Import with Upsert (Updates existing records instead of duplicating them)
         function handleExcelImport(event) {
             if (typeof XLSX === 'undefined') {
-                alert("Excel library load nahi ho payi! Internet check karein.");
+                alert("Excel library not loaded!");
                 return;
             }
             const file = event.target.files[0];
@@ -3066,7 +2984,7 @@
                     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
                     const rawRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
                     if (rawRows.length < 4) {
-                        alert("Excel file me data nahi mila! Kripya Template check karein.");
+                        alert("Excel file has no data!");
                         return;
                     }
 
@@ -3081,7 +2999,7 @@
                         }
                     }
                     if (headerIdx === -1) {
-                        alert("Galat Excel format! Table headers ('Main Reg No', 'Farmer Name') match nahi ho rahe.");
+                        alert("Invalid Excel format! Headers 'Main Reg No', 'Farmer Name' not found.");
                         return;
                     }
 
@@ -3114,7 +3032,6 @@
                             else if (cleanH.includes("re-corr fee")) colMap.recorrectionFee = idx;
                             else if (cleanH.includes("re-corr reason")) colMap.recorrectionReason = idx;
                             else if (cleanH.includes("remark") && !cleanH.includes("audit")) colMap.remark = idx;
-                            else if (cleanH.includes("audit trail & remark")) colMap.remark = idx;
                             else if (cleanH.includes("vault status")) colMap.vaultStatus = idx;
                             else if (cleanH.includes("payment status")) colMap.paymentStatus = idx;
                         }
@@ -3174,7 +3091,6 @@
                             else if (tName.includes('KML')) { parsedKmlStatus = tStatus; kmlStf = tStaff; if (singleTaskPaid) isKmlPaid = true; }
                         }
 
-                        // Deterministic Merge Key for both Reg and Non-Reg files
                         const mergeKey = regVal ? `REG_${regVal}` : `NAME_${fName.toUpperCase()}_${dlrName}_${cleanFormattedDate}_${cleanSharing}`;
 
                         if (staffMergedMap[mergeKey]) {
@@ -3248,7 +3164,6 @@
                     let addedCount = 0;
                     let updatedCount = 0;
 
-                    // Upsert Logic: Update existing record if Reg No (or Farmer+Dealer+Date+Sharing) already exists
                     Object.values(staffMergedMap).forEach(rec => {
                         if (rec.dealerName && !appState.dealerMap[rec.dealerName]) {
                             appState.dealerMap[rec.dealerName] = [rec.companyName];
@@ -3305,50 +3220,38 @@
                     appState.settingsUpdatedAtMs = Date.now();
                     saveStateToCloud();
                     refreshAllUIComponents();
-                    let msg = `Excel Import Complete!\n\n• Nayi Files Judi: ${addedCount}\n• Purani Files Update Hui: ${updatedCount}`;
-                    if (duplicateAlertCount > 0) msg += `\n⚠️ DHYAN DEIN: ${duplicateAlertCount} Duplicates detect hue hain!`;
+                    let msg = `Excel Import Complete!\n\n• New Files: ${addedCount}\n• Updated Files: ${updatedCount}`;
+                    if (duplicateAlertCount > 0) msg += `\n⚠️ ${duplicateAlertCount} Duplicates detected!`;
                     showSuccessToast("Import Complete", `Added: ${addedCount} | Updated: ${updatedCount}`);
                     alert(msg);
                     event.target.value = '';
                 } catch (err) {
                     console.error(err);
-                    alert("Excel file read karne me dikkat aayi! Kripya valid template use karein.");
+                    alert("Excel read error! Use valid template.");
                 }
             };
             reader.readAsArrayBuffer(file);
         }
 
-        // FEATURE 2 (EXCEL PART): ADMIN EXCEL DEALER & COMPANY BREAKDOWN TABLE
         function writeDealerBreakdownToAdminExcel(ws, startWriteRow, sortedRecords, thinBorder) {
             let currentWriteRow = startWriteRow;
 
             ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: 0 })] = {
-                v: "DEALER & COMPANY-WISE BILLING BREAKDOWN (DIRECT COPY-PASTE READY FOR DEALERS)",
+                v: "DEALER & COMPANY-WISE BILLING BREAKDOWN",
                 t: "s",
                 s: { font: { name: "Calibri", sz: 11, bold: true, color: { rgb: "0F766E" } } }
             };
             currentWriteRow++;
 
             const dealerHeaders = [
-                "Dealer Name",
-                "Company Name",
-                "Total Files",
-                "DGN Count",
-                "Main BOQ Count",
-                "Sharing BOQ Count",
-                "Total BOQ (1+Shares)",
-                "KML Count",
-                "Base Billed (DGN+Share ₹)",
-                "Re-Correction Charges (₹)",
-                "Company Total Billed (₹)",
-                "Dealer Paid (₹)",
-                "Dealer Net Outstanding (₹)"
+                "Dealer Name", "Company Name", "Total Files", "DGN Count", "Main BOQ Count", "Sharing BOQ Count",
+                "Total BOQ (1+Shares)", "KML Count", "Base Billed (₹)", "Re-Correction (₹)", "Company Total (₹)",
+                "Dealer Paid (₹)", "Dealer Net Outstanding (₹)"
             ];
 
             dealerHeaders.forEach((dh, cIdx) => {
                 ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: cIdx })] = {
-                    v: dh,
-                    t: "s",
+                    v: dh, t: "s",
                     s: {
                         font: { name: "Calibri", sz: 10, bold: true, color: { rgb: "FFFFFF" } },
                         fill: { fgColor: { rgb: "0F766E" } },
@@ -3394,8 +3297,7 @@
 
                 rowVals.forEach((rv, cIdx) => {
                     ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: cIdx })] = {
-                        v: rv.v,
-                        t: rv.t,
+                        v: rv.v, t: rv.t,
                         s: {
                             font: { name: "Calibri", sz: 10, bold: !!rv.b },
                             alignment: { horizontal: rv.a },
@@ -3407,7 +3309,7 @@
             });
 
             const grandTotalDealerRow = [
-                { v: "TOTAL ALL DEALERS:", t: "s", a: "left" },
+                { v: "TOTAL:", t: "s", a: "left" },
                 { v: "-", t: "s", a: "center" },
                 { v: totFiles, t: "n", a: "center" },
                 { v: totDgn, t: "n", a: "center" },
@@ -3424,8 +3326,7 @@
 
             grandTotalDealerRow.forEach((rv, cIdx) => {
                 ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: cIdx })] = {
-                    v: rv.v,
-                    t: rv.t,
+                    v: rv.v, t: rv.t,
                     s: {
                         font: { name: "Calibri", sz: 10, bold: true },
                         fill: { fgColor: { rgb: "CCFBF1" } },
@@ -3439,7 +3340,6 @@
             return currentWriteRow;
         }
 
-        // FEATURE 3: STAFF SINGLE-ROW EXCEL EXPORT (1 REGISTRATION = 1 SINGLE ROW)
         function writeStaffSingleRowExcel(ws, startWriteRow, sortedRecords, headerColor, thinBorder) {
             let currentWriteRow = startWriteRow;
             const loggedStaff = (appState.currentLoggedStaff || '').trim().toUpperCase();
@@ -3447,45 +3347,25 @@
             const staffScope = staffScopeEl ? staffScopeEl.value : 'ALL';
 
             ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: 0 })] = {
-                v: `DETAILED SINGLE-ROW STAFF WORK & PAYOUT VOUCHER (1 REG = 1 ROW | STAFF: ${loggedStaff})`,
+                v: `STAFF WORK & PAYOUT VOUCHER (STAFF: ${loggedStaff})`,
                 t: "s",
                 s: { font: { name: "Calibri", sz: 11, bold: true, color: { rgb: "1E3A8A" } } }
             };
             currentWriteRow++;
 
             const headers = [
-                "Intake Date",              // Col A (0)
-                "Sent Dept Date",           // Col B (1)
-                "Work Order Date",          // Col C (2)
-                "Farmer Name",              // Col D (3)
-                "Main Reg No",              // Col E (4)
-                "Sharing Reg Nos",          // Col F (5)
-                "Share Count",              // Col G (6)
-                "Total Units (1+Shares)",   // Col H (7)
-                "Dealer Name",              // Col I (8)
-                "Company",                  // Col J (9)
-                "System Type",              // Col K (10)
-                "DGN Status",               // Col L (11)
-                "DGN Staff",                // Col M (12)
-                "My DGN Pay (₹)",           // Col N (13)
-                "BOQ Status",               // Col O (14)
-                "BOQ Staff",                // Col P (15)
-                "My BOQ Units",             // Col Q (16)
-                "My BOQ Pay (₹)",           // Col R (17)
-                "KML Status",               // Col S (18)
-                "KML Staff",                // Col T (19)
-                "My KML Pay (₹)",           // Col U (20)
-                "My Total File Pay (₹)",    // Col V (21)
-                "My Paid Amount (₹)",       // Col W (22)
-                "My Unpaid Balance (₹)",    // Col X (23)
-                "Payment Status Detail",    // Col Y (24)
-                "Remark"                    // Col Z (25)
+                "Intake Date", "Sent Dept Date", "Work Order Date", "Farmer Name", "Main Reg No", "Sharing Reg Nos",
+                "Share Count", "Total Units (1+Shares)", "Dealer Name", "Company", "System Type",
+                "DGN Status", "DGN Staff", "My DGN Pay (₹)",
+                "BOQ Status", "BOQ Staff", "My BOQ Units", "My BOQ Pay (₹)",
+                "KML Status", "KML Staff", "My KML Pay (₹)",
+                "My Total File Pay (₹)", "My Paid Amount (₹)", "My Unpaid Balance (₹)",
+                "Payment Status Detail", "Remark"
             ];
 
             headers.forEach((h, cIdx) => {
                 ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: cIdx })] = {
-                    v: h,
-                    t: "s",
+                    v: h, t: "s",
                     s: {
                         font: { name: "Calibri", sz: 10, bold: true, color: { rgb: "FFFFFF" } },
                         fill: { fgColor: { rgb: headerColor } },
@@ -3509,6 +3389,9 @@
                 return true;
             });
 
+            let totShareCnt = 0, totUnits = 0, totDgnPay = 0, totBoqUnits = 0, totBoqPay = 0, totKmlPay = 0;
+            let totFilePay = 0, totPaid = 0, totUnpaid = 0;
+
             staffRecords.forEach((r, idx) => {
                 const rowNum = startRow + idx;
                 const rIdx = rowNum - 1;
@@ -3524,9 +3407,14 @@
                 const entStaffClean = (r.entryStaff || '').trim().toUpperCase();
                 const kmlStaffClean = (r.kmlStaff || '').trim().toUpperCase();
 
+                let myDgnPay = (dgnStaffClean === loggedStaff && r.dgnStatus === 'Done') ? stDgnRate : 0;
+                let myBoqUnits = (entStaffClean === loggedStaff && r.entryStatus === 'Done') ? totalUnits : 0;
+                let myBoqPay = (entStaffClean === loggedStaff && r.entryStatus === 'Done') ? (stEntryRate * totalUnits) : 0;
+                let myKmlPay = (kmlStaffClean === loggedStaff && r.kmlStatus === 'Done') ? stKmlRate : 0;
+                const myTotalFilePay = myDgnPay + myBoqPay + myKmlPay;
+
                 let myPaidAmt = 0;
                 const payTags = [];
-
                 if (dgnStaffClean === loggedStaff && r.dgnStatus === 'Done') {
                     if (r.dgnPaid) myPaidAmt += stDgnRate;
                     payTags.push(`DGN:${r.dgnPaid ? 'Paid' : 'Unpaid'}`);
@@ -3539,8 +3427,18 @@
                     if (r.kmlPaid) myPaidAmt += stKmlRate;
                     payTags.push(`KML:${r.kmlPaid ? 'Paid' : 'Unpaid'}`);
                 }
-
+                const myUnpaidBalance = myTotalFilePay - myPaidAmt;
                 const payDetailStr = payTags.length > 0 ? payTags.join(' | ') : 'Pending / Unassigned';
+
+                totShareCnt += shareCnt;
+                totUnits += totalUnits;
+                totDgnPay += myDgnPay;
+                totBoqUnits += myBoqUnits;
+                totBoqPay += myBoqPay;
+                totKmlPay += myKmlPay;
+                totFilePay += myTotalFilePay;
+                totPaid += myPaidAmt;
+                totUnpaid += myUnpaidBalance;
 
                 const rowCells = [
                     { v: formatExcelDate(r.date), t: "s", a: "center" },
@@ -3554,27 +3452,19 @@
                     { v: r.dealerName || "-", t: "s", a: "left" },
                     { v: r.companyName || "-", t: "s", a: "left" },
                     { v: r.systemType || "Mini sprinkler", t: "s", a: "left" },
-
-                    // DGN Columns (L, M, N)
                     { v: r.dgnStatus, t: "s", a: "center" },
                     { v: dgnStaffClean || "-", t: "s", a: "center" },
-                    { f: `IF(AND(L${rowNum}="Done", M${rowNum}="${loggedStaff}"), ${stDgnRate}, 0)`, v: 0, t: "n", a: "right" },
-
-                    // BOQ Columns (O, P, Q, R)
+                    { f: `IF(AND(L${rowNum}="Done",M${rowNum}="${loggedStaff}"),${stDgnRate},0)`, v: myDgnPay, t: "n", a: "right" },
                     { v: r.entryStatus, t: "s", a: "center" },
                     { v: entStaffClean || "-", t: "s", a: "center" },
-                    { f: `IF(AND(O${rowNum}="Done", P${rowNum}="${loggedStaff}"), H${rowNum}, 0)`, v: 0, t: "n", a: "center" },
-                    { f: `Q${rowNum}*${stEntryRate}`, v: 0, t: "n", a: "right" },
-
-                    // KML Columns (S, T, U)
+                    { f: `IF(AND(O${rowNum}="Done",P${rowNum}="${loggedStaff}"),H${rowNum},0)`, v: myBoqUnits, t: "n", a: "center" },
+                    { f: `Q${rowNum}*${stEntryRate}`, v: myBoqPay, t: "n", a: "right" },
                     { v: r.kmlStatus, t: "s", a: "center" },
                     { v: kmlStaffClean || "-", t: "s", a: "center" },
-                    { f: `IF(AND(S${rowNum}="Done", T${rowNum}="${loggedStaff}"), ${stKmlRate}, 0)`, v: 0, t: "n", a: "right" },
-
-                    // Totals & Reconciliation Columns (V, W, X, Y, Z)
-                    { f: `N${rowNum}+R${rowNum}+U${rowNum}`, v: 0, t: "n", a: "right", b: true },
+                    { f: `IF(AND(S${rowNum}="Done",T${rowNum}="${loggedStaff}"),${stKmlRate},0)`, v: myKmlPay, t: "n", a: "right" },
+                    { f: `N${rowNum}+R${rowNum}+U${rowNum}`, v: myTotalFilePay, t: "n", a: "right", b: true },
                     { v: myPaidAmt, t: "n", a: "right" },
-                    { f: `V${rowNum}-W${rowNum}`, v: 0, t: "n", a: "right", b: true },
+                    { f: `V${rowNum}-W${rowNum}`, v: myUnpaidBalance, t: "n", a: "right", b: true },
                     { v: payDetailStr, t: "s", a: "center" },
                     { v: r.remark || "-", t: "s", a: "left" }
                 ];
@@ -3602,15 +3492,15 @@
 
             const totalsData = Array(26).fill({ v: "", t: "s", a: "center" });
             totalsData[3] = { v: `TOTAL (${loggedStaff}):`, t: "s", a: "right" };
-            totalsData[6] = { f: hasStaffRows ? `SUM(G${startRow}:G${endRow})` : "0", v: 0, t: "n", a: "center" };
-            totalsData[7] = { f: hasStaffRows ? `SUM(H${startRow}:H${endRow})` : "0", v: 0, t: "n", a: "center" };
-            totalsData[13] = { f: hasStaffRows ? `SUM(N${startRow}:N${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
-            totalsData[16] = { f: hasStaffRows ? `SUM(Q${startRow}:Q${endRow})` : "0", v: 0, t: "n", a: "center", h: true };
-            totalsData[17] = { f: hasStaffRows ? `SUM(R${startRow}:R${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
-            totalsData[20] = { f: hasStaffRows ? `SUM(U${startRow}:U${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
-            totalsData[21] = { f: hasStaffRows ? `SUM(V${startRow}:V${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
-            totalsData[22] = { f: hasStaffRows ? `SUM(W${startRow}:W${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
-            totalsData[23] = { f: hasStaffRows ? `SUM(X${startRow}:X${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
+            totalsData[6] = { f: hasStaffRows ? `SUM(G${startRow}:G${endRow})` : "0", v: totShareCnt, t: "n", a: "center" };
+            totalsData[7] = { f: hasStaffRows ? `SUM(H${startRow}:H${endRow})` : "0", v: totUnits, t: "n", a: "center" };
+            totalsData[13] = { f: hasStaffRows ? `SUM(N${startRow}:N${endRow})` : "0", v: totDgnPay, t: "n", a: "right", h: true };
+            totalsData[16] = { f: hasStaffRows ? `SUM(Q${startRow}:Q${endRow})` : "0", v: totBoqUnits, t: "n", a: "center", h: true };
+            totalsData[17] = { f: hasStaffRows ? `SUM(R${startRow}:R${endRow})` : "0", v: totBoqPay, t: "n", a: "right", h: true };
+            totalsData[20] = { f: hasStaffRows ? `SUM(U${startRow}:U${endRow})` : "0", v: totKmlPay, t: "n", a: "right", h: true };
+            totalsData[21] = { f: hasStaffRows ? `SUM(V${startRow}:V${endRow})` : "0", v: totFilePay, t: "n", a: "right", h: true };
+            totalsData[22] = { f: hasStaffRows ? `SUM(W${startRow}:W${endRow})` : "0", v: totPaid, t: "n", a: "right", h: true };
+            totalsData[23] = { f: hasStaffRows ? `SUM(X${startRow}:X${endRow})` : "0", v: totUnpaid, t: "n", a: "right", h: true };
 
             totalsData.forEach((cData, cIdx) => {
                 const cellRef = XLSX.utils.encode_cell({ r: totalRowIdx, c: cIdx });
@@ -3640,7 +3530,7 @@
 
         function exportToExcel() {
             if (typeof XLSX === 'undefined') {
-                alert("Excel Export library load nahi ho payi!");
+                alert("Excel Export library not loaded!");
                 return;
             }
             const isUserAdmin = (appState.currentUserRole === 'admin');
@@ -3657,27 +3547,25 @@
             };
             const ws = {};
             const titleText = isUserAdmin
-                ? `SHRI JI AGRITECH - UPMIP MANAGEMENT PORTAL (${isArchivedTab ? 'ARCHIVED VAULT' : 'ACTIVE RECORDS'})`
-                : `SHRI JI AGRITECH - STAFF TASK & PAYOUT VOUCHER (${appState.currentLoggedStaff})`;
+                ? `SHRI JI AGRITECH - UPMIP PORTAL (${isArchivedTab ? 'ARCHIVED' : 'ACTIVE'})`
+                : `SHRI JI AGRITECH - STAFF VOUCHER (${appState.currentLoggedStaff})`;
             
             ws["A1"] = { v: titleText, t: "s", s: { font: { name: "Calibri", sz: 14, bold: true, color: { rgb: titleTextColor } } } };
-            ws["A2"] = { v: `Generated on: ${getFormattedTimestamp()}`, t: "s", s: { font: { name: "Calibri", sz: 10, italic: true, color: { rgb: "475569" } } } };
+            ws["A2"] = { v: `Generated: ${getFormattedTimestamp()}`, t: "s", s: { font: { name: "Calibri", sz: 10, italic: true, color: { rgb: "475569" } } } };
 
             let currentWriteRow = 3;
 
-            // 1. TOP BLOCK: STAFF-WISE TASK & PAYOUT BREAKDOWN
             ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: 0 })] = {
-                v: `STAFF-WISE TASK & PAYOUT BREAKDOWN (${isArchivedTab ? 'ARCHIVED VAULT' : 'ACTIVE FILTERED'} RECORDS)`,
+                v: `STAFF-WISE TASK & PAYOUT BREAKDOWN`,
                 t: "s",
                 s: { font: { name: "Calibri", sz: 11, bold: true, color: { rgb: titleTextColor } } }
             };
             currentWriteRow++;
             
-            const summaryHeaders = ["Staff Name", "DGN Done Count", "BOQ Units Done (1+Shares)", "KML Done Count", "Paid Payout (₹)", "Unpaid Payout (₹)", "Total Earned (₹)"];
+            const summaryHeaders = ["Staff Name", "DGN Done Count", "BOQ Units Done", "KML Done Count", "Paid (₹)", "Unpaid (₹)", "Total (₹)"];
             summaryHeaders.forEach((sh, sIdx) => {
                 ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: sIdx })] = {
-                    v: sh,
-                    t: "s",
+                    v: sh, t: "s",
                     s: {
                         font: { name: "Calibri", sz: 10, bold: true, color: { rgb: "FFFFFF" } },
                         fill: { fgColor: { rgb: "2D6A4F" } },
@@ -3713,8 +3601,7 @@
                 ];
                 rowVals.forEach((rv, rIdx) => {
                     ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: rIdx })] = {
-                        v: rv.v,
-                        t: rv.t,
+                        v: rv.v, t: rv.t,
                         s: {
                             font: { name: "Calibri", sz: 10, bold: rIdx === 0 || rIdx === 6 },
                             alignment: { horizontal: rv.a },
@@ -3727,7 +3614,7 @@
 
             if (isUserAdmin) {
                 const totalSummaryRow = [
-                    { v: "TOTAL ALL STAFF:", t: "s", a: "left" },
+                    { v: "TOTAL:", t: "s", a: "left" },
                     { v: sumDgn, t: "n", a: "center" },
                     { v: sumBoq, t: "n", a: "center" },
                     { v: sumKml, t: "n", a: "center" },
@@ -3737,8 +3624,7 @@
                 ];
                 totalSummaryRow.forEach((rv, rIdx) => {
                     ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: rIdx })] = {
-                        v: rv.v,
-                        t: rv.t,
+                        v: rv.v, t: rv.t,
                         s: {
                             font: { name: "Calibri", sz: 10, bold: true },
                             fill: { fgColor: { rgb: "FEF3C7" } },
@@ -3753,11 +3639,9 @@
             currentWriteRow += 1;
 
             if (isUserAdmin) {
-                // 2. MIDDLE BLOCK (ADMIN ONLY): DEALER & COMPANY-WISE BILLING BREAKDOWN
                 currentWriteRow = writeDealerBreakdownToAdminExcel(ws, currentWriteRow, sortedRecords, thinBorder);
                 currentWriteRow += 1;
 
-                // 3. BOTTOM BLOCK (ADMIN ONLY): DETAILED MASTER RECORDS TABLE
                 ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: 0 })] = {
                     v: "DETAILED MASTER RECORDS TABLE",
                     t: "s",
@@ -3773,8 +3657,7 @@
                 ];
                 headers.forEach((h, cIdx) => {
                     ws[XLSX.utils.encode_cell({ r: currentWriteRow, c: cIdx })] = {
-                        v: h,
-                        t: "s",
+                        v: h, t: "s",
                         s: {
                             font: { name: "Calibri", sz: 11, bold: true, color: { rgb: "FFFFFF" } },
                             fill: { fgColor: { rgb: headerColor } },
@@ -3786,6 +3669,8 @@
 
                 currentWriteRow++;
                 const startRow = currentWriteRow + 1;
+
+                let tShare = 0, tDgnAmt = 0, tBoqFiles = 0, tBoqAmt = 0, tKmlPay = 0, tRecorr = 0, tClient = 0, tStaffPay = 0, tProfit = 0;
 
                 sortedRecords.forEach((r, idx) => {
                     const rowNum = startRow + idx;
@@ -3799,6 +3684,27 @@
                     const normSh = normalizeSharingString(r.sharingRegNo);
                     const shareCnt = computeCleanSharingCount(normSh);
                     
+                    const dgnAmount = (r.dgnStatus !== 'N/A') ? dgnRate : 0;
+                    const boqTotalFiles = 1 + shareCnt;
+                    const boqAmount = (r.entryStatus !== 'N/A') ? (shareCnt * boqRate) : 0;
+                    const kmlPay = (r.kmlStatus === 'Done') ? stKmlRate : 0;
+                    const totalClientBilled = dgnAmount + boqAmount + recorFee;
+                    const totalStaffPayout = 
+                        (r.dgnStatus === 'Done' ? stDgnRate : 0) + 
+                        (r.entryStatus === 'Done' ? stEntryRate * boqTotalFiles : 0) + 
+                        (r.kmlStatus === 'Done' ? stKmlRate : 0);
+                    const adminProfit = totalClientBilled - totalStaffPayout;
+
+                    tShare += shareCnt;
+                    tDgnAmt += dgnAmount;
+                    tBoqFiles += boqTotalFiles;
+                    tBoqAmt += boqAmount;
+                    tKmlPay += kmlPay;
+                    tRecorr += recorFee;
+                    tClient += totalClientBilled;
+                    tStaffPay += totalStaffPayout;
+                    tProfit += adminProfit;
+
                     const pArr = [];
                     if (r.dgnStatus === 'Done') pArr.push(`DGN:${r.dgnPaid ? 'Paid' : 'Unpaid'}`);
                     if (r.entryStatus === 'Done') pArr.push(`BOQ:${r.entryPaid ? 'Paid' : 'Unpaid'}`);
@@ -3810,7 +3716,7 @@
                         { v: r.sentDeptDate ? formatExcelDate(r.sentDeptDate) : "-", t: "s", a: "center" },
                         { v: r.workOrderDate ? formatExcelDate(r.workOrderDate) : "-", t: "s", a: "center" },
                         { v: r.farmerName || "-", t: "s", a: "left" },
-                        { v: r.regNo || "N/A (Docs Pending)", t: "s", a: "center" },
+                        { v: r.regNo || "N/A", t: "s", a: "center" },
                         { v: normSh || "-", t: "s", a: "left" },
                         { f: `IF(OR(LEN(TRIM(F${rowNum}))=0, F${rowNum}="-"), 0, LEN(TRIM(F${rowNum}))-LEN(SUBSTITUTE(TRIM(F${rowNum}), ",", ""))+1)`, v: shareCnt, t: "n", a: "center" },
                         { v: r.dealerName, t: "s", a: "left" },
@@ -3820,21 +3726,21 @@
                         { v: r.dgnStatus, t: "s", a: "center" },
                         { v: r.dgnStaff || "-", t: "s", a: "center" },
                         { v: dgnRate, t: "n", a: "right" },
-                        { f: `IF(L${rowNum}<>"N/A", N${rowNum}, 0)`, v: 0, t: "n", a: "right" },
+                        { f: `IF(L${rowNum}<>"N/A", N${rowNum}, 0)`, v: dgnAmount, t: "n", a: "right" },
                         { v: r.entryStatus, t: "s", a: "center" },
                         { v: r.entryStaff || "-", t: "s", a: "center" },
                         { v: boqRate, t: "n", a: "right" },
-                        { f: `1+G${rowNum}`, v: 0, t: "n", a: "center" },
-                        { f: `IF(P${rowNum}<>"N/A", G${rowNum}*R${rowNum}, 0)`, v: 0, t: "n", a: "right" },
+                        { f: `1+G${rowNum}`, v: boqTotalFiles, t: "n", a: "center" },
+                        { f: `IF(P${rowNum}<>"N/A", G${rowNum}*R${rowNum}, 0)`, v: boqAmount, t: "n", a: "right" },
                         { v: r.kmlStatus, t: "s", a: "center" },
                         { v: r.kmlStaff || "-", t: "s", a: "center" },
                         { v: stKmlRate, t: "n", a: "right" },
-                        { f: `IF(U${rowNum}="Done", W${rowNum}, 0)`, v: 0, t: "n", a: "right" },
+                        { f: `IF(U${rowNum}="Done", W${rowNum}, 0)`, v: kmlPay, t: "n", a: "right" },
                         { v: recorFee, t: "n", a: "right" },
                         { v: r.recorrectionReason || "-", t: "s", a: "left" },
-                        { f: `O${rowNum}+T${rowNum}+Y${rowNum}`, v: 0, t: "n", a: "right" },
-                        { f: `(IF(L${rowNum}="Done", ${stDgnRate}, 0)) + (IF(P${rowNum}="Done", ${stEntryRate}*S${rowNum}, 0)) + (IF(U${rowNum}="Done", ${stKmlRate}, 0))`, v: 0, t: "n", a: "right" },
-                        { f: `AA${rowNum}-AB${rowNum}`, v: 0, t: "n", a: "right" },
+                        { f: `O${rowNum}+T${rowNum}+Y${rowNum}`, v: totalClientBilled, t: "n", a: "right" },
+                        { f: `(IF(L${rowNum}="Done", ${stDgnRate}, 0)) + (IF(P${rowNum}="Done", ${stEntryRate}*S${rowNum}, 0)) + (IF(U${rowNum}="Done", ${stKmlRate}, 0))`, v: totalStaffPayout, t: "n", a: "right" },
+                        { f: `AA${rowNum}-AB${rowNum}`, v: adminProfit, t: "n", a: "right" },
                         { v: r.remark || '-', t: "s", a: "left" },
                         { v: r.isArchived ? 'Archived' : 'Active', t: "s", a: "center" },
                         { v: pStatusStr, t: "s", a: "center" }
@@ -3862,15 +3768,15 @@
                 const hasRows = sortedRecords.length > 0;
                 const totalsData = Array(32).fill({ v: "", t: "s", a: "center" });
                 totalsData[3] = { v: "TOTALS:", t: "s", a: "center" };
-                totalsData[6] = { f: hasRows ? `SUM(G${startRow}:G${endRow})` : "0", v: 0, t: "n", a: "center" };
-                totalsData[14] = { f: hasRows ? `SUM(O${startRow}:O${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
-                totalsData[18] = { f: hasRows ? `SUM(S${startRow}:S${endRow})` : "0", v: 0, t: "n", a: "center", h: true };
-                totalsData[19] = { f: hasRows ? `SUM(T${startRow}:T${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
-                totalsData[23] = { f: hasRows ? `SUM(X${startRow}:X${endRow})` : "0", v: 0, t: "n", a: "right" };
-                totalsData[24] = { f: hasRows ? `SUM(Y${startRow}:Y${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
-                totalsData[26] = { f: hasRows ? `SUM(AA${startRow}:AA${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
-                totalsData[27] = { f: hasRows ? `SUM(AB${startRow}:AB${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
-                totalsData[28] = { f: hasRows ? `SUM(AC${startRow}:AC${endRow})` : "0", v: 0, t: "n", a: "right", h: true };
+                totalsData[6] = { f: hasRows ? `SUM(G${startRow}:G${endRow})` : "0", v: tShare, t: "n", a: "center" };
+                totalsData[14] = { f: hasRows ? `SUM(O${startRow}:O${endRow})` : "0", v: tDgnAmt, t: "n", a: "right", h: true };
+                totalsData[18] = { f: hasRows ? `SUM(S${startRow}:S${endRow})` : "0", v: tBoqFiles, t: "n", a: "center", h: true };
+                totalsData[19] = { f: hasRows ? `SUM(T${startRow}:T${endRow})` : "0", v: tBoqAmt, t: "n", a: "right", h: true };
+                totalsData[23] = { f: hasRows ? `SUM(X${startRow}:X${endRow})` : "0", v: tKmlPay, t: "n", a: "right" };
+                totalsData[24] = { f: hasRows ? `SUM(Y${startRow}:Y${endRow})` : "0", v: tRecorr, t: "n", a: "right", h: true };
+                totalsData[26] = { f: hasRows ? `SUM(AA${startRow}:AA${endRow})` : "0", v: tClient, t: "n", a: "right", h: true };
+                totalsData[27] = { f: hasRows ? `SUM(AB${startRow}:AB${endRow})` : "0", v: tStaffPay, t: "n", a: "right", h: true };
+                totalsData[28] = { f: hasRows ? `SUM(AC${startRow}:AC${endRow})` : "0", v: tProfit, t: "n", a: "right", h: true };
 
                 totalsData.forEach((cData, cIdx) => {
                     const cellRef = XLSX.utils.encode_cell({ r: totalRowIdx, c: cIdx });
@@ -3896,12 +3802,11 @@
                 ws["!ref"] = XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: totalRowIdx, c: headers.length - 1 } });
 
             } else {
-                // STAFF EXPORT: 1 REGISTRATION = 1 SINGLE ROW
                 writeStaffSingleRowExcel(ws, currentWriteRow, sortedRecords, headerColor, thinBorder);
             }
 
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, isUserAdmin ? "Admin_Master_Audit" : "Staff_SingleRow_Voucher");
+            XLSX.utils.book_append_sheet(wb, ws, isUserAdmin ? "Admin_Master" : "Staff_Voucher");
             XLSX.writeFile(wb, `Shri_Ji_Agritech_${appState.currentUserRole}_${isArchivedTab ? 'Archived_' : ''}${getFormattedDateOnly()}.xlsx`);
         }
         
@@ -3916,7 +3821,7 @@
                 document.getElementById('analyticsStaffTab').classList.add('hidden');
                 document.getElementById('analyticsDealerTab').classList.remove('hidden');
                 document.getElementById('tabBtnDealer').className = "px-4 py-2 text-xs font-bold rounded-xl bg-cyan-600 text-white shadow-md";
-                document.getElementById('tabBtnStaff').className = "px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
+                document.getElementById('tabBtnStaff').className = "px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600";
             }
             if (id === 'paymentLedgerModal') renderPaymentLedger();
             if (id === 'staffUserManageModal') renderStaffUserManager();
@@ -3935,7 +3840,6 @@
             renderTable();
         }
 
-        // Auto-compress uploaded logo to 160x160 max so it never bloats Firestore 1MB limit
         function handleLogoUpload(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -3980,36 +3884,45 @@
             }
         }
 
-        // --- HYBRID LOCALSTORAGE + REAL-TIME FIRESTORE CLOUD SYNC ---
-        function saveStateToCloud() {
+        // ============================================================
+        // 🟢 FIXED SAVE FUNCTION (Added forceOverwrite flag for Restore)
+        // ============================================================
+        function saveStateToCloud(forceOverwrite = false) {
             saveToLocalCache();
             if (db) {
-                updateSyncStatusBadge('syncing', 'Saving to Firebase Cloud...');
+                updateSyncStatusBadge('syncing', 'Saving to Cloud...');
                 const docRef = db.collection("shriJiPortal").doc("masterData");
-                // Pre-Save Merge: Fetch latest cloud snapshot before writing so simultaneous multi-user edits never overwrite each other
-                docRef.get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        mergeCloudAndLocalData(doc.data());
-                    }
+
+                if (forceOverwrite) {
                     const finalPayload = saveToLocalCache();
-                    return docRef.set(finalPayload);
-                })
-                .then(() => {
-                    updateSyncStatusBadge('online', 'Firebase Cloud Live Synced');
-                })
-                .catch((error) => {
-                    console.warn("Offline mode: Saved locally to browser storage.", error);
-                    updateSyncStatusBadge('offline', 'Saved Locally (Offline Mode)');
-                });
+                    docRef.set(finalPayload).then(() => {
+                        updateSyncStatusBadge('online', 'Firebase Cloud Live Synced');
+                    }).catch((error) => {
+                        console.warn("Offline: Saved locally.", error);
+                        updateSyncStatusBadge('offline', 'Saved Locally (Offline)');
+                    });
+                } else {
+                    docRef.get().then((doc) => {
+                        if (doc.exists) {
+                            mergeCloudAndLocalData(doc.data());
+                        }
+                        const finalPayload = saveToLocalCache();
+                        return docRef.set(finalPayload);
+                    }).then(() => {
+                        updateSyncStatusBadge('online', 'Firebase Cloud Live Synced');
+                    }).catch((error) => {
+                        console.warn("Offline: Saved locally.", error);
+                        updateSyncStatusBadge('offline', 'Saved Locally (Offline)');
+                    });
+                }
             } else {
-                updateSyncStatusBadge('offline', 'Saved Locally (Offline Mode)');
+                updateSyncStatusBadge('offline', 'Saved Locally (Offline)');
             }
         }
 
         function forceCloudSyncNow() {
             saveStateToCloud();
-            showSuccessToast("Sync Triggered", "Local data merged & pushed to Firebase Cloud!");
+            showSuccessToast("Sync Triggered", "Data pushed to Cloud!");
         }
 
         function loadStateFromCloud() {
@@ -4019,13 +3932,13 @@
                     const parsedLocal = JSON.parse(localData);
                     applyParsedDataToState(parsedLocal);
                 } catch (e) {
-                    console.error("Local storage parse error:", e);
+                    console.error("Local parse error:", e);
                 }
             }
             refreshAllUIComponents();
 
             if (db) {
-                updateSyncStatusBadge('syncing', 'Connecting to Firebase Cloud...');
+                updateSyncStatusBadge('syncing', 'Connecting to Cloud...');
                 db.collection("shriJiPortal").doc("masterData").get()
                 .then((doc) => {
                     if (doc.exists) {
@@ -4040,8 +3953,8 @@
                     }
                 })
                 .catch((error) => {
-                    console.warn("Working Offline - Using LocalStorage Data.", error);
-                    updateSyncStatusBadge('offline', 'Offline Mode (Using Browser Storage)');
+                    console.warn("Offline mode.", error);
+                    updateSyncStatusBadge('offline', 'Offline (Browser Storage)');
                 });
 
                 if (!unsubscribeCloudListener) {
@@ -4062,14 +3975,14 @@
                             }
                         }, (err) => {
                             console.warn("Realtime listener offline:", err);
-                            updateSyncStatusBadge('offline', 'Offline Mode (Using Browser Storage)');
+                            updateSyncStatusBadge('offline', 'Offline (Browser Storage)');
                         });
                     } catch (e) {
-                        console.warn("Could not attach realtime listener:", e);
+                        console.warn("Listener error:", e);
                     }
                 }
             } else {
-                updateSyncStatusBadge('offline', 'Offline Mode (Using Browser Storage)');
+                updateSyncStatusBadge('offline', 'Offline (Browser Storage)');
             }
         }
     </script>
