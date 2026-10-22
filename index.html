@@ -2924,7 +2924,7 @@
         }
 
         // ============================================================
-        // 🟢 FIXED RESTORE FUNCTION (Force Overwrite + Cache Fix)
+        // 🟢 FIXED RESTORE FUNCTION (No Duplication Race Condition)
         // ============================================================
         function restoreJsonBackup(event) {
             const fileInput = event.target;
@@ -2939,32 +2939,53 @@
                         return;
                     }
                     if (confirm("Restore backup? Existing cloud & local data will be completely replaced.")) {
-                        // 1. Reset states
+                        
+                        // 1. STOP the realtime listener so it doesn't merge old data
+                        if (unsubscribeCloudListener) {
+                            unsubscribeCloudListener();
+                            unsubscribeCloudListener = null;
+                        }
+
+                        // 2. Reset local states
                         appState.deletedRecordIds = [];
                         appState.lastMasterResetAtMs = 0;
-                        appState.settingsUpdatedAtMs = Date.now() + 10000; // Force newer
+                        appState.settingsUpdatedAtMs = Date.now() + 10000; 
                         
-                        // 2. Force records to be newer than cloud so they win
                         parsed.records.forEach(r => {
-                            r.updatedAtMs = Date.now() + 10000;
+                            r.updatedAtMs = Date.now() + 10000; 
                         });
 
-                        // 3. Apply parsed data to local state
                         applyParsedDataToState(parsed, true);
-                        
-                        // 4. Force save to cloud (bypassing merge)
-                        saveStateToCloud(true);
-                        
-                        // 5. Refresh UI
-                        refreshAllUIComponents();
-                        
-                        showSuccessToast("Restore Complete 🎉", "Data successfully restored to Cloud & Browser!");
+                        saveToLocalCache();
+
+                        if (db) {
+                            updateSyncStatusBadge('syncing', 'Restoring to Cloud...');
+                            const docRef = db.collection("shriJiPortal").doc("masterData");
+                            
+                            // 3. Force overwrite cloud data completely
+                            docRef.set(saveToLocalCache()).then(() => {
+                                updateSyncStatusBadge('online', 'Firebase Cloud Live Synced');
+                                refreshAllUIComponents();
+                                showSuccessToast("Restore Complete 🎉", "Data successfully restored without duplicates!");
+                                
+                                // 4. Re-attach realtime listener
+                                attachRealtimeListener();
+                            }).catch(err => {
+                                console.error("Restore to cloud failed:", err);
+                                updateSyncStatusBadge('offline', 'Saved Locally (Offline)');
+                                refreshAllUIComponents();
+                                attachRealtimeListener();
+                            });
+                        } else {
+                            refreshAllUIComponents();
+                            showSuccessToast("Restore Complete", "Data restored locally.");
+                        }
                     }
                 } catch (err) {
                     console.error("Restore error:", err);
                     alert("Backup file corrupt or invalid JSON!");
                 }
-                fileInput.value = ''; // Reset file input
+                fileInput.value = ''; 
             };
             reader.readAsText(file);
         }
@@ -3884,9 +3905,6 @@
             }
         }
 
-        // ============================================================
-        // 🟢 FIXED SAVE FUNCTION (Added forceOverwrite flag for Restore)
-        // ============================================================
         function saveStateToCloud(forceOverwrite = false) {
             saveToLocalCache();
             if (db) {
@@ -3925,6 +3943,28 @@
             showSuccessToast("Sync Triggered", "Data pushed to Cloud!");
         }
 
+        function attachRealtimeListener() {
+            if (!db || unsubscribeCloudListener) return;
+            unsubscribeCloudListener = db.collection("shriJiPortal").doc("masterData")
+            .onSnapshot((doc) => {
+                if (doc.exists) {
+                    const cloudData = doc.data();
+                    mergeCloudAndLocalData(cloudData);
+                    saveToLocalCache();
+                    const editModalOpen = !document.getElementById('updateTaskModal').classList.contains('hidden');
+                    if (!editModalOpen) {
+                        refreshAllUIComponents();
+                    } else {
+                        renderTable();
+                    }
+                    updateSyncStatusBadge('online', 'Firebase Cloud Live Synced');
+                }
+            }, (err) => {
+                console.warn("Realtime listener offline:", err);
+                updateSyncStatusBadge('offline', 'Offline (Browser Storage)');
+            });
+        }
+
         function loadStateFromCloud() {
             const localData = localStorage.getItem(STORAGE_KEY);
             if (localData) {
@@ -3951,36 +3991,13 @@
                     } else {
                         saveStateToCloud();
                     }
+                    attachRealtimeListener();
                 })
                 .catch((error) => {
                     console.warn("Offline mode.", error);
                     updateSyncStatusBadge('offline', 'Offline (Browser Storage)');
+                    attachRealtimeListener();
                 });
-
-                if (!unsubscribeCloudListener) {
-                    try {
-                        unsubscribeCloudListener = db.collection("shriJiPortal").doc("masterData")
-                        .onSnapshot((doc) => {
-                            if (doc.exists) {
-                                const cloudData = doc.data();
-                                mergeCloudAndLocalData(cloudData);
-                                saveToLocalCache();
-                                const editModalOpen = !document.getElementById('updateTaskModal').classList.contains('hidden');
-                                if (!editModalOpen) {
-                                    refreshAllUIComponents();
-                                } else {
-                                    renderTable();
-                                }
-                                updateSyncStatusBadge('online', 'Firebase Cloud Live Synced');
-                            }
-                        }, (err) => {
-                            console.warn("Realtime listener offline:", err);
-                            updateSyncStatusBadge('offline', 'Offline (Browser Storage)');
-                        });
-                    } catch (e) {
-                        console.warn("Listener error:", e);
-                    }
-                }
             } else {
                 updateSyncStatusBadge('offline', 'Offline (Browser Storage)');
             }
