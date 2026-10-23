@@ -1222,7 +1222,7 @@
             }
         }
 
-        function mergeCloudAndLocalData(cloudData) {
+                function mergeCloudAndLocalData(cloudData) {
             if (!cloudData) return;
 
             const localSettingsMs = appState.settingsUpdatedAtMs || 0;
@@ -1259,30 +1259,55 @@
             appState.deletedRecordIds = Array.from(deletedSet).slice(-800);
 
             if (Array.isArray(cloudData.records)) {
-                const recordMap = new Map();
-                cloudData.records.forEach(r => {
-                    if (r && r.id && !deletedSet.has(r.id) && (r.updatedAtMs || r.id || 0) >= maxResetMs) {
-                        r.sharingRegNo = normalizeSharingString(r.sharingRegNo);
-                        r.sharingCount = computeCleanSharingCount(r.sharingRegNo);
-                        recordMap.set(r.id, r);
-                    }
-                });
-                (appState.records || []).forEach(localRec => {
-                    if (!localRec || !localRec.id || deletedSet.has(localRec.id) || (localRec.updatedAtMs || localRec.id || 0) < maxResetMs) return;
-                    localRec.sharingRegNo = normalizeSharingString(localRec.sharingRegNo);
-                    localRec.sharingCount = computeCleanSharingCount(localRec.sharingRegNo);
-                    const cloudRec = recordMap.get(localRec.id);
-                    if (!cloudRec) {
-                        recordMap.set(localRec.id, localRec);
+                const combinedRecords = [...(appState.records || []), ...(cloudData.records || [])];
+                
+                // 1. फिल्टर करें (डिलीट हुई फाइलें हटा दें)
+                const validRecords = combinedRecords.filter(r => 
+                    r && r.id && !deletedSet.has(r.id) && (r.updatedAtMs || r.id || 0) >= maxResetMs
+                );
+
+                // 2. ID के आधार पर डुप्लीकेट हटाएं
+                const idMap = new Map();
+                validRecords.forEach(r => {
+                    r.sharingRegNo = normalizeSharingString(r.sharingRegNo);
+                    r.sharingCount = computeCleanSharingCount(r.sharingRegNo);
+                    
+                    const existing = idMap.get(r.id);
+                    if (!existing) {
+                        idMap.set(r.id, r);
                     } else {
-                        const localTime = localRec.updatedAtMs || 0;
-                        const cloudTime = cloudRec.updatedAtMs || 0;
-                        if (localTime >= cloudTime) {
-                            recordMap.set(localRec.id, localRec);
+                        if ((r.updatedAtMs || 0) >= (existing.updatedAtMs || 0)) {
+                            idMap.set(r.id, r);
                         }
                     }
                 });
-                appState.records = Array.from(recordMap.values());
+
+                // 3. रजिस्ट्रेशन नंबर (Reg No) के आधार पर डबल फाइलों को मर्ज करें (मुख्य फिक्स)
+                const regMap = new Map();
+                const finalRecords = [];
+                
+                Array.from(idMap.values()).forEach(r => {
+                    const cleanReg = (r.regNo || '').trim().toUpperCase();
+                    if (cleanReg && cleanReg !== 'N/A' && cleanReg !== '-' && !cleanReg.includes('PENDING')) {
+                        const existingByReg = regMap.get(cleanReg);
+                        if (!existingByReg) {
+                            regMap.set(cleanReg, r);
+                            finalRecords.push(r);
+                        } else {
+                            // अगर रजिस्ट्रेशन नंबर पहले से है, तो जो सबसे नया अपडेट हुआ है उसे रखें
+                            if ((r.updatedAtMs || 0) > (existingByReg.updatedAtMs || 0)) {
+                                regMap.set(cleanReg, r);
+                                const idx = finalRecords.findIndex(fr => fr.id === existingByReg.id);
+                                if (idx > -1) finalRecords[idx] = r;
+                            }
+                        }
+                    } else {
+                        // अगर रजिस्ट्रेशन नंबर नहीं है (जैसे Pending है), तो उसे सीधा जोड़ दें
+                        finalRecords.push(r);
+                    }
+                });
+
+                appState.records = finalRecords;
             }
         }
 
